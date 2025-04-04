@@ -1,0 +1,281 @@
+/* Hero Section */
+.hero-section {
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3');
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 60px;
+}
+
+.hero-content h1 {
+    font-size: 48px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+/* Portfolio Section */
+.portfolio-section {
+    padding: 60px 0;
+}
+
+.portfolio-item {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    margin-bottom: 35px;
+    height: auto;
+    background-color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.portfolio-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+.portfolio-img-container {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.portfolio-item:hover img {
+    transform: scale(1.05);
+}
+
+.portfolio-content {
+    padding: 25px;
+}
+
+.portfolio-content h3 {
+    color: #333;
+    font-size: 20px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-weight: 600;
+    text-align: right;
+}
+
+.portfolio-description {
+    color: #666;
+    font-size: 15px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    text-align: right;
+    height: 48px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.portfolio-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.portfolio-meta {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    justify-content: flex-end;
+}
+
+.portfolio-category {
+    background-color: rgba(0, 181, 173, 0.1);
+    color: #00b5ad;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.portfolio-date {
+    color: #999;
+    font-size: 13px;
+    margin-left: 12px;
+}
+
+.view-btn, .contact-btn {
+    background-color: transparent;
+    border: 2px solid #00b5ad;
+    color: #00b5ad;
+    padding: 8px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.view-btn:hover, .contact-btn:hover {
+    background-color: #00b5ad;
+    color: #fff;
+}
+
+.view-btn i, .contact-btn i {
+    margin-left: 8px;
+}
+
+/* Pagination */
+.pagination-wrapper {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    display: flex;
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination li {
+    margin: 0 2px;
+}
+
+.pagination li a,
+.pagination li span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    color: #333;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.pagination li.active a {
+    background-color: #00b5ad;
+    border-color: #00b5ad;
+    color: #fff;
+    font-weight: 600;
+}
+
+.pagination li a:hover {
+    background-color: #f8f9fa;
+    border-color: #00b5ad;
+    color: #00b5ad;
+}
+
+/* Chat Buttons */
+.chat-btns {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 100;
+}
+
+.chat-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+.chat-btn.whatsapp {
+    background-color: #25D366;
+}
+
+.chat-btn.messenger {
+    background-color: #0084FF;
+}
+
+.chat-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Responsive Styles */
+@media (max-width: 991px) {
+    .hero-content h1 {
+        font-size: 42px;
+    }
+
+    .portfolio-img-container {
+        height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        height: 250px;
+    }
+
+    .hero-content h1 {
+        font-size: 36px;
+    }
+
+    .portfolio-img-container {
+        height: 180px;
+    }
+
+    .portfolio-content {
+        padding: 20px;
+    }
+
+    .portfolio-content h3 {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-content h1 {
+        font-size: 32px;
+    }
+
+    .portfolio-img-container {
+        height: 160px;
+    }
+
+    .portfolio-content {
+        padding: 15px;
+    }
+
+    .portfolio-content h3 {
+        font-size: 16px;
+    }
+
+    .portfolio-description {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .view-btn, .contact-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+}
