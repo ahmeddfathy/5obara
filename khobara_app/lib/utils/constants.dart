@@ -22,8 +22,8 @@ class AppConstants {
   // Uncomment and use this for testing with a physical device:
   // static const String baseUrl = 'http://192.168.1.X:8000/api'; // Replace X with your computer's IP
 
-  static const String assetsPath = 'assets/';
-  static const String imagesPath = 'assets/images/';
+  static const String assetsPath = '';
+  static const String imagesPath = 'images/';
 
   // API endpoints
   static const String portfoliosEndpoint = '/portfolios';
@@ -45,71 +45,90 @@ class AppConstants {
 }
 
 class AppColors {
+  // Main colors from documentation
   static const Color primary = Color(0xFF00b5ad);
-  static const Color secondary = Color(0xFF333333);
+  static const Color primaryDark = Color(0xFF009d96);
+  static const Color secondary = Color(0xFF2c3e50);
+  static const Color textColor = Color(0xFF333333);
+  static const Color textLight = Color(0xFF666666);
+  static const Color white = Colors.white;
+  static const Color lightGray = Color(0xFFF8F9FA);
+
+  // Additional colors
+  static const Color textPrimary = Color(0xFF212121);
+  static const Color textSecondary = Color(0xFF757575);
+  static const Color background = Color(0xFFF5F5F5);
+  static const Color surface = Color(0xFFFFFFFF);
+  static const Color divider = Color(0xFFEEEEEE);
+
+  // Social media colors
+  static const Color whatsapp = Color(0xFF25D366);
+  static const Color facebook = Color(0xFF1877f2);
+  static const Color twitter = Color(0xFF1da1f2);
+  static const Color instagram = Color(0xFFe4405f);
+  static const Color linkedin = Color(0xFF0077b5);
+
+  // Additional UI colors
   static const Color accent = Color(0xFFFF5722);
   static const Color error = Color(0xFFE53935);
   static const Color success = Color(0xFF43A047);
   static const Color warning = Color(0xFFFFA000);
   static const Color info = Color(0xFF039BE5);
-
-  static const Color textColor = Color(0xFF666666);
-  static const Color textPrimary = Color(0xFF212121);
-  static const Color textSecondary = Color(0xFF757575);
-  static const Color textLight = Color(0xFFBDBDBD);
-
-  static const Color background = Color(0xFFF5F5F5);
-  static const Color surface = Color(0xFFFFFFFF);
-  static const Color white = Colors.white;
-  static const Color lightGray = Color(0xFFF8F9FA);
-  static const Color divider = Color(0xFFEEEEEE);
-  static const Color whatsapp = Color(0xFF25D366);
 }
 
 class AppTextStyles {
-  static const TextStyle heading1 = TextStyle(
+  // Updated text styles based on documentation
+  static TextStyle heading1 = const TextStyle(
+    fontSize: 36,
+    fontWeight: FontWeight.bold,
+    color: AppColors.textPrimary,
+    height: 1.2,
+  );
+
+  static TextStyle heading2 = const TextStyle(
     fontSize: 28,
     fontWeight: FontWeight.bold,
     color: AppColors.textPrimary,
+    height: 1.3,
   );
 
-  static const TextStyle heading2 = TextStyle(
+  static TextStyle heading3 = const TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.bold,
     color: AppColors.textPrimary,
+    height: 1.4,
   );
 
-  static const TextStyle heading3 = TextStyle(
+  static TextStyle heading4 = const TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.bold,
     color: AppColors.textPrimary,
+    height: 1.4,
   );
 
-  static const TextStyle heading4 = TextStyle(
+  static TextStyle body1 = const TextStyle(
     fontSize: 18,
-    fontWeight: FontWeight.bold,
-    color: AppColors.textPrimary,
+    color: AppColors.textColor,
+    height: 1.6,
   );
 
-  static const TextStyle body1 = TextStyle(
+  static TextStyle body2 = const TextStyle(
     fontSize: 16,
-    color: AppColors.textPrimary,
+    color: AppColors.textColor,
+    height: 1.6,
   );
 
-  static const TextStyle body2 = TextStyle(
+  static TextStyle caption = const TextStyle(
     fontSize: 14,
-    color: AppColors.textPrimary,
-  );
-
-  static const TextStyle caption = TextStyle(
-    fontSize: 12,
     color: AppColors.textSecondary,
+    height: 1.5,
   );
 
-  static const TextStyle button = TextStyle(
+  static TextStyle button = const TextStyle(
     fontSize: 16,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w600,
     color: Colors.white,
+    height: 1.4,
   );
 }
 
@@ -119,10 +138,23 @@ class AppDecorations {
     borderRadius: BorderRadius.circular(8),
     boxShadow: [
       BoxShadow(
-        color: Colors.black.withOpacity(0.05),
-        blurRadius: 10,
+        color: Colors.black.withOpacity(0.1),
+        blurRadius: 15,
         spreadRadius: 0,
         offset: const Offset(0, 5),
+      ),
+    ],
+  );
+
+  static BoxDecoration elevatedCardDecoration = BoxDecoration(
+    color: AppColors.surface,
+    borderRadius: BorderRadius.circular(8),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.1),
+        blurRadius: 30,
+        spreadRadius: 0,
+        offset: const Offset(0, 10),
       ),
     ],
   );
@@ -130,6 +162,38 @@ class AppDecorations {
   static BoxDecoration roundedDecoration = BoxDecoration(
     color: AppColors.surface,
     borderRadius: BorderRadius.circular(12),
+  );
+
+  static InputDecoration inputDecoration = InputDecoration(
+    filled: true,
+    fillColor: AppColors.white,
+    contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(color: Color(0xFFDDDDDD)),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(color: AppColors.primary, width: 2),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(color: Color(0xFFDDDDDD)),
+    ),
+  );
+
+  static ButtonStyle primaryButtonStyle = ElevatedButton.styleFrom(
+    backgroundColor: AppColors.primary,
+    foregroundColor: Colors.white,
+    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+    ),
+    elevation: 2,
+    textStyle: const TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w600,
+    ),
   );
 }
 
@@ -141,12 +205,23 @@ class AppStrings {
   static const String contactViaWhatsapp = 'تواصل معنا عبر الواتساب';
   static const String whyChooseUs =
       'لماذا تختار مكتب خبراء لدراسة مشروعك الاقتصادي؟';
+
+  // Contact information
+  static const String contactEmail = 'info@5obara.com';
+  static const String contactPhone = '+966569617288';
+  static const String contactLocation = 'جدة، المملكة العربية السعودية';
+
+  // Common section headings
+  static const String aboutUs = 'من نحن';
+  static const String ourServices = 'خدماتنا المتكاملة';
+  static const String startYourProject = 'ابدأ مشروعك';
+  static const String contactUs = 'تواصل معنا';
 }
 
 class AppAssets {
-  static const String mainImage =
-      'assets/images/home/shutterstock_778123057.jpg';
-  static const String logo = 'assets/images/home/logo.jpg';
+  static const String mainImage = 'assets/images/home/hero.jpg';
+  static const String logo = 'assets/images/logo.jpg';
+  static const String footerLogo = 'assets/images/footer-logo.png';
   static const String icon1 = 'assets/images/home/1184773-1.png';
   static const String icon2 = 'assets/images/home/1grey.png';
   static const String icon3 = 'assets/images/home/1184773-2.png';
@@ -156,4 +231,11 @@ class AppAssets {
   static const String serviceImage1 = 'assets/images/home/1184773-4.png';
   static const String serviceImage2 = 'assets/images/home/1184773-5.png';
   static const String serviceImage3 = 'assets/images/home/1184773-6.png';
+
+  // About section images
+  static const String aboutMainImage = 'assets/images/about/about-main.jpg';
+  static const String aboutHeroBg = 'assets/images/about/hero-bg.jpg';
+  static const String afniahLogo =
+      'assets/images/about/Afniah_Logo-1-1024x809.png';
+  static const String bashoryLogo = 'assets/images/about/bashory-logo.jpeg';
 }

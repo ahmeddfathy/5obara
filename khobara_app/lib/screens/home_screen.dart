@@ -11,7 +11,6 @@ import '../widgets/home/services_section.dart';
 import '../widgets/home/services_offering.dart';
 import '../widgets/home/why_choose_us.dart';
 import '../widgets/home/invest_section.dart';
-import '../widgets/home/contact_section.dart';
 import '../widgets/shared/footer.dart';
 import '../utils/routes.dart';
 import '../widgets/shared/app_drawer.dart';
@@ -73,69 +72,96 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: AppColors.lightGray,
       drawer: const AppDrawer(),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            controller: _scrollController,
-            child: Column(
-              children: [
-                const TopBar(),
-                const Header(),
-                const HeroSection(),
-                const StatsSection(),
-                const ServicesSection(),
-                const ServicesOfferingSection(),
-                const WhyChooseUsSection(),
-                const InvestSection(),
-                const ContactSection(),
-                const Footer(),
-              ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+                children: [
+                  const TopBar(),
+                  const Header(),
+                  const HeroSection(),
+                  const ServicesSection(),
+                  const ServicesOfferingSection(),
+                  const WhyChooseUsSection(),
+                  const StatsSection(),
+                  const InvestSection(),
+                  const Footer(),
+                ],
+              ),
             ),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 20,
-            child: Column(
-              children: [
-                if (_showBackToTopButton)
+            Positioned(
+              bottom: 20,
+              left: 20,
+              child: Column(
+                children: [
+                  if (_showBackToTopButton)
+                    FloatingActionButton(
+                      heroTag: 'backToTop',
+                      backgroundColor: Colors.white,
+                      elevation: 4,
+                      onPressed: _scrollToTop,
+                      mini: true,
+                      child: const Icon(
+                        Icons.arrow_upward,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  const SizedBox(height: 10),
                   FloatingActionButton(
-                    heroTag: 'backToTop',
-                    backgroundColor: Colors.white,
-                    onPressed: _scrollToTop,
-                    mini: true,
+                    heroTag: 'whatsapp',
+                    backgroundColor: AppColors.whatsapp,
+                    elevation: 4,
+                    onPressed: () =>
+                        _launchUrl('https://wa.me/${AppStrings.contactPhone}'),
                     child: const Icon(
-                      Icons.arrow_upward,
-                      color: AppColors.primary,
+                      FontAwesomeIcons.whatsapp,
+                      color: Colors.white,
+                      size: 24,
                     ),
                   ),
-                const SizedBox(height: 10),
-                FloatingActionButton(
-                  heroTag: 'whatsapp',
-                  backgroundColor: AppColors.whatsapp,
-                  onPressed: () => _launchUrl('https://wa.me/966569617288'),
-                  child: const Icon(
-                    FontAwesomeIcons.whatsapp,
-                    color: Colors.white,
+                  const SizedBox(height: 10),
+                  FloatingActionButton(
+                    heroTag: 'messenger',
+                    backgroundColor: AppColors.facebook,
+                    elevation: 4,
+                    onPressed: () => _launchUrl('https://m.me/5obara'),
+                    child: const Icon(
+                      FontAwesomeIcons.facebookMessenger,
+                      color: Colors.white,
+                      size: 24,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                FloatingActionButton(
-                  heroTag: 'chat',
-                  backgroundColor: AppColors.primary,
-                  onPressed: () {},
-                  child: const Icon(Icons.chat, color: Colors.white),
-                ),
-                const SizedBox(height: 10),
-                FloatingActionButton(
-                  heroTag: 'phone',
-                  backgroundColor: Colors.blue,
-                  onPressed: () => _makePhoneCall('+966569617288'),
-                  child: const Icon(Icons.phone, color: Colors.white),
-                ),
-              ],
+                  const SizedBox(height: 10),
+                  FloatingActionButton(
+                    heroTag: 'chat',
+                    backgroundColor: AppColors.primary,
+                    elevation: 4,
+                    onPressed: () {},
+                    child: const Icon(
+                      Icons.chat,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  FloatingActionButton(
+                    heroTag: 'phone',
+                    backgroundColor: Colors.blue,
+                    elevation: 4,
+                    onPressed: () => _makePhoneCall('+966569617288'),
+                    child: const Icon(
+                      Icons.phone,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -5,20 +5,69 @@
 @section('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/blog.css') }}" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+<style>
+    /* Hero Section - Specific to this page */
+    .hero-section {
+        position: relative;
+        background-color: #1a1a1a;
+        overflow: hidden;
+        height: 600px;
+    }
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+    }
+    .hero-section .featured-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        color: white;
+        text-align: center;
+        padding: 200px 0;
+    }
+    .hero-content h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .hero-content p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+
+</style>
 
 @endsection
 
 @section('content')
 <!-- Hero Section -->
 <section class="hero-section">
+    @if($post->featured_image)
+        <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}" class="featured-image">
+    @endif
     <div class="container">
         <div class="hero-content">
             <h1>{{ $post->title }}</h1>
-                    @if($post->investment_type)
-            <p>{{ $post->investment_type }}</p>
-                    @endif
-                </div>
-            </div>
+            @if($post->investment_type)
+                <p>{{ $post->investment_type }}</p>
+            @endif
+        </div>
+    </div>
 </section>
 
 <!-- Blog Detail -->
@@ -65,10 +114,7 @@
             </div>
             @endif
 
-                    <!-- Featured image -->
-        @if($post->featured_image)
-                    <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}" class="blog-detail-image">
-        @endif
+
 
                     <!-- Post Content -->
                     <div class="blog-detail-content">
@@ -185,20 +231,39 @@
         <div class="mt-5">
             <h2 class="text-center fw-bold mb-4">فرص استثمارية مشابهة</h2>
             <div class="row g-4">
-                    @for ($i = 0; $i < 3; $i++)
+                @foreach($similarPosts as $similarPost)
                 <div class="col-lg-4 col-md-6">
                     <div class="blog-item">
                         <div class="blog-img-container">
-                        @if($post->featured_image)
-                            <img src="{{ asset('storage/' . $post->featured_image) }}" alt="Related post">
-                        @endif
+                            @if($similarPost->featured_image)
+                                <img src="{{ asset('storage/' . $similarPost->featured_image) }}" alt="{{ $similarPost->title }}">
+                            @else
+                                <img src="{{ asset('assets/img/blog/default-post.jpg') }}" alt="{{ $similarPost->title }}">
+                            @endif
+
+                            @if($similarPost->investment_amount)
+                                <div class="blog-badge">${{ number_format($similarPost->investment_amount) }}</div>
+                            @endif
+
+                            @if($similarPost->investment_type)
+                                <div class="blog-type">{{ $similarPost->investment_type }}</div>
+                            @endif
                         </div>
                         <div class="blog-content">
-                            <h3><a href="#">فرصة استثمارية مشابهة {{ $i + 1 }}</a></h3>
-                            <p class="blog-description">هذه فرصة استثمارية مشابهة للفرصة الحالية، قد تكون مهتماً بمعرفة المزيد عنها.</p>
+                            <h3>
+                                <a href="{{ route('blog.show', $similarPost->slug) }}">
+                                    {{ $similarPost->title }}
+                                </a>
+                            </h3>
+                            <p class="blog-description">
+                                {{ Str::limit(strip_tags($similarPost->content), 150) }}
+                            </p>
                             <div class="blog-meta">
-                                <span class="blog-date"><i class="far fa-calendar-alt"></i> {{ now()->subDays(rand(1, 30))->format('Y-m-d') }}</span>
-                                <a href="#" class="read-more">
+                                <div class="blog-date">
+                                    <i class="far fa-calendar-alt"></i>
+                                    {{ $similarPost->published_at->format('Y-m-d') }}
+                                </div>
+                                <a href="{{ route('blog.show', $similarPost->slug) }}" class="read-more">
                                     عرض التفاصيل
                                     <i class="fas fa-arrow-left"></i>
                                 </a>
@@ -206,7 +271,7 @@
                         </div>
                     </div>
                 </div>
-                @endfor
+                @endforeach
             </div>
         </div>
     </div>

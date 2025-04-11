@@ -4,7 +4,6 @@ import '../../widgets/shared/top_bar.dart';
 import '../../widgets/shared/header.dart';
 import '../../widgets/shared/footer.dart';
 import '../../widgets/shared/app_drawer.dart';
-import '../../widgets/shared/contact_form_section.dart';
 import '../../services/api_service.dart';
 import '../../models/post_model.dart';
 import '../../widgets/shared/loading_indicator.dart';
@@ -90,7 +89,6 @@ class _OpportunitiesScreenState extends State<OpportunitiesScreen> {
             const Header(),
             _buildHeroSection(context),
             _buildContent(),
-            const ContactFormSection(),
             const Footer(),
           ],
         ),

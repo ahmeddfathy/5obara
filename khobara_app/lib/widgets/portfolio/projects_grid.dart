@@ -57,23 +57,22 @@ class ProjectsGrid extends StatelessWidget {
       spacing: 10,
       runSpacing: 10,
       alignment: WrapAlignment.center,
-      children:
-          categories.map((category) {
-            return FilterChip(
-              label: Text(category),
-              selected: category == 'الكل',
-              selectedColor: AppColors.primary.withOpacity(0.2),
-              checkmarkColor: AppColors.primary,
-              labelStyle: TextStyle(
-                color: category == 'الكل' ? AppColors.primary : Colors.black87,
-                fontWeight:
-                    category == 'الكل' ? FontWeight.bold : FontWeight.normal,
-              ),
-              onSelected: (bool selected) {
-                // Filter functionality would be implemented here
-              },
-            );
-          }).toList(),
+      children: categories.map((category) {
+        return FilterChip(
+          label: Text(category),
+          selected: category == 'الكل',
+          selectedColor: AppColors.primary.withOpacity(0.2),
+          checkmarkColor: AppColors.primary,
+          labelStyle: TextStyle(
+            color: category == 'الكل' ? AppColors.primary : Colors.black87,
+            fontWeight:
+                category == 'الكل' ? FontWeight.bold : FontWeight.normal,
+          ),
+          onSelected: (bool selected) {
+            // Filter functionality would be implemented here
+          },
+        );
+      }).toList(),
     );
   }
 

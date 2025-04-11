@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('title', 'الموقع الرسمي')
 
@@ -86,6 +86,7 @@
             <p>مع متابعة بدء العمل حتى حصول المشروع على شهادة الجودة والإعتماد التشغيلية للمنتجات</p>
             <p>اطلب الآن دراسة جدوى اقتصادية مفصلة لمشروعك</p>
         </div>
+
         <div class="services-grid">
             <div class="service-item">
                 <div class="service-icon">
@@ -95,35 +96,37 @@
             </div>
             <div class="service-item">
                 <div class="service-icon">
-                    <img src="{{ asset('assets/img/home/1grey.png') }}" alt="خطوط انتاج صناعية">
+                    <img src="{{ asset('assets/img/home/1184773-2.png') }}" alt="خطوط انتاج صناعية">
                 </div>
                 <h3>خطوط انتاج صناعية</h3>
             </div>
             <div class="service-item">
                 <div class="service-icon">
-                    <img src="{{ asset('assets/img/home/1184773-2.png') }}" alt="دراسات جدوى اقتصادية">
+                    <img src="{{ asset('assets/img/home/1184773-3.png') }}" alt="دراسات جدوى اقتصادية">
                 </div>
                 <h3>دراسات جدوى اقتصادية</h3>
             </div>
             <div class="service-item">
                 <div class="service-icon">
-                    <img src="{{ asset('assets/img/home/1184773-3.png') }}" alt="دراسات مالية ومراجعات محاسبية">
+                    <img src="{{ asset('assets/img/home/1184773-4.png') }}" alt="دراسات مالية ومراجعات محاسبية">
                 </div>
                 <h3>دراسات مالية ومراجعات محاسبية</h3>
             </div>
             <div class="service-item">
                 <div class="service-icon">
-                    <img src="{{ asset('assets/img/home/4grey.png') }}" alt="رسومات هندسية للمشروع">
+                    <img src="{{ asset('assets/img/home/1184773-5.png') }}" alt="رسومات هندسية للمشروع">
                 </div>
                 <h3>رسومات هندسية للمشروع</h3>
             </div>
             <div class="service-item">
                 <div class="service-icon">
-                    <img src="{{ asset('assets/img/home/3grey.png') }}" alt="الحصول على التمويل">
+                    <img src="{{ asset('assets/img/home/1184773-6.png') }}" alt="الحصول على التمويل">
                 </div>
                 <h3>الحصول على التمويل</h3>
             </div>
         </div>
+
+
         <div class="services-checklist">
             <div class="checklist-item">
                 <input type="checkbox" checked disabled>
@@ -193,7 +196,7 @@
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="service-icon-item">
                         <div class="service-icon-img">
-                            <img src="{{ asset('assets/img/home/1grey.png') }}" alt="خطوط انتاج">
+                            <img src="{{ asset('assets/img/home/1184773-1.png') }}" alt="خطوط انتاج">
                         </div>
                         <h4 class="service-icon-title">خطوط انتاج</h4>
                     </div>
@@ -201,7 +204,7 @@
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="service-icon-item">
                         <div class="service-icon-img">
-                            <img src="{{ asset('assets/img/home/2grey.png') }}" alt="إنشاء وتنفيذ المشروعات الصناعية">
+                            <img src="{{ asset('assets/img/home/1184773-2.png') }}" alt="إنشاء وتنفيذ المشروعات الصناعية">
                         </div>
                         <h4 class="service-icon-title">إنشاء وتنفيذ المشروعات الصناعية</h4>
                     </div>
@@ -209,7 +212,7 @@
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="service-icon-item">
                         <div class="service-icon-img">
-                            <img src="{{ asset('assets/img/home/3grey.png') }}" alt="دراسات جدوى اقتصادية">
+                            <img src="{{ asset('assets/img/home/1184773-3.png') }}" alt="دراسات جدوى اقتصادية">
                         </div>
                         <h4 class="service-icon-title">دراسات جدوى اقتصادية</h4>
                     </div>
@@ -217,7 +220,7 @@
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="service-icon-item">
                         <div class="service-icon-img">
-                            <img src="{{ asset('assets/img/home/4grey.png') }}" alt="الرسم الهندسي">
+                            <img src="{{ asset('assets/img/home/1184773-4.png') }}" alt="الرسم الهندسي">
                         </div>
                         <h4 class="service-icon-title">الرسم الهندسي</h4>
                     </div>
@@ -256,66 +259,6 @@
                 </div>
                 <div class="col-12 text-center">
                     <button type="submit" class="submit-btn">طلب استثمار</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Contact Section -->
-<section class="contact-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="contact-info-wrapper">
-                    <h3 class="contact-heading">طرق التواصل معنا</h3>
-                    <div class="contact-methods">
-                        <div class="contact-method">
-                            <i class="fas fa-envelope"></i>
-                            <span>info@5obara.com</span>
-                        </div>
-                        <div class="contact-method">
-                            <i class="fas fa-phone"></i>
-                            <span>+966569617288</span>
-                        </div>
-                        <div class="contact-method">
-                            <i class="fas fa-phone"></i>
-                            <span>+966569617288</span>
-                        </div>
-                        <div class="contact-method">
-                            <i class="fas fa-phone"></i>
-                            <span>+966569617288</span>
-                        </div>
-                    </div>
-                    <div class="social-block">
-                        <h5>تابعنا على:</h5>
-                        <div class="social-links">
-                            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="contact-form">
-                    <h3>أرسل لنا رسالة</h3>
-                    <form>
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="الاسم">
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control" placeholder="البريد الإلكتروني">
-                        </div>
-                        <div class="form-group">
-                            <input type="tel" class="form-control" placeholder="رقم الهاتف">
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" rows="5" placeholder="الرسالة"></textarea>
-                        </div>
-                        <button type="submit" class="form-submit">إرسال</button>
-                    </form>
                 </div>
             </div>
         </div>

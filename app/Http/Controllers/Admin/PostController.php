@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -246,25 +247,73 @@ class PostController extends Controller
         try {
             // Delete all gallery images
             foreach ($post->images as $image) {
-                Storage::disk('public')->delete($image->image_path);
+                if (Storage::disk('public')->exists($image->image_path)) {
+                    Storage::disk('public')->delete($image->image_path);
+                }
+                $image->delete();
             }
 
             // Delete featured image
-            if ($post->featured_image) {
+            if ($post->featured_image && Storage::disk('public')->exists($post->featured_image)) {
                 Storage::disk('public')->delete($post->featured_image);
             }
 
-            // Delete post (will cascade delete images due to foreign key constraint)
+            // Delete content images
+            $contentImages = Storage::disk('public')->files('posts/content');
+            foreach ($contentImages as $image) {
+                if (Storage::disk('public')->exists($image)) {
+                    Storage::disk('public')->delete($image);
+                }
+            }
+
+            // Delete post
             $post->delete();
 
             DB::commit();
 
             return redirect()->route('admin.posts.index')
-                ->with('success', 'Post deleted successfully.');
+                ->with('success', 'Post and all associated images deleted successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Failed to delete post: ' . $e->getMessage());
 
-            return redirect()->back()->with('error', 'Failed to delete post: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Failed to delete post. Please try again. If the problem persists, contact support.');
+        }
+    }
+
+    /**
+     * Handle image upload for the post content editor.
+     */
+    public function uploadImage(Request $request)
+    {
+        try {
+            $request->validate([
+                'image' => 'required|image|max:10240' // 10MB in KB
+            ]);
+
+            if (!$request->hasFile('image')) {
+                return response()->json([
+                    'error' => 'No image file was uploaded.'
+                ], 400);
+            }
+
+            $file = $request->file('image');
+            $path = $file->store('posts/content', 'public');
+
+            if (!$path) {
+                return response()->json([
+                    'error' => 'Failed to store the image.'
+                ], 500);
+            }
+
+            return response()->json([
+                'url' => asset('storage/' . $path)
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to upload image. Please try again.'
+            ], 500);
         }
     }
 }

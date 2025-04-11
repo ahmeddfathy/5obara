@@ -28,23 +28,6 @@
         color: white;
     }
 
-    .social-links {
-        display: flex;
-        align-items: center;
-    }
-
-    .social-links a {
-        color: white;
-        font-size: 16px;
-        margin-left: 15px;
-        transition: all 0.3s ease;
-    }
-
-    .social-links a:hover {
-        color: rgba(255, 255, 255, 0.8);
-        transform: translateY(-2px);
-    }
-
     .contact-links {
         display: flex;
         align-items: center;
@@ -68,12 +51,12 @@
     }
 
     @media (max-width: 767px) {
-        .social-links, .contact-links {
+        .contact-links {
             justify-content: center;
             margin: 5px 0;
         }
 
-        .col-md-6.text-end, .col-md-6.text-start {
+        .col-12 {
             text-align: center !important;
         }
 

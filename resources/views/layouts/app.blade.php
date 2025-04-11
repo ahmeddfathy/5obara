@@ -1,68 +1,45 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>@yield('title') | خبراء</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Favicon -->
-        <link rel="icon" href="{{ asset('assets/img/home/1184773-1.png') }}" type="image/x-icon">
+        <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
-        @yield('styles')
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <style>
-            /* Critical CSS for components */
-            .top-bar {
-                background-color: #00b5ad;
-                padding: 8px 0;
-                color: white;
-                display: block !important;
-            }
-            .main-header {
-                background-color: #fff;
-                padding: 10px 0;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-                display: block !important;
-            }
-            .main-footer {
-                background-color: #f8f9fa;
-                padding: 60px 0 0;
-                color: #333;
-                display: block !important;
-            }
-            .contact-info a, .social-links a {
-                color: white;
-                text-decoration: none;
-                margin-right: 15px;
-            }
-        </style>
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- Styles -->
+        @livewireStyles
     </head>
-    <body>
-        <!-- Top Bar -->
-        @include('parts.top-bar')
+    <body class="font-sans antialiased">
+        <x-banner />
 
-        <!-- Header -->
-        @include('parts.header')
+        <div class="min-h-screen bg-gray-100">
+            @livewire('navigation-menu')
 
-        <!-- Main Content -->
-        @yield('content')
+            <!-- Page Heading -->
+            @if (isset($header))
+                <header class="bg-white shadow">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endif
 
-        <!-- Footer -->
-        @include('parts.footer')
+            <!-- Page Content -->
+            <main>
+                {{ $slot }}
+            </main>
+        </div>
 
-        <!-- JavaScript -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="{{ asset('assets/js/script.js') }}"></script>
-        <script src="{{ asset('assets/js/components.js') }}"></script>
-        @yield('scripts')
+        @stack('modals')
+
+        @livewireScripts
     </body>
 </html>

@@ -5,7 +5,6 @@ import '../widgets/shared/header.dart';
 import '../widgets/shared/footer.dart';
 import '../widgets/shared/app_drawer.dart';
 import '../widgets/portfolio/projects_grid.dart';
-import '../widgets/shared/contact_form_section.dart';
 
 class PortfolioScreen extends StatelessWidget {
   const PortfolioScreen({super.key});
@@ -15,17 +14,17 @@ class PortfolioScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.lightGray,
       drawer: const AppDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // أقسام الصفحة
-            const TopBar(),
-            const Header(),
-            _buildHeroSection(),
-            const ProjectsGrid(),
-            const ContactFormSection(),
-            const Footer(),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const TopBar(),
+              const Header(),
+              _buildHeroSection(),
+              const ProjectsGrid(),
+              const Footer(),
+            ],
+          ),
         ),
       ),
     );
@@ -33,8 +32,20 @@ class PortfolioScreen extends StatelessWidget {
 
   Widget _buildHeroSection() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
-      color: AppColors.primary,
+      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
+      decoration: BoxDecoration(
+        color: AppColors.primary,
+        image: DecorationImage(
+          image: const NetworkImage(
+            'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3',
+          ),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(0.5),
+            BlendMode.darken,
+          ),
+        ),
+      ),
       width: double.infinity,
       child: Column(
         children: [
@@ -42,16 +53,30 @@ class PortfolioScreen extends StatelessWidget {
             'معرض الأعمال',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 32,
+              fontSize: 36,
               fontWeight: FontWeight.bold,
+              shadows: [
+                Shadow(
+                  color: Colors.black.withOpacity(0.2),
+                  offset: const Offset(0, 2),
+                  blurRadius: 3,
+                ),
+              ],
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Text(
             'نماذج من المشاريع التي قمنا بتنفيذها والتي حققت نجاحاً كبيراً',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withOpacity(0.95),
               fontSize: 18,
+              shadows: [
+                Shadow(
+                  color: Colors.black.withOpacity(0.2),
+                  offset: const Offset(0, 1),
+                  blurRadius: 2,
+                ),
+              ],
             ),
             textAlign: TextAlign.center,
           ),

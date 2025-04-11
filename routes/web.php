@@ -42,34 +42,33 @@ Route::get('/start-your-project', function () {
 // })->name('portfolio');
 
 // Admin Routes (protected)
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    // Admin Dashboard
-    Route::get('/', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        // Admin Dashboard
+        Route::get('/', function () {
+            return view('dashboard');
+        })->name('dashboard');
 
-    // Admin image upload routes
-    Route::post('/upload/image', [ImagesController::class, 'upload'])->name('images.upload');
-    Route::post('/ckeditor/upload', [ImagesController::class, 'ckeditorUpload'])->name('ckeditor.upload');
+        // Admin image upload routes
+        Route::post('/upload/image', [ImagesController::class, 'upload'])->name('images.upload');
+        Route::post('/ckeditor/upload', [ImagesController::class, 'ckeditorUpload'])->name('ckeditor.upload');
 
-    // Admin Posts Management
-    Route::resource('posts', AdminPostController::class);
+        // Admin Posts Management
+        Route::resource('posts', AdminPostController::class);
+        Route::get('/quill-test', function () {
+            return view('admin.posts.quill_test');
+        })->name('quill.test');
+        Route::get('/quill-test-create', function () {
+            return view('admin.posts.quill_test_create');
+        })->name('quill.test.create');
+        Route::post('posts/upload-image', [AdminPostController::class, 'uploadImage'])->name('posts.upload-image');
+        // Admin Portfolio Management
+        Route::resource('portfolio', AdminPortfolioController::class);
+    });
 
-    // Admin Portfolio Management
-    Route::resource('portfolio', AdminPortfolioController::class);
-
-    // مسار اختبار CKEditor
-    Route::get('/ckeditor-test', function () {
-        return view('admin.posts.ckeditor_test');
-    })->name('ckeditor.test');
-});
-
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
+// Redirect /dashboard to /admin
+Route::get('/dashboard', function () {
+    return redirect()->route('admin.dashboard');
+})->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']);

@@ -1,9 +1,9 @@
 /* Hero Section */
 .hero-section {
-    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3');
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3');
     background-size: cover;
     background-position: center;
-    height: 300px;
+    height: 600px;
     display: flex;
     align-items: center;
     justify-content: center;

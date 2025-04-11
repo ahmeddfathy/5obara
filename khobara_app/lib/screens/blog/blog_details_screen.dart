@@ -8,7 +8,7 @@ import '../../widgets/shared/top_bar.dart';
 import '../../widgets/shared/header.dart';
 import '../../widgets/shared/footer.dart';
 import '../../widgets/shared/app_drawer.dart';
-import '../../widgets/shared/contact_form_section.dart';
+
 
 class BlogDetailsScreen extends StatelessWidget {
   final Post post;
@@ -28,7 +28,6 @@ class BlogDetailsScreen extends StatelessWidget {
             _buildHeroSection(context),
             _buildBlogContent(context),
             if (post.investmentAmount != null) _buildInvestmentDetails(context),
-            const ContactFormSection(),
             const Footer(),
           ],
         ),

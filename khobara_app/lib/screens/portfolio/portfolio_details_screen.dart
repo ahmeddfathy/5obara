@@ -7,7 +7,6 @@ import '../../widgets/shared/top_bar.dart';
 import '../../widgets/shared/header.dart';
 import '../../widgets/shared/footer.dart';
 import '../../widgets/shared/app_drawer.dart';
-import '../../widgets/shared/contact_form_section.dart';
 
 class PortfolioDetailsScreen extends StatelessWidget {
   final Portfolio portfolio;
@@ -27,7 +26,6 @@ class PortfolioDetailsScreen extends StatelessWidget {
             const Header(),
             _buildHeroSection(context),
             _buildPortfolioDetails(context),
-            const ContactFormSection(),
             const Footer(),
           ],
         ),

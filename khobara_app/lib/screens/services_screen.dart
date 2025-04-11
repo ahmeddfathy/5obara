@@ -5,7 +5,7 @@ import '../widgets/shared/header.dart';
 import '../widgets/shared/footer.dart';
 import '../widgets/services/services_grid.dart';
 import '../widgets/services/cta_section.dart';
-import '../widgets/shared/contact_form_section.dart';
+
 import '../widgets/shared/app_drawer.dart';
 
 class ServicesScreen extends StatelessWidget {
@@ -16,25 +16,27 @@ class ServicesScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: const AppDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const TopBar(),
-            const Header(),
-            Container(
-              width: double.infinity,
-              constraints: const BoxConstraints(maxWidth: 1200),
-              child: Column(
-                children: [
-                  _buildHeroSection(),
-                  const ServicesGrid(),
-                  const CtaSection(),
-                  _buildContactSection(),
-                ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const TopBar(),
+              const Header(),
+              _buildHeroSection(),
+              Container(
+                width: double.infinity,
+                constraints: const BoxConstraints(maxWidth: 1200),
+                child: Column(
+                  children: [
+                    const ServicesGrid(),
+                    _buildProcessSection(),
+                    const CtaSection(),
+                  ],
+                ),
               ),
-            ),
-            const Footer(),
-          ],
+              const Footer(),
+            ],
+          ),
         ),
       ),
     );
@@ -42,200 +44,179 @@ class ServicesScreen extends StatelessWidget {
 
   Widget _buildHeroSection() {
     return Container(
-      height: 300,
+      height: 600,
       width: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: const AssetImage('assets/img/services/hero-bg.jpg'),
+          image: const NetworkImage(
+            'https://images.unsplash.com/photo-1573164574472-797cdf4a583a?q=80&w=1920&auto=format&fit=crop',
+          ),
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.7),
+            Colors.black.withOpacity(0.6),
             BlendMode.darken,
           ),
         ),
       ),
       child: Center(
-        child: Text(
-          'خدماتنا',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 48,
-            fontWeight: FontWeight.w600,
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'خدماتنا المتكاملة',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 56,
+                fontWeight: FontWeight.w700,
+                shadows: [
+                  Shadow(
+                    offset: Offset(0, 2),
+                    blurRadius: 4,
+                    color: Color(0x4D000000),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'نقدم حلولاً استشارية متكاملة لتحقيق نجاح مشاريعك',
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.9),
+                fontSize: 20,
+                height: 1.6,
+                shadows: [
+                  Shadow(
+                    offset: const Offset(0, 1),
+                    blurRadius: 2,
+                    color: Colors.black.withOpacity(0.2),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildContactSection() {
+  Widget _buildProcessSection() {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 80),
       color: const Color(0xFFF8F9FA),
       child: Column(
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  padding: const EdgeInsets.all(40),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x1A000000),
-                        blurRadius: 15,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          const Text(
+            'كيف نعمل',
+            style: TextStyle(
+              color: AppColors.secondary,
+              fontSize: 36,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Container(
+            width: 80,
+            height: 4,
+            margin: const EdgeInsets.only(top: 20, bottom: 60),
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth > 900) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        'ارسل لنا رسالة',
-                        style: TextStyle(
-                          color: Color(0xFF00B5AD),
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      DropdownButtonFormField<String>(
-                        value: 'استشارة',
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide: const BorderSide(
-                              color: Color(0xFFDDDDDD),
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 10,
-                          ),
-                        ),
-                        items: const [
-                          DropdownMenuItem(
-                            value: 'استشارة',
-                            child: Text('استشارة'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'اقتراح',
-                            child: Text('اقتراح'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'استفسار',
-                            child: Text('استفسار'),
-                          ),
-                          DropdownMenuItem(
-                            value: 'طلب دراسة',
-                            child: Text('طلب دراسة'),
-                          ),
-                          DropdownMenuItem(value: 'شكوى', child: Text('شكوى')),
-                        ],
-                        onChanged: (value) {},
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF00B5AD),
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          ),
-                          child: const Text(
-                            'إرسال',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
+                      Expanded(child: _buildProcessStep(1, 'التشاور الأولي')),
+                      const SizedBox(width: 30),
+                      Expanded(child: _buildProcessStep(2, 'تحليل وتخطيط')),
+                      const SizedBox(width: 30),
+                      Expanded(child: _buildProcessStep(3, 'تنفيذ وتسليم')),
                     ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  padding: const EdgeInsets.all(40),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF00B5AD),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  );
+                } else {
+                  return Column(
                     children: [
-                      const Text(
-                        'طرق التواصل معنا',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                      _buildProcessStep(1, 'التشاور الأولي'),
                       const SizedBox(height: 30),
-                      _buildContactInfoItem(Icons.email, 'info@5obara.com'),
-                      _buildContactInfoItem(Icons.phone, '+966569617288'),
-                      _buildContactInfoItem(Icons.message, '+966569617288'),
-                      _buildContactInfoItem(
-                        Icons.phone_android,
-                        '+966569617288',
-                      ),
+                      _buildProcessStep(2, 'تحليل وتخطيط'),
                       const SizedBox(height: 30),
-                      Row(
-                        children: [
-                          _buildSocialLink(Icons.facebook),
-                          _buildSocialLink(Icons.alternate_email),
-                          _buildSocialLink(Icons.camera_alt),
-                          _buildSocialLink(Icons.work),
-                        ],
-                      ),
+                      _buildProcessStep(3, 'تنفيذ وتسليم'),
                     ],
-                  ),
-                ),
-              ),
-            ],
+                  );
+                }
+              },
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildContactInfoItem(IconData icon, String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.white, size: 18),
-          const SizedBox(width: 10),
-          Text(text, style: const TextStyle(color: Colors.white, fontSize: 15)),
+  Widget _buildProcessStep(int number, String title) {
+    final descriptions = {
+      1: 'نستمع إلى متطلباتك وأهداف مشروعك بعناية، ونقوم بتحليل احتياجاتك بدقة',
+      2: 'نقوم بتحليل البيانات وتطوير خطة عمل استراتيجية مخصصة لمشروعك',
+      3: 'نقدم تقريراً شاملاً مع توصيات عملية قابلة للتنفيذ، ونضمن متابعة النتائج',
+    };
+
+    return Container(
+      padding: const EdgeInsets.all(40),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 30,
+            offset: const Offset(0, 10),
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildSocialLink(IconData icon) {
-    return Container(
-      width: 40,
-      height: 40,
-      margin: const EdgeInsets.only(left: 15),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white, width: 2),
-        borderRadius: BorderRadius.circular(20),
+      child: Column(
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Text(
+                number.toString(),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 25),
+          Text(
+            title,
+            style: const TextStyle(
+              color: AppColors.secondary,
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 15),
+          Text(
+            descriptions[number]!,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Color(0xFF666666),
+              fontSize: 16,
+              height: 1.8,
+            ),
+          ),
+        ],
       ),
-      child: Icon(icon, color: Colors.white, size: 16),
     );
   }
 }

@@ -4,7 +4,6 @@ import '../../widgets/shared/top_bar.dart';
 import '../../widgets/shared/header.dart';
 import '../../widgets/shared/footer.dart';
 import '../../widgets/shared/app_drawer.dart';
-import '../../widgets/shared/contact_form_section.dart';
 import '../../widgets/blog/blog_grid.dart';
 
 class BlogScreen extends StatelessWidget {
@@ -15,16 +14,17 @@ class BlogScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.lightGray,
       drawer: const AppDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const TopBar(),
-            const Header(),
-            _buildHeroSection(context),
-            const BlogGrid(),
-            const ContactFormSection(),
-            const Footer(),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const TopBar(),
+              const Header(),
+              _buildHeroSection(context),
+              const BlogGrid(),
+              const Footer(),
+            ],
+          ),
         ),
       ),
     );

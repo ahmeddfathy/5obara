@@ -1,58 +1,98 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-    <div class="p-6 bg-white border-b border-gray-200">
-        <h1 class="text-2xl font-bold mb-6">Edit Portfolio Item</h1>
+<div class="portfolio-container">
+    <div class="portfolio-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="portfolio-title">Edit Portfolio Item</h1>
+            <p class="portfolio-subtitle">Update your portfolio item details</p>
+        </div>
+        <div class="portfolio-actions">
+            <a href="{{ route('admin.portfolio.index') }}" class="portfolio-btn portfolio-btn-outline">
+                <i class="fas fa-arrow-left"></i> Back to List
+            </a>
+        </div>
+    </div>
 
+    <div class="portfolio-card portfolio-fade-in">
+        <div class="portfolio-card-header">
+            <h2 class="portfolio-card-title"><i class="fas fa-edit"></i> Edit Portfolio Details</h2>
+        </div>
+        <div class="portfolio-card-body">
         <form action="{{ route('admin.portfolio.update', $portfolio) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
-            <div class="mb-4">
-                <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Title</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="portfolio-form-group">
+                            <label for="title" class="portfolio-form-label">Title</label>
                 <input type="text" name="title" id="title" value="{{ old('title', $portfolio->title) }}" required
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                class="portfolio-form-control">
+                        </div>
             </div>
 
-            <div class="mb-4">
-                <label for="description" class="block text-gray-700 text-sm font-bold mb-2">Description</label>
-                <textarea name="description" id="description" rows="5" required
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{ old('description', $portfolio->description) }}</textarea>
+                    <div class="col-md-6">
+                        <div class="portfolio-form-group">
+                            <label for="client_name" class="portfolio-form-label">Client Name</label>
+                            <input type="text" name="client_name" id="client_name" value="{{ old('client_name', $portfolio->client_name) }}"
+                                class="portfolio-form-control">
+                        </div>
+                    </div>
             </div>
 
-            <div class="mb-4">
-                <label for="image" class="block text-gray-700 text-sm font-bold mb-2">Project Image</label>
-                @if($portfolio->image)
-                <div class="mb-2">
-                    <img src="{{ asset('storage/' . $portfolio->image) }}" alt="Current project image" class="h-32 w-auto">
+                <div class="portfolio-form-group">
+                    <label for="description" class="portfolio-form-label">Description</label>
+                    <textarea name="description" id="description" rows="5" required
+                        class="portfolio-form-control">{{ old('description', $portfolio->description) }}</textarea>
                 </div>
-                @endif
-                <input type="file" name="image" id="image" accept="image/*"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="portfolio-form-group">
+                            <label for="project_type" class="portfolio-form-label">Project Type</label>
+                            <input type="text" name="project_type" id="project_type" value="{{ old('project_type', $portfolio->project_type) }}" required
+                                class="portfolio-form-control">
+                        </div>
             </div>
 
-            <div class="mb-4">
-                <label for="client_name" class="block text-gray-700 text-sm font-bold mb-2">Client Name</label>
-                <input type="text" name="client_name" id="client_name" value="{{ old('client_name', $portfolio->client_name) }}"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <div class="col-md-6">
+                        <div class="portfolio-form-group">
+                            <label for="completion_date" class="portfolio-form-label">Completion Date</label>
+                            <input type="date" name="completion_date" id="completion_date" value="{{ old('completion_date', $portfolio->completion_date ? $portfolio->completion_date->format('Y-m-d') : '') }}"
+                                class="portfolio-form-control">
+                        </div>
+                    </div>
             </div>
 
-            <div class="mb-4">
-                <label for="completion_date" class="block text-gray-700 text-sm font-bold mb-2">Completion Date</label>
-                <input type="date" name="completion_date" id="completion_date" value="{{ old('completion_date', $portfolio->completion_date ? $portfolio->completion_date->format('Y-m-d') : '') }}"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <div class="portfolio-form-group">
+                    <label for="project_url" class="portfolio-form-label">Project URL</label>
+                    <input type="url" name="project_url" id="project_url" value="{{ old('project_url', $portfolio->project_url) }}"
+                        class="portfolio-form-control">
             </div>
 
-            <div class="mb-4">
-                <label for="project_type" class="block text-gray-700 text-sm font-bold mb-2">Project Type</label>
-                <input type="text" name="project_type" id="project_type" value="{{ old('project_type', $portfolio->project_type) }}" required
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <div class="portfolio-form-group">
+                    <label class="portfolio-form-label">Project Image</label>
+
+                    @if($portfolio->image)
+                    <div class="portfolio-image-preview">
+                        <div class="portfolio-image-item">
+                            <img src="{{ asset('storage/' . $portfolio->image) }}" alt="{{ $portfolio->title }}">
+                        </div>
+                    </div>
+                    @endif
+
+                    <div class="portfolio-upload-area mt-3">
+                        <input type="file" name="image" id="image" accept="image/*" class="d-none">
+                        <i class="fas fa-cloud-upload-alt portfolio-upload-icon"></i>
+                        <h4 class="portfolio-upload-title">Upload New Image</h4>
+                        <p class="portfolio-upload-subtitle">Click to browse or drag and drop images here</p>
+                    </div>
             </div>
 
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Technologies Used</label>
-                <div class="flex flex-wrap gap-2">
+                <div class="portfolio-form-group">
+                    <label class="portfolio-form-label">Technologies Used</label>
+                    <div class="d-flex flex-wrap gap-2">
                     @php
                         $commonTechnologies = ['PHP', 'Laravel', 'JavaScript', 'Vue.js', 'React', 'Angular', 'Node.js', 'Python', 'Django', 'Ruby', 'Ruby on Rails', 'MySQL', 'PostgreSQL', 'MongoDB', 'CSS', 'HTML', 'Tailwind CSS', 'Bootstrap', 'AWS', 'Docker', 'Kubernetes'];
                         $portfolioTechnologies = old('technologies', $portfolio->technologies ?? []);
@@ -62,54 +102,51 @@
                     @endphp
 
                     @foreach($commonTechnologies as $tech)
-                    <label class="inline-flex items-center mr-4 mb-2">
-                        <input type="checkbox" name="technologies[]" value="{{ $tech }}"
+                        <div class="portfolio-form-check me-3 mb-2">
+                            <input type="checkbox" name="technologies[]" value="{{ $tech }}" id="tech-{{ $loop->index }}"
                         {{ in_array($tech, $portfolioTechnologies) ? 'checked' : '' }}
-                        class="form-checkbox h-4 w-4 text-blue-600">
-                        <span class="ml-2 text-gray-700">{{ $tech }}</span>
-                    </label>
+                                class="portfolio-form-check-input">
+                            <label for="tech-{{ $loop->index }}" class="portfolio-form-check-label">{{ $tech }}</label>
+                        </div>
                     @endforeach
 
                     @if(is_array($portfolioTechnologies))
                         @foreach($portfolioTechnologies as $tech)
                             @if(!in_array($tech, $commonTechnologies))
-                            <label class="inline-flex items-center mr-4 mb-2">
-                                <input type="checkbox" name="technologies[]" value="{{ $tech }}" checked
-                                class="form-checkbox h-4 w-4 text-blue-600">
-                                <span class="ml-2 text-gray-700">{{ $tech }}</span>
-                            </label>
+                                <div class="portfolio-form-check me-3 mb-2">
+                                    <input type="checkbox" name="technologies[]" value="{{ $tech }}" id="tech-custom-{{ $loop->index }}"
+                                        checked class="portfolio-form-check-input">
+                                    <label for="tech-custom-{{ $loop->index }}" class="portfolio-form-check-label">{{ $tech }}</label>
+                                </div>
                             @endif
                         @endforeach
                     @endif
                 </div>
-                <div class="mt-2">
-                    <label for="other_tech" class="block text-gray-700 text-sm mb-1">Other Technologies (comma-separated)</label>
-                    <input type="text" id="other_tech" name="other_tech"
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <div class="mt-3">
+                        <label for="other_tech" class="portfolio-form-label">Other Technologies (comma-separated)</label>
+                        <input type="text" id="other_tech" name="other_tech" class="portfolio-form-control">
                 </div>
             </div>
 
-            <div class="mb-4">
-                <label for="project_url" class="block text-gray-700 text-sm font-bold mb-2">Project URL</label>
-                <input type="url" name="project_url" id="project_url" value="{{ old('project_url', $portfolio->project_url) }}"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <div class="portfolio-form-group">
+                    <div class="portfolio-form-check">
+                        <input type="checkbox" name="is_featured" value="1" id="is_featured"
+                            {{ old('is_featured', $portfolio->is_featured) ? 'checked' : '' }}
+                            class="portfolio-form-check-input">
+                        <label for="is_featured" class="portfolio-form-check-label">Featured Project</label>
+            </div>
             </div>
 
-            <div class="mb-4">
-                <label class="flex items-center">
-                    <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $portfolio->is_featured) ? 'checked' : '' }}
-                        class="form-checkbox h-4 w-4 text-blue-600">
-                    <span class="ml-2 text-gray-700">Featured Project</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Update Portfolio Item
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="portfolio-btn portfolio-btn-primary">
+                        <i class="fas fa-save"></i> Update Portfolio Item
                 </button>
-                <a href="{{ route('admin.portfolio.index') }}" class="text-gray-600 hover:text-gray-800">Cancel</a>
+                    <a href="{{ route('admin.portfolio.index') }}" class="portfolio-btn portfolio-btn-outline">
+                        Cancel
+                    </a>
             </div>
         </form>
+        </div>
     </div>
 </div>
 
@@ -117,16 +154,50 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const otherTechInput = document.getElementById('other_tech');
+        const uploadArea = document.querySelector('.portfolio-upload-area');
+        const fileInput = document.getElementById('image');
+
+        uploadArea.addEventListener('click', function() {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const fileName = this.files[0].name;
+                const uploadTitle = document.querySelector('.portfolio-upload-title');
+                uploadTitle.textContent = 'Selected: ' + fileName;
+            }
+        });
+
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('border-primary');
+        });
+
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('border-primary');
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('border-primary');
+
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                const fileName = e.dataTransfer.files[0].name;
+                const uploadTitle = document.querySelector('.portfolio-upload-title');
+                uploadTitle.textContent = 'Selected: ' + fileName;
+            }
+        });
 
         otherTechInput.addEventListener('blur', function() {
             if (!this.value.trim()) return;
 
             const technologies = this.value.split(',').map(tech => tech.trim()).filter(tech => tech);
+            const checkboxContainer = document.querySelector('.d-flex.flex-wrap.gap-2');
 
             technologies.forEach(tech => {
                 if (!tech) return;
-
-                const checkboxContainer = document.querySelector('.flex.flex-wrap.gap-2');
 
                 // Check if tech already exists as a checkbox
                 const existingCheckboxes = document.querySelectorAll('input[name="technologies[]"]');
@@ -138,23 +209,27 @@
                 }
 
                 // Create new checkbox for the tech
-                const label = document.createElement('label');
-                label.className = 'inline-flex items-center mr-4 mb-2';
+                const formCheck = document.createElement('div');
+                formCheck.className = 'portfolio-form-check me-3 mb-2';
+
+                const id = 'tech-new-' + Math.random().toString(36).substr(2, 9);
 
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.name = 'technologies[]';
                 checkbox.value = tech;
+                checkbox.id = id;
                 checkbox.checked = true;
-                checkbox.className = 'form-checkbox h-4 w-4 text-blue-600';
+                checkbox.className = 'portfolio-form-check-input';
 
-                const span = document.createElement('span');
-                span.className = 'ml-2 text-gray-700';
-                span.textContent = tech;
+                const label = document.createElement('label');
+                label.className = 'portfolio-form-check-label';
+                label.textContent = tech;
+                label.setAttribute('for', id);
 
-                label.appendChild(checkbox);
-                label.appendChild(span);
-                checkboxContainer.appendChild(label);
+                formCheck.appendChild(checkbox);
+                formCheck.appendChild(label);
+                checkboxContainer.appendChild(formCheck);
             });
 
             // Clear the input field

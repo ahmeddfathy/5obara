@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('title', 'من نحن')
 
@@ -12,6 +12,7 @@
         <div class="container">
             <div class="hero-content">
                 <h1>من نحن</h1>
+                <p class="lead">نحن نقدم خدمات استشارية متكاملة ودراسات جدوى احترافية</p>
             </div>
         </div>
     </section>
@@ -38,7 +39,12 @@
             <div class="partners-section">
                 <h2>شركاء النجاح</h2>
                 <div class="partners-grid">
-                    <!-- يمكن إضافة شعارات الشركاء هنا -->
+                    <div class="partner-card">
+                        <img src="{{ asset('assets/img/about/Afniah_Logo-1-1024x809.png') }}" alt="شركة أفنية">
+                    </div>
+                    <div class="partner-card">
+                        <img src="{{ asset('assets/img/about/bashory-logo.jpeg') }}" alt="شركة باشوري">
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,29 +56,38 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="contact-form">
-                        <h3>ارسل لنا رسالة</h3>
+                        <h3>تواصل معنا</h3>
                         <form>
                             <div class="form-group">
+                                <input type="text" class="form-control" placeholder="الاسم الكامل">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control" placeholder="البريد الإلكتروني">
+                            </div>
+                            <div class="form-group">
                                 <select class="form-control">
+                                    <option value="">نوع الخدمة</option>
+                                    <option>دراسة جدوى</option>
                                     <option>استشارة</option>
-                                    <option>اقتراح</option>
-                                    <option>استفسار</option>
-                                    <option>طلب دراسة</option>
-                                    <option>شكوى</option>
+                                    <option>تمويل مشروع</option>
+                                    <option>خدمات أخرى</option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn-submit">إرسال</button>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="4" placeholder="رسالتك"></textarea>
+                            </div>
+                            <button type="submit" class="btn-submit">إرسال الرسالة</button>
                         </form>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="contact-info">
-                        <h3>طرق التواصل معنا</h3>
+                        <h3>معلومات التواصل</h3>
                         <ul>
                             <li><i class="far fa-envelope"></i> info@5obara.com</li>
                             <li><i class="fas fa-phone"></i> +966569617288</li>
                             <li><i class="fab fa-whatsapp"></i> +966569617288</li>
-                            <li><i class="fas fa-phone-alt"></i> +966569617288</li>
+                            <li><i class="fas fa-map-marker-alt"></i> جدة، المملكة العربية السعودية</li>
                         </ul>
                         <div class="social-links">
                             <a href="#"><i class="fab fa-facebook-f"></i></a>

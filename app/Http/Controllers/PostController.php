@@ -52,7 +52,18 @@ class PostController extends Controller
             $virtualGallery = false;
         }
 
-        return view('blog.show', compact('post', 'galleryImages', 'virtualGallery'));
+        // Get similar posts based on investment type and location
+        $similarPosts = Post::where('id', '!=', $post->id) // Exclude current post
+            ->where(function($query) use ($post) {
+                $query->where('investment_type', $post->investment_type)
+                    ->orWhere('location', $post->location);
+            })
+            ->where('is_published', true)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return view('blog.show', compact('post', 'galleryImages', 'virtualGallery', 'similarPosts'));
     }
 
     /**

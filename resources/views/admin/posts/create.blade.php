@@ -1,274 +1,333 @@
 @extends('layouts.admin')
 
 @section('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/admin/posts.css') }}">
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 <style>
-    .gallery-preview {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 10px;
-    }
-    .gallery-item {
-        position: relative;
-        width: 150px;
-        height: 150px;
-        border-radius: 4px;
-        overflow: hidden;
-    }
-    .gallery-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-    .gallery-caption {
-        margin-top: 5px;
-        width: 150px;
-    }
-    .gallery-remove {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        background: rgba(255,0,0,0.7);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 25px;
-        height: 25px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-    }
-
-    /* تنسيقات محرر CKEditor 5 */
-    .ck-editor__editable {
-        min-height: 400px !important;
-        max-height: none !important;
-        direction: rtl !important;
-    }
-
-    .ck.ck-editor__main > .ck-editor__editable {
-        background: #fff;
-        border: 1px solid #d3d3d3;
-        padding: 2rem;
-    }
-
-    .ck.ck-toolbar {
-        direction: rtl !important;
-        background: #f8f9fa;
-        border: 1px solid #d3d3d3;
-        padding: 8px;
-    }
-
-    .ck.ck-content {
-        min-height: 400px;
-        direction: rtl !important;
+    #editor {
+        height: 300px;
+        direction: rtl;
         text-align: right;
+    }
+    .ql-editor {
+        direction: rtl;
+        text-align: right;
+        font-family: 'Arial', sans-serif;
         font-size: 16px;
         line-height: 1.6;
     }
-
-    /* تنسيقات الصور في المحرر */
-    .ck-content .image {
-        margin: 1em 0;
-        text-align: center;
+    .ql-container {
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
     }
-
-    .ck-content .image > img {
-        max-width: 100%;
-        height: auto;
+    .ql-toolbar {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    .ql-editor p {
+        margin-bottom: 1em;
+    }
+    .ql-editor img {
         display: block;
-        margin: 0 auto;
-    }
-
-    .ck-content .image-style-side {
-        float: right;
-        margin-left: 1.5em;
-        max-width: 50%;
-    }
-
-    .ck-content .image-style-align-left {
-        float: left;
-        margin-right: 1.5em;
-    }
-
-    .ck-content .image-style-align-right {
-        float: right;
-        margin-left: 1.5em;
-    }
-
-    .ck-content .image-style-align-center {
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .ck-content .image-caption {
-        color: #666;
-        font-size: 0.9em;
-        text-align: center;
+        max-width: 100%;
+        margin: 1em 0;
     }
 </style>
-
-<!-- تضمين CKEditor 5 النسخة الكاملة مع دعم الصور -->
-<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/super-build/ckeditor.js"></script>
 @endsection
 
 @section('content')
-<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-    <div class="p-6 bg-white border-b border-gray-200">
-        <h1 class="text-2xl font-bold mb-6">Create New Post</h1>
+<div class="admin-posts-container">
+    <div class="admin-posts-header">
+        <h1 class="admin-title">
+            <i class="fas fa-plus-circle me-2"></i>Create New Post
+        </h1>
+    </div>
 
-        <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
+    <div class="admin-card admin-fade-in">
+        <div class="admin-card-header">
+            <h2 class="admin-card-title"><i class="fas fa-edit me-2"></i>Post Information</h2>
+        </div>
+        <div class="admin-card-body">
+            <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data" id="postForm">
+                @csrf
 
-            <div class="mb-4">
-                <label for="title" class="block text-gray-700 text-sm font-bold mb-2">Title</label>
-                <input type="text" name="title" id="title" value="{{ old('title') }}" required
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group mb-4">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" name="title" id="title" value="{{ old('title') }}" required
+                                class="form-control">
+                        </div>
 
-            <div class="mb-4">
-                <label for="editor" class="block text-gray-700 text-sm font-bold mb-2">Content</label>
-                <textarea id="editor" name="content">{{ old('content') }}</textarea>
-                <div class="text-sm text-gray-500 mt-2">
-                    <p>يمكنك إدراج الصور في أي مكان من المحتوى. استخدم الأزرار في شريط الأدوات لإضافة صور ومحتوى منسق.</p>
+                        <div class="form-group mb-4">
+                            <label for="editor" class="form-label">Content</label>
+                            <div id="editor">{!! old('content') !!}</div>
+                            <input type="hidden" name="content" id="content-input">
+                            <div class="text-sm text-muted mt-2">
+                                <p>يمكنك إدراج الصور في أي مكان من المحتوى. استخدم الأزرار في شريط الأدوات لإضافة صور ومحتوى منسق.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group mb-4">
+                            <label for="featured_image" class="form-label">Featured Image</label>
+                            <div class="featured-image-preview mb-2 d-none">
+                                <img src="" id="featured-image-preview" class="img-fluid rounded">
+                            </div>
+                            <input type="file" name="featured_image" id="featured_image" accept="image/*"
+                                class="form-control" onchange="previewFeaturedImage(this)">
+                            <p class="text-sm text-muted mt-1">هذه الصورة ستظهر في الصفحة الرئيسية وفي أعلى صفحة المقال</p>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label for="investment_amount" class="form-label">Investment Amount</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" name="investment_amount" id="investment_amount" value="{{ old('investment_amount') }}"
+                                    class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label for="investment_type" class="form-label">Investment Type</label>
+                            <input type="text" name="investment_type" id="investment_type" value="{{ old('investment_type') }}"
+                                class="form-control">
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" name="location" id="location" value="{{ old('location') }}"
+                                class="form-control">
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="form-check form-switch">
+                                <input type="checkbox" name="is_published" value="1" {{ old('is_published') ? 'checked' : '' }}
+                                    class="form-check-input">
+                                <span class="form-check-label">Publish immediately</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mb-4">
-                <label for="featured_image" class="block text-gray-700 text-sm font-bold mb-2">Featured Image</label>
-                <input type="file" name="featured_image" id="featured_image" accept="image/*"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <p class="text-sm text-gray-500 mt-1">هذه الصورة ستظهر في الصفحة الرئيسية وفي أعلى صفحة المقال</p>
-            </div>
+                <div class="admin-card mt-4">
+                    <div class="admin-card-header">
+                        <h3 class="admin-card-title"><i class="fas fa-images me-2"></i>Gallery Images</h3>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="border border-dashed border-gray-300 p-4 rounded">
+                            <input type="file" name="gallery_images[]" id="gallery_images" accept="image/*" multiple
+                                class="form-control" onchange="previewGalleryImages(this)">
+                            <p class="text-sm text-muted mt-1">You can select multiple images at once</p>
 
-            <div class="mb-4">
-                <label for="gallery_images" class="block text-gray-700 text-sm font-bold mb-2">Gallery Images</label>
-                <div class="border border-dashed border-gray-400 p-4 rounded">
-                    <input type="file" name="gallery_images[]" id="gallery_images" accept="image/*" multiple
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    <p class="text-sm text-gray-500 mt-1">You can select multiple images at once</p>
-
-                    <div id="gallery-preview" class="gallery-preview mt-4"></div>
+                            <div id="gallery-preview" class="gallery-preview mt-4"></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="mb-4">
-                <label for="investment_amount" class="block text-gray-700 text-sm font-bold mb-2">Investment Amount</label>
-                <input type="number" name="investment_amount" id="investment_amount" value="{{ old('investment_amount') }}"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
+                <div class="admin-card mt-4">
+                    <div class="admin-card-header">
+                        <h3 class="admin-card-title"><i class="fas fa-tags me-2"></i>Additional Information</h3>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="tags" class="form-label">Tags (comma-separated)</label>
+                                    <input type="text" name="tags" id="tags" value="{{ old('tags') }}"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="investment_highlights" class="form-label">Investment Highlights (comma-separated)</label>
+                                    <input type="text" name="investment_highlights" id="investment_highlights" value="{{ old('investment_highlights') }}"
+                                        class="form-control">
+                                    <p class="text-sm text-muted mt-1">For example: "Guaranteed ROI of 15%,Premium location,Fully managed property"</p>
+                                </div>
+                            </div>
+                        </div>
 
-            <div class="mb-4">
-                <label for="investment_type" class="block text-gray-700 text-sm font-bold mb-2">Investment Type</label>
-                <input type="text" name="investment_type" id="investment_type" value="{{ old('investment_type') }}"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
+                        <div class="form-group mb-4">
+                            <label for="contact_info" class="form-label">Contact Information</label>
+                            <textarea name="contact_info" id="contact_info" rows="3"
+                                class="form-control">{{ old('contact_info') }}</textarea>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="mb-4">
-                <label for="location" class="block text-gray-700 text-sm font-bold mb-2">Location</label>
-                <input type="text" name="location" id="location" value="{{ old('location') }}"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
-
-            <div class="mb-4">
-                <label for="tags" class="block text-gray-700 text-sm font-bold mb-2">Tags (comma-separated)</label>
-                <input type="text" name="tags" id="tags" value="{{ old('tags') }}"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
-
-            <div class="mb-4">
-                <label for="investment_highlights" class="block text-gray-700 text-sm font-bold mb-2">Investment Highlights (comma-separated)</label>
-                <input type="text" name="investment_highlights" id="investment_highlights" value="{{ old('investment_highlights') }}"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <p class="text-sm text-gray-500 mt-1">For example: "Guaranteed ROI of 15%,Premium location,Fully managed property"</p>
-            </div>
-
-            <div class="mb-4">
-                <label for="contact_info" class="block text-gray-700 text-sm font-bold mb-2">Contact Information</label>
-                <textarea name="contact_info" id="contact_info" rows="3"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">{{ old('contact_info') }}</textarea>
-            </div>
-
-            <div class="mb-4">
-                <label class="flex items-center">
-                    <input type="checkbox" name="is_published" value="1" {{ old('is_published') ? 'checked' : '' }}
-                        class="form-checkbox h-4 w-4 text-blue-600">
-                    <span class="ml-2 text-gray-700">Publish immediately</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Create Post
-                </button>
-                <a href="{{ route('admin.posts.index') }}" class="text-gray-600 hover:text-gray-800">Cancel</a>
-            </div>
-        </form>
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="admin-btn admin-btn-primary">
+                        <i class="fas fa-save me-2"></i>Create Post
+                    </button>
+                    <a href="{{ route('admin.posts.index') }}" class="admin-btn admin-btn-outline">
+                        <i class="fas fa-arrow-left me-2"></i>Back to List
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 @endsection
 
 @section('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        ClassicEditor
-            .create(document.querySelector('#editor'), {
-                toolbar: ['heading', '|', 'bold', 'italic', '|', 'bulletedList', 'numberedList', '|', 'imageUpload', '|', 'undo', 'redo'],
-                language: 'ar',
-                simpleUpload: {
-                    uploadUrl: '{{ route('admin.ckeditor.upload') }}',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    }
+    var quill;
+    var initialContent = `{!! old('content') !!}`;
+
+    function imageHandler() {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+
+        input.onchange = async () => {
+            const file = input.files[0];
+            if (file) {
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('Image size should be less than 10MB');
+                    return;
                 }
-            })
-            .then(editor => {
-                console.log('Editor initialized successfully');
-            })
-            .catch(error => {
-                console.error('Error initializing CKEditor:', error);
-            });
 
-        // معالجة معرض الصور
-        const galleryInput = document.getElementById('gallery_images');
-        const preview = document.getElementById('gallery-preview');
+                const formData = new FormData();
+                formData.append('image', file);
+                formData.append('_token', '{{ csrf_token() }}');
 
-        if (galleryInput) {
-            galleryInput.addEventListener('change', updateGalleryPreview);
+                try {
+                    const range = quill.getSelection(true);
+                    quill.insertText(range.index, 'Uploading image...', Quill.sources.USER);
+                    quill.setSelection(range.index, 0, Quill.sources.SILENT);
+
+                    const response = await fetch('{{ route("admin.posts.upload-image") }}', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(result.error || 'Upload failed');
+                    }
+
+                    quill.deleteText(range.index, 13, Quill.sources.SILENT);
+
+                    if (range.index > 0) {
+                        quill.insertText(range.index, '\n', Quill.sources.USER);
+                    }
+
+                    quill.insertEmbed(range.index, 'image', result.url, Quill.sources.USER);
+                    quill.insertText(range.index + 1, '\n', Quill.sources.USER);
+                    quill.setSelection(range.index + 2, Quill.sources.SILENT);
+
+                } catch (error) {
+                    alert(error.message || 'Failed to upload image. Please try again.');
+                    const range = quill.getSelection(true);
+                    quill.deleteText(range.index - 13, 13, Quill.sources.SILENT);
+                }
+            }
+        };
+    }
+
+    function previewFeaturedImage(input) {
+        const preview = document.getElementById('featured-image-preview');
+        const previewContainer = preview.parentElement;
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                previewContainer.classList.remove('d-none');
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            previewContainer.classList.add('d-none');
         }
+    }
 
-        function updateGalleryPreview() {
-            preview.innerHTML = '';
+    function previewGalleryImages(input) {
+        const previewContainer = document.getElementById('gallery-preview');
+        previewContainer.innerHTML = '';
 
-            if (galleryInput.files) {
-                Array.from(galleryInput.files).forEach((file, index) => {
-                    const container = document.createElement('div');
-                    container.className = 'gallery-item-container';
+        if (input.files && input.files.length > 0) {
+            for (let i = 0; i < input.files.length; i++) {
+                const file = input.files[i];
+                const reader = new FileReader();
 
-                    const imageContainer = document.createElement('div');
-                    imageContainer.className = 'gallery-item';
+                reader.onload = function(e) {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item';
 
                     const img = document.createElement('img');
-                    img.src = URL.createObjectURL(file);
-                    img.onload = function() {
-                        URL.revokeObjectURL(this.src);
-                    }
-                    imageContainer.appendChild(img);
-                    container.appendChild(imageContainer);
+                    img.src = e.target.result;
+                    img.alt = 'Gallery image ' + (i + 1);
 
-                    const caption = document.createElement('input');
-                    caption.type = 'text';
-                    caption.name = `image_captions[${index}]`;
-                    caption.placeholder = 'Image caption';
-                    caption.className = 'gallery-caption shadow appearance-none border rounded py-1 px-2 text-gray-700 text-sm';
-                    container.appendChild(caption);
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'gallery-remove';
+                    removeBtn.innerHTML = '×';
+                    removeBtn.type = 'button';
 
-                    preview.appendChild(container);
-                });
+                    galleryItem.appendChild(img);
+                    galleryItem.appendChild(removeBtn);
+
+                    const captionInput = document.createElement('input');
+                    captionInput.type = 'text';
+                    captionInput.name = 'image_captions[]';
+                    captionInput.className = 'gallery-caption form-control form-control-sm mt-2';
+                    captionInput.placeholder = 'Image caption';
+
+                    const galleryItemContainer = document.createElement('div');
+                    galleryItemContainer.className = 'gallery-item-container';
+                    galleryItemContainer.appendChild(galleryItem);
+                    galleryItemContainer.appendChild(captionInput);
+
+                    previewContainer.appendChild(galleryItemContainer);
+                }
+
+                reader.readAsDataURL(file);
             }
         }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: {
+                    container: [
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'align': [] }],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['link', 'image', 'video'],
+                        ['clean']
+                    ],
+                    handlers: {
+                        'image': imageHandler
+                    }
+                }
+            },
+            placeholder: 'اكتب هنا...'
+        });
+
+        if (initialContent) {
+            quill.root.innerHTML = initialContent;
+        }
+
+        document.getElementById('postForm').addEventListener('submit', function(e) {
+            var content = quill.root.innerHTML;
+            document.getElementById('content-input').value = content;
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('gallery-remove')) {
+                e.target.closest('.gallery-item-container').remove();
+            }
+        });
     });
 </script>
 @endsection
-

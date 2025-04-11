@@ -1,73 +1,199 @@
 /* Hero Section */
 .hero-section {
-    background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1573164574472-797cdf4a583a?q=80&w=1920&auto=format&fit=crop');
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1573164574472-797cdf4a583a?q=80&w=1920&auto=format&fit=crop');
     background-size: cover;
     background-position: center;
-    height: 300px;
+    height: 600px;
     display: flex;
     align-items: center;
     text-align: center;
     color: #fff;
     position: relative;
+    margin-bottom: 60px;
 }
 
 .hero-content h1 {
-    font-size: 48px;
-    font-weight: 600;
-    margin-bottom: 0;
+    font-size: 56px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 /* Services Section */
 .services-section {
-    padding: 80px 0;
+    padding: 100px 0;
     background-color: #fff;
+    position: relative;
+}
+
+.services-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;utf8,<svg width="30" height="30" viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"><rect width="2" height="2" fill="%23f1f1f1" /></svg>');
+    background-size: 30px 30px;
+    opacity: 0.5;
+    z-index: 0;
+}
+
+.services-section .container {
+    position: relative;
+    z-index: 1;
 }
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-bottom: 60px;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+    margin-bottom: 80px;
 }
 
 .service-card {
-    background-color: #f8f9fa;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    transition: all 0.4s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .service-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    border-color: var(--primary-color);
 }
 
 .service-icon {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
     background-color: var(--primary-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
 }
 
-.service-icon i {
-    font-size: 30px;
-    color: #fff;
+.service-icon img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+.service-card:hover .service-icon {
+    transform: rotate(15deg);
+    background-color: var(--primary-dark);
 }
 
 .service-card h3 {
+    color: var(--secondary-color);
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.service-card p {
+    color: #666;
+    font-size: 18px;
+    line-height: 1.8;
+    margin: 0;
+    flex-grow: 1;
+}
+
+/* Process Section */
+.process-section {
+    padding: 80px 0;
+    background-color: #f8f9fa;
+    position: relative;
+}
+
+.process-section h2 {
+    text-align: center;
+    color: var(--secondary-color);
+    font-size: 36px;
+    margin-bottom: 60px;
+    font-weight: 700;
+    position: relative;
+}
+
+.process-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+}
+
+.process-step {
+    background-color: #fff;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.process-step::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 4px;
+    background-color: var(--primary-color);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.process-step:hover::before {
+    transform: scaleX(1);
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 auto 25px;
+    transition: all 0.3s ease;
+}
+
+.process-step:hover .step-number {
+    transform: scale(1.1);
+    background-color: var(--primary-dark);
+}
+
+.process-step h4 {
     color: var(--secondary-color);
     font-size: 24px;
     margin-bottom: 15px;
     font-weight: 600;
 }
 
-.service-card p {
+.process-step p {
     color: #666;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.8;
     margin: 0;
 }
@@ -75,33 +201,74 @@
 /* CTA Section */
 .cta-section {
     text-align: center;
-    padding: 40px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    margin-top: 60px;
+    padding: 80px 40px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    border-radius: 16px;
+    margin: 60px 0;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 50%;
+}
+
+.cta-section::after {
+    content: '';
+    position: absolute;
+    bottom: -30px;
+    left: -30px;
+    width: 150px;
+    height: 150px;
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 50%;
 }
 
 .cta-section h2 {
-    color: var(--secondary-color);
-    font-size: 28px;
+    color: #fff;
+    font-size: 36px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+}
+
+.cta-section p {
+    font-size: 18px;
     margin-bottom: 30px;
-    font-weight: 600;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
 }
 
 .btn-primary {
-    background-color: var(--primary-color);
-    color: #fff;
-    padding: 12px 30px;
-    border-radius: 4px;
+    background-color: #fff;
+    color: var(--primary-color);
+    padding: 16px 40px;
+    border-radius: 8px;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    font-size: 18px;
     transition: all 0.3s ease;
     display: inline-block;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .btn-primary:hover {
-    background-color: #00a896;
-    transform: translateY(-2px);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    background-color: #fff;
+    color: var(--primary-dark);
 }
 
 /* Contact Section */
@@ -208,60 +375,78 @@
 /* Responsive Design */
 @media (max-width: 991px) {
     .hero-content h1 {
-        font-size: 36px;
+        font-size: 42px;
     }
-    
+
     .service-card {
-        padding: 25px;
+        padding: 30px;
     }
-    
+
     .service-card h3 {
-        font-size: 22px;
-    }
-    
-    .cta-section h2 {
         font-size: 24px;
+    }
+
+    .cta-section h2 {
+        font-size: 32px;
+    }
+
+    .process-section h2 {
+        font-size: 32px;
     }
 }
 
 @media (max-width: 768px) {
     .hero-section {
-        height: 250px;
+        height: 350px;
     }
-    
+
     .hero-content h1 {
-        font-size: 32px;
+        font-size: 36px;
     }
-    
+
     .services-grid {
         grid-template-columns: 1fr;
+        gap: 30px;
     }
-    
-    .contact-info {
-        margin-top: 30px;
+
+    .process-step {
+        margin-bottom: 30px;
+    }
+
+    .cta-section {
+        padding: 60px 30px;
     }
 }
 
 @media (max-width: 576px) {
     .hero-content h1 {
-        font-size: 28px;
+        font-size: 32px;
     }
-    
+
     .service-card {
-        padding: 20px;
-    }
-    
-    .service-icon {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .service-icon i {
-        font-size: 24px;
-    }
-    
-    .contact-form,
-    .contact-info {
         padding: 25px;
     }
-} 
+
+    .service-icon {
+        width: 70px;
+        height: 70px;
+    }
+
+    .service-icon img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .cta-section {
+        padding: 50px 20px;
+    }
+
+    .cta-section h2 {
+        font-size: 28px;
+    }
+
+    .btn-primary {
+        padding: 14px 30px;
+        font-size: 16px;
+    }
+}

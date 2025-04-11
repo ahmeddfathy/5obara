@@ -7,185 +7,174 @@ class AboutContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 100),
+      color: Colors.white,
       child: Column(
         children: [
-          Text(
-            'من نحن',
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+          Container(
+            constraints: const BoxConstraints(maxWidth: 900),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+            padding: const EdgeInsets.all(60),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 30,
+                  offset: const Offset(0, 10),
+                ),
+              ],
             ),
-            textAlign: TextAlign.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(right: 20),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      right: BorderSide(
+                        color: AppColors.primary,
+                        width: 3,
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    'نحن مكتب معتمد في تنفيذ دراسات جدوى اقتصادية مفصلة للمشروعات نعمل داخل المملكة العربية السعودية بمدينة جده ولدينا فرق استشارية لجميع القطاعات الاقتصادية لسوق المملكة العربية السعودية.',
+                    style: TextStyle(
+                      fontSize: 20,
+                      height: 1.8,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.primaryDark,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 28),
+                const Text(
+                  'نحن نتولى دراسة جدوى مشروعكم والبدء بالتقديم للجهات الممولة والبدء بتنفيذ المشروع بالرسومات الهندسية واستيراد المكائن والمواد الخام وخطوط الانتاج بضمان أعلى جودة وأفضل سعر.',
+                  style: TextStyle(
+                    fontSize: 18,
+                    height: 1.9,
+                    color: Color(0xFF2c3e50),
+                  ),
+                ),
+                const SizedBox(height: 28),
+                const Text(
+                  'يقوم بجمع البيانات فريق مدرب بالتعاون مع مراكز احصائية ويقوم بتحليل البيانات فريق استشاري متخصص بالقطاع محل الدراسة نحن نسعى لإنجاح مشروعكم وتحقيق مكاسب وعوائد اقتصادية مطلوبة كما نبحث عن أفضل الطرق التسويقية التي يجب على المشروع استخدامها بالسوق لديكم.',
+                  style: TextStyle(
+                    fontSize: 18,
+                    height: 1.9,
+                    color: Color(0xFF2c3e50),
+                  ),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 20),
-          const Text(
-            'نبذة عن مكتب خبراء للاستشارات الاقتصادية',
-            style: TextStyle(fontSize: 18, color: Colors.grey),
-            textAlign: TextAlign.center,
+          const SizedBox(height: 80),
+          _buildPartnersSection(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPartnersSection() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 100),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.white, Color(0xFFF8F9FA)],
+        ),
+      ),
+      child: Column(
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Text(
+                'شركاء النجاح',
+                style: TextStyle(
+                  fontSize: 42,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.secondary,
+                ),
+              ),
+              Positioned(
+                bottom: -15,
+                child: Container(
+                  width: 200,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.transparent,
+                        AppColors.primary,
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 50),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth > 800) {
-                return _buildDesktopLayout();
-              } else {
-                return _buildMobileLayout();
-              }
-            },
+          const SizedBox(height: 60),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Wrap(
+                spacing: 40,
+                runSpacing: 40,
+                alignment: WrapAlignment.center,
+                children: [
+                  _buildPartnerCard(AppAssets.afniahLogo, 'شركة أفنية'),
+                  _buildPartnerCard(AppAssets.bashoryLogo, 'شركة باشوري'),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildDesktopLayout() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(flex: 1, child: _buildImage()),
-        const SizedBox(width: 40),
-        Expanded(flex: 1, child: _buildContent()),
-      ],
-    );
-  }
-
-  Widget _buildMobileLayout() {
-    return Column(
-      children: [_buildImage(), const SizedBox(height: 30), _buildContent()],
-    );
-  }
-
-  Widget _buildImage() {
+  Widget _buildPartnerCard(String imagePath, String name) {
     return Container(
-      height: 400,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        image: const DecorationImage(
-          image: AssetImage(AppAssets.mainImage),
-          fit: BoxFit.cover,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'مكتب خبراء للاستشارات الاقتصادية',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.right,
-        ),
-        const SizedBox(height: 20),
-        Text(
-          'مكتب خبراء هو مكتب استشاري متخصص في تقديم الخدمات الاستشارية للمشاريع الاقتصادية والتجارية. تأسس المكتب في عام 2010 على يد مجموعة من الخبراء والمستشارين المتخصصين في مجال الاقتصاد والأعمال.',
-          style: TextStyle(fontSize: 16, color: Colors.grey[700], height: 1.6),
-          textAlign: TextAlign.right,
-        ),
-        const SizedBox(height: 20),
-        Text(
-          'نهدف في مكتب خبراء إلى مساعدة أصحاب المشاريع على تحقيق النجاح في مشاريعهم من خلال تقديم الاستشارات المتخصصة ودراسات الجدوى الاقتصادية التي تساعدهم على اتخاذ القرارات الصحيحة وتجنب المخاطر.',
-          style: TextStyle(fontSize: 16, color: Colors.grey[700], height: 1.6),
-          textAlign: TextAlign.right,
-        ),
-        const SizedBox(height: 30),
-        _buildStatsSection(),
-      ],
-    );
-  }
-
-  Widget _buildStatsSection() {
-    return Container(
-      padding: const EdgeInsets.all(20),
+      width: 280,
+      padding: const EdgeInsets.all(40),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
         ],
+        border: Border.all(
+          color: Colors.black.withOpacity(0.05),
+        ),
       ),
       child: Column(
         children: [
-          const Text(
-            'إنجازاتنا بالأرقام',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
+          Image.asset(
+            imagePath,
+            height: 100,
+            fit: BoxFit.contain,
           ),
-          const SizedBox(height: 20),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth > 500) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: _buildStatItems(),
-                );
-              } else {
-                return Column(
-                  children:
-                      _buildStatItems()
-                          .map(
-                            (item) => Padding(
-                              padding: const EdgeInsets.only(bottom: 20),
-                              child: item,
-                            ),
-                          )
-                          .toList(),
-                );
-              }
-            },
+          const SizedBox(height: 15),
+          Text(
+            name,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.grey,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
-    );
-  }
-
-  List<Widget> _buildStatItems() {
-    final stats = [
-      {'value': '+500', 'label': 'مشروع ناجح'},
-      {'value': '+50', 'label': 'خبير متخصص'},
-      {'value': '+10', 'label': 'سنوات خبرة'},
-    ];
-
-    return stats
-        .map(
-          (stat) => _buildStatItem(
-            value: stat['value'] as String,
-            label: stat['label'] as String,
-          ),
-        )
-        .toList();
-  }
-
-  Widget _buildStatItem({required String value, required String label}) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primary,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(label, style: TextStyle(fontSize: 16, color: Colors.grey[700])),
-      ],
     );
   }
 }

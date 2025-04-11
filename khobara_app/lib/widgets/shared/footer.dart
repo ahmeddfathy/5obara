@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../utils/constants.dart';
 
 class Footer extends StatelessWidget {
@@ -6,47 +7,25 @@ class Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
-          color: const Color(0xFFF8F9FA),
-          child: Column(
-            children: [
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  if (constraints.maxWidth > 768) {
-                    return _buildDesktopLayout();
-                  } else {
-                    return _buildMobileLayout();
-                  }
-                },
-              ),
-              const SizedBox(height: 50),
-              _buildVisionCopyright(),
-            ],
+    return Container(
+      color: AppColors.lightGray,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 40, 16, 20),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth > 768) {
+                  return _buildDesktopLayout();
+                } else {
+                  return _buildMobileLayout();
+                }
+              },
+            ),
           ),
-        ),
-        Positioned(
-          left: 20,
-          bottom: 20,
-          child: Column(
-            children: [
-              _buildChatButton(
-                icon: Icons.message,
-                color: const Color(0xFF25D366),
-                onTap: () {},
-              ),
-              const SizedBox(height: 10),
-              _buildChatButton(
-                icon: Icons.chat_bubble,
-                color: const Color(0xFF0084FF),
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
-      ],
+          _buildFooterBottom(),
+        ],
+      ),
     );
   }
 
@@ -54,62 +33,64 @@ class Footer extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(child: _buildContactMethodsSection()),
-        const SizedBox(width: 30),
-        Expanded(child: _buildContactFormSection()),
+        Expanded(
+          flex: 1,
+          child: _buildContactMethods(),
+        ),
+        const SizedBox(width: 20),
+        Expanded(
+          flex: 1,
+          child: _buildContactForm(),
+        ),
       ],
     );
   }
 
   Widget _buildMobileLayout() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildContactMethodsSection(),
-        const SizedBox(height: 30),
-        _buildContactFormSection(),
+        _buildContactMethods(),
+        const SizedBox(height: 20),
+        _buildContactForm(),
       ],
     );
   }
 
-  Widget _buildContactMethodsSection() {
+  Widget _buildContactMethods() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'طرق التواصل معنا',
           style: TextStyle(
-            color: Color(0xFF00B5AD),
-            fontSize: 22,
+            color: AppColors.primary,
+            fontSize: 24,
             fontWeight: FontWeight.w600,
           ),
         ),
-        const SizedBox(height: 25),
+        const SizedBox(height: 20),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: Column(
                 children: [
-                  _buildContactMethod('Facebook', Icons.facebook, () {}),
-                  _buildContactMethod('Twitter', Icons.alternate_email, () {}),
-                  _buildContactMethod('Instagram', Icons.camera_alt, () {}),
-                  _buildContactMethod('LinkedIn', Icons.work, () {}),
+                  _buildContactMethod('Facebook', FontAwesomeIcons.facebookF),
+                  _buildContactMethod('Twitter', FontAwesomeIcons.twitter),
+                  _buildContactMethod('Instagram', FontAwesomeIcons.instagram),
+                  _buildContactMethod('LinkedIn', FontAwesomeIcons.linkedinIn),
                 ],
               ),
             ),
-            const SizedBox(width: 30),
+            const SizedBox(width: 16),
             Expanded(
               child: Column(
                 children: [
-                  _buildContactMethod('info@5obara.com', Icons.email, () {}),
-                  _buildContactMethod('+966569617288', Icons.phone, () {}),
+                  _buildContactMethod('info@5obara.com', Icons.email),
+                  _buildContactMethod('+966569617288', Icons.phone),
+                  _buildContactMethod('+966569617288', Icons.phone_android),
                   _buildContactMethod(
-                    '+966569617288',
-                    Icons.phone_android,
-                    () {},
-                  ),
-                  _buildContactMethod('+966569617288', Icons.message, () {}),
+                      '+966569617288', FontAwesomeIcons.whatsapp),
                 ],
               ),
             ),
@@ -119,50 +100,69 @@ class Footer extends StatelessWidget {
     );
   }
 
-  Widget _buildContactMethod(String label, IconData icon, VoidCallback onTap) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
+  Widget _buildContactMethod(String label, IconData icon) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(6),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: const TextStyle(
-              color: Color(0xFF555555),
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
+          Flexible(
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: Color(0xFF555555),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+              overflow: TextOverflow.ellipsis,
             ),
           ),
-          GestureDetector(
-            onTap: onTap,
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: const Color(0xFF00B5AD),
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x3300B5AD),
-                    blurRadius: 5,
-                    offset: Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Icon(icon, color: Colors.white, size: 16),
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 3),
+                ),
+              ],
             ),
+            child: Icon(icon, color: Colors.white, size: 16),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildContactFormSection() {
+  Widget _buildContactForm() {
     return Container(
-      padding: const EdgeInsets.all(30),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(0xFF00B5AD),
-        borderRadius: BorderRadius.circular(8),
+        color: AppColors.primary,
+        borderRadius: BorderRadius.circular(6),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 30,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,129 +171,72 @@ class Footer extends StatelessWidget {
             'أرسل لنا رسالة',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 22,
+              fontSize: 24,
               fontWeight: FontWeight.w600,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 25),
-          TextField(
-            decoration: InputDecoration(
-              hintText: 'الاسم',
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: BorderSide.none,
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 10,
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
+          _buildFormField('الاسم'),
+          const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'مثال: 544902462',
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
-                      borderSide: BorderSide.none,
+                child: Stack(
+                  children: [
+                    _buildFormField('مثال: 544902462'),
+                    Positioned(
+                      left: 10,
+                      top: 12,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFEEEEEE),
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                        child: const Text(
+                          '+966',
+                          style: TextStyle(
+                            color: Color(0xFF555555),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
                     ),
-                    prefixText: '966+ ',
-                    prefixStyle: const TextStyle(
-                      color: Color(0xFF555555),
-                      backgroundColor: Color(0xFFEEEEEE),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 10,
-                    ),
-                  ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 12),
               Expanded(
-                child: DropdownButtonFormField<String>(
-                  value: 'استشارة',
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(4),
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 10,
-                    ),
-                  ),
-                  items: const [
-                    DropdownMenuItem(value: 'استشارة', child: Text('استشارة')),
-                    DropdownMenuItem(value: 'استفسار', child: Text('استفسار')),
-                    DropdownMenuItem(value: 'أخرى', child: Text('أخرى')),
-                  ],
-                  onChanged: (value) {},
-                ),
+                child: _buildDropdownField(),
               ),
             ],
           ),
-          const SizedBox(height: 15),
-          TextField(
-            decoration: InputDecoration(
-              hintText: 'بأي مدينة مشروعك؟',
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: BorderSide.none,
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 10,
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          TextField(
-            maxLines: 4,
-            decoration: InputDecoration(
-              hintText: 'الرسالة',
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: BorderSide.none,
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 10,
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 12),
+          _buildFormField('بأي مدينة مشروعك؟'),
+          const SizedBox(height: 12),
+          _buildFormField('الرسالة', maxLines: 4),
+          const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF333333),
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                backgroundColor: Colors.white,
+                foregroundColor: AppColors.primary,
+                padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(6),
                 ),
+                elevation: 4,
               ),
               child: const Text(
                 'إرسال',
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
@@ -303,53 +246,70 @@ class Footer extends StatelessWidget {
     );
   }
 
-  Widget _buildVisionCopyright() {
-    return Column(
-      children: [
-        Image.asset(
-          'assets/img/footer-logo.png',
-          height: 80,
-          errorBuilder:
-              (context, error, stackTrace) => Container(
-                height: 80,
-                width: 80,
-                color: const Color(0xFF00B5AD),
-                child: const Center(
-                  child: Text('LOGO', style: TextStyle(color: Colors.white)),
-                ),
-              ),
+  Widget _buildFormField(String hint, {int maxLines = 1}) {
+    return TextField(
+      maxLines: maxLines,
+      decoration: InputDecoration(
+        hintText: hint,
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: BorderSide.none,
         ),
-        const SizedBox(height: 20),
-        const Text(
-          'جميع الحقوق محفوظة © 2024',
-          style: TextStyle(color: Color(0xFF666666), fontSize: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 8,
         ),
-      ],
+      ),
     );
   }
 
-  Widget _buildChatButton({
-    required IconData icon,
-    required Color color,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 45,
-        height: 45,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(
-              color: color.withOpacity(0.3),
-              blurRadius: 5,
-              offset: const Offset(0, 3),
-            ),
+  Widget _buildDropdownField() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: 'استشارة',
+          isExpanded: true,
+          items: const [
+            DropdownMenuItem(value: 'استشارة', child: Text('استشارة')),
+            DropdownMenuItem(value: 'استفسار', child: Text('استفسار')),
+            DropdownMenuItem(value: 'أخرى', child: Text('أخرى')),
           ],
+          onChanged: (value) {},
         ),
-        child: Icon(icon, color: Colors.white, size: 20),
+      ),
+    );
+  }
+
+  Widget _buildFooterBottom() {
+    return Container(
+      width: double.infinity,
+      color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 30),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            AppAssets.footerLogo,
+            height: 100,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            'جميع الحقوق محفوظة © 2024',
+            style: TextStyle(
+              color: Color(0xFF666666),
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -72,7 +72,11 @@ flutter:
   assets:
     - assets/images/
     - assets/images/home/
-    - assets/images/placeholder.png
+    - assets/images/about/
+    - assets/images/contact/
+    - assets/images/start-your-project/
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

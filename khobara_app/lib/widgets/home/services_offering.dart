@@ -7,14 +7,20 @@ class ServicesOfferingSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final services = [
-      {'icon': AppAssets.icon2, 'title': 'خطوط انتاج'},
-      {'icon': AppAssets.icon1, 'title': 'إنشاء وتنفيذ المشروعات الصناعية'},
-      {'icon': AppAssets.icon6, 'title': 'دراسات جدوى اقتصادية'},
-      {'icon': AppAssets.icon5, 'title': 'الرسم الهندسي'},
+      {'icon': 'assets/images/home/1grey.png', 'title': 'خطوط انتاج'},
+      {
+        'icon': 'assets/images/home/1184773-1.png',
+        'title': 'إنشاء وتنفيذ المشروعات الصناعية'
+      },
+      {
+        'icon': 'assets/images/home/1184773-3.png',
+        'title': 'دراسات جدوى اقتصادية'
+      },
+      {'icon': 'assets/images/home/4grey.png', 'title': 'الرسم الهندسي'},
     ];
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
       color: Colors.white,
       child: Column(
         children: [
@@ -22,25 +28,26 @@ class ServicesOfferingSection extends StatelessWidget {
             'خدمات خبراء',
             style: TextStyle(
               color: AppColors.secondary,
-              fontSize: 32,
-              fontWeight: FontWeight.w600,
+              fontSize: 42,
+              fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 20),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Text(
+          const SizedBox(height: 30),
+          Container(
+            width: 800,
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: const Text(
               'نحن نقدم عدد متنوع من الخدمات والاستشارات الاقتصادية يقوم عليها خبراء بسوق التجارة والصناعة خبرتهم تزيد عن عشرون عاما',
               style: TextStyle(
-                color: AppColors.textColor,
-                fontSize: 15,
-                height: 1.6,
+                color: AppColors.textLight,
+                fontSize: 18,
+                height: 1.7,
               ),
               textAlign: TextAlign.center,
             ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 50),
           _buildServicesGrid(context, services),
         ],
       ),
@@ -53,18 +60,17 @@ class ServicesOfferingSection extends StatelessWidget {
   ) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final crossAxisCount =
-            constraints.maxWidth > 768
-                ? 4
-                : (constraints.maxWidth > 576 ? 2 : 1);
+        final crossAxisCount = constraints.maxWidth > 768
+            ? 4
+            : (constraints.maxWidth > 576 ? 2 : 1);
 
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20,
+            crossAxisSpacing: 30,
+            mainAxisSpacing: 30,
             childAspectRatio: 0.8,
           ),
           itemCount: services.length,
@@ -81,15 +87,14 @@ class ServicesOfferingSection extends StatelessWidget {
 
   Widget _buildServiceItem({required String icon, required String title}) {
     return Container(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.all(30),
       decoration: BoxDecoration(
-        color: AppColors.lightGray.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(8),
+        color: AppColors.lightGray,
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
-            spreadRadius: 0,
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 15,
             offset: const Offset(0, 5),
           ),
         ],
@@ -100,27 +105,31 @@ class ServicesOfferingSection extends StatelessWidget {
           Container(
             width: 80,
             height: 80,
-            padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(50),
             ),
-            child: Image.asset(
-              icon,
-              errorBuilder:
-                  (context, error, stackTrace) => Container(
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.image, color: Colors.grey),
-                  ),
+            child: Center(
+              child: Image.asset(
+                icon,
+                width: 45,
+                height: 45,
+                color: Colors.white,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: Colors.grey[300],
+                  child: const Icon(Icons.image, color: Colors.grey),
+                ),
+              ),
             ),
           ),
           const SizedBox(height: 20),
           Text(
             title,
             style: const TextStyle(
-              color: AppColors.secondary,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+              color: AppColors.textColor,
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              height: 1.4,
             ),
             textAlign: TextAlign.center,
           ),

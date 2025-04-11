@@ -84,6 +84,8 @@
         <div class="vision-copyright">
             <div class="vision2030">
                 <img src="{{ asset('assets/img/footer-logo.png') }}" alt="رؤية 2030" class="vision-logo">
+                <!-- Social Media Links on Logo -->
+
             </div>
             <p class="footer-copy">جميع الحقوق محفوظة © 2024</p>
         </div>

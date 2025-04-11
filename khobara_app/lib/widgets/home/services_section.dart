@@ -7,31 +7,35 @@ class ServicesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 20),
+      padding: EdgeInsets.symmetric(
+        vertical: MediaQuery.of(context).size.width > 600 ? 60 : 30,
+        horizontal: MediaQuery.of(context).size.width > 600 ? 20 : 16,
+      ),
       color: Colors.white,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
+          Text(
             'نبذة عن الخدمات التي نقدمها وما نتميز به',
             style: TextStyle(
               color: AppColors.secondary,
-              fontSize: 32,
-              fontWeight: FontWeight.w600,
+              fontSize: MediaQuery.of(context).size.width > 600 ? 36 : 28,
+              fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
           ),
+          const SizedBox(height: 30),
+          _buildServicesDescription(context),
           const SizedBox(height: 40),
-          _buildServicesDescription(),
-          const SizedBox(height: 50),
           _buildServicesGrid(context),
           const SizedBox(height: 40),
-          _buildServicesChecklist(),
+          _buildServicesChecklist(context),
         ],
       ),
     );
   }
 
-  Widget _buildServicesDescription() {
+  Widget _buildServicesDescription(BuildContext context) {
     final List<String> descriptions = [
       'نحن نتولى مشروعك حتى تنفيذه على أرض الواقع',
       'وهذا مرورا بدراسة الجدوى الاقتصادية المفصلة والمعتمدة',
@@ -41,35 +45,55 @@ class ServicesSection extends StatelessWidget {
       'اطلب الآن دراسة جدوى اقتصادية مفصلة لمشروعك',
     ];
 
-    return Column(
-      children:
-          descriptions
-              .map(
-                (desc) => Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
+    return Container(
+      width: MediaQuery.of(context).size.width > 800 ? 800 : double.infinity,
+      margin: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width > 600 ? 20 : 16,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: descriptions
+            .map((desc) => Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
                   child: Text(
                     desc,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      color: AppColors.textColor,
-                      fontSize: 15,
-                      height: 1.6,
+                    style: TextStyle(
+                      color: AppColors.textLight,
+                      fontSize:
+                          MediaQuery.of(context).size.width > 600 ? 16 : 14,
+                      height: 1.5,
                     ),
                   ),
-                ),
-              )
-              .toList(),
+                ))
+            .toList(),
+      ),
     );
   }
 
   Widget _buildServicesGrid(BuildContext context) {
     final services = [
-      {'icon': AppAssets.icon1, 'title': 'تنفيذ المشروعات'},
-      {'icon': AppAssets.icon2, 'title': 'خطوط انتاج صناعية'},
-      {'icon': AppAssets.icon3, 'title': 'دراسات جدوى اقتصادية'},
-      {'icon': AppAssets.icon4, 'title': 'دراسات مالية ومراجعات محاسبية'},
-      {'icon': AppAssets.icon5, 'title': 'رسومات هندسية للمشروع'},
-      {'icon': AppAssets.icon6, 'title': 'الحصول على التمويل'},
+      {'icon': 'assets/images/home/1184773-1.png', 'title': 'تنفيذ المشروعات'},
+      {
+        'icon': 'assets/images/home/1184773-2.png',
+        'title': 'خطوط انتاج صناعية'
+      },
+      {
+        'icon': 'assets/images/home/1184773-3.png',
+        'title': 'دراسات جدوى اقتصادية'
+      },
+      {
+        'icon': 'assets/images/home/1184773-4.png',
+        'title': 'دراسات مالية ومراجعات محاسبية'
+      },
+      {
+        'icon': 'assets/images/home/1184773-5.png',
+        'title': 'رسومات هندسية للمشروع'
+      },
+      {
+        'icon': 'assets/images/home/1184773-6.png',
+        'title': 'الحصول على التمويل'
+      },
     ];
 
     return LayoutBuilder(
@@ -80,13 +104,14 @@ class ServicesSection extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20,
-            childAspectRatio: 1.5,
+            crossAxisSpacing: MediaQuery.of(context).size.width > 600 ? 20 : 12,
+            mainAxisSpacing: MediaQuery.of(context).size.width > 600 ? 20 : 12,
+            childAspectRatio: 1.2,
           ),
           itemCount: services.length,
           itemBuilder: (context, index) {
             return _buildServiceItem(
+              context,
               icon: services[index]['icon']!,
               title: services[index]['title']!,
             );
@@ -96,16 +121,17 @@ class ServicesSection extends StatelessWidget {
     );
   }
 
-  Widget _buildServiceItem({required String icon, required String title}) {
+  Widget _buildServiceItem(BuildContext context,
+      {required String icon, required String title}) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.primary.withOpacity(0.5)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 15,
             spreadRadius: 0,
             offset: const Offset(0, 5),
           ),
@@ -116,23 +142,22 @@ class ServicesSection extends StatelessWidget {
         children: [
           Image.asset(
             icon,
-            height: 60,
-            width: 60,
-            errorBuilder:
-                (context, error, stackTrace) => Container(
-                  height: 60,
-                  width: 60,
-                  color: Colors.grey[300],
-                  child: const Icon(Icons.image, color: Colors.grey),
-                ),
+            height: MediaQuery.of(context).size.width > 600 ? 60 : 40,
+            width: MediaQuery.of(context).size.width > 600 ? 60 : 40,
+            errorBuilder: (context, error, stackTrace) => Container(
+              height: MediaQuery.of(context).size.width > 600 ? 60 : 40,
+              width: MediaQuery.of(context).size.width > 600 ? 60 : 40,
+              color: Colors.grey[300],
+              child: const Icon(Icons.image, color: Colors.grey),
+            ),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 12),
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               color: AppColors.secondary,
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
+              fontSize: MediaQuery.of(context).size.width > 600 ? 18 : 16,
+              fontWeight: FontWeight.w600,
             ),
             textAlign: TextAlign.center,
           ),
@@ -141,7 +166,7 @@ class ServicesSection extends StatelessWidget {
     );
   }
 
-  Widget _buildServicesChecklist() {
+  Widget _buildServicesChecklist(BuildContext context) {
     final checklistItems = [
       'عمل دراسة جدوى اقتصادية واقعية مفصلة',
       'ترتيب الأوراق والمساعدة في الحصول على تمويل',
@@ -150,33 +175,48 @@ class ServicesSection extends StatelessWidget {
     ];
 
     return Container(
-      decoration: BoxDecoration(
-        color: AppColors.lightGray.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(10),
+      width: MediaQuery.of(context).size.width > 800 ? 800 : double.infinity,
+      margin: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width > 600 ? 20 : 16,
       ),
-      padding: const EdgeInsets.all(20),
       child: Column(
-        children:
-            checklistItems.map((item) => _buildChecklistItem(item)).toList(),
+        mainAxisSize: MainAxisSize.min,
+        children: checklistItems
+            .map((item) => _buildChecklistItem(context, item))
+            .toList(),
       ),
     );
   }
 
-  Widget _buildChecklistItem(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+  Widget _buildChecklistItem(BuildContext context, String text) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding:
+          EdgeInsets.all(MediaQuery.of(context).size.width > 600 ? 16 : 12),
+      decoration: BoxDecoration(
+        color: AppColors.lightGray,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.check_circle, color: AppColors.primary, size: 18),
-          const SizedBox(width: 10),
+          const Icon(Icons.check_circle, color: AppColors.primary, size: 20),
+          const SizedBox(width: 12),
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppColors.textColor,
-                fontSize: 14,
-                height: 1.4,
+                fontSize: MediaQuery.of(context).size.width > 600 ? 16 : 14,
+                fontWeight: FontWeight.w500,
+                height: 1.5,
               ),
             ),
           ),

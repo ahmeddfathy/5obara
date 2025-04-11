@@ -19,13 +19,12 @@ class Header extends StatelessWidget {
           Row(
             children: [
               Builder(
-                builder:
-                    (ctx) => IconButton(
-                      icon: const Icon(Icons.menu),
-                      onPressed: () {
-                        Scaffold.of(ctx).openDrawer();
-                      },
-                    ),
+                builder: (ctx) => IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(ctx).openDrawer();
+                  },
+                ),
               ),
               GestureDetector(
                 onTap: () {
@@ -34,15 +33,25 @@ class Header extends StatelessWidget {
                   }
                 },
                 child: Image.asset(
-                  AppAssets.logo,
+                  'assets/images/logo.jpg',
                   height: 50,
-                  errorBuilder:
-                      (context, error, stackTrace) => Container(
-                        height: 50,
-                        width: 50,
-                        color: AppColors.primary,
-                        child: const Center(child: Text('LOGO')),
+                  width: 120,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    height: 50,
+                    width: 120,
+                    color: AppColors.primary,
+                    child: const Center(
+                      child: Text(
+                        'خبراء',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -84,6 +93,30 @@ class Header extends StatelessWidget {
                         'اتصل بنا',
                         '/contact',
                         isActive: currentRoute == '/contact',
+                      ),
+                      const SizedBox(width: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (currentRoute != '/start-project') {
+                            context.go('/start-project');
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Text(
+                          'ابدأ مشروعك',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   );
