@@ -32,28 +32,75 @@ class BlogScreen extends StatelessWidget {
 
   Widget _buildHeroSection(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 60, horizontal: 20),
-      color: AppColors.primary,
+      height: 300,
       width: double.infinity,
-      child: Column(
-        children: [
-          const Text(
-            'المدونة',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(
+            'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
           ),
-          const SizedBox(height: 16),
-          Text(
-            'آخر المقالات والأخبار عن الخبراء للتطوير والاستشارات',
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
-              fontSize: 18,
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            AppColors.primary.withOpacity(0.8),
+            BlendMode.srcOver,
+          ),
+        ),
+      ),
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0.1),
+                  Colors.black.withOpacity(0.7),
+                ],
+              ),
             ),
-            textAlign: TextAlign.center,
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'المدونة',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(
+                          offset: Offset(1, 1),
+                          blurRadius: 3,
+                          color: Color.fromARGB(255, 0, 0, 0),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'آخر المقالات والأخبار عن الخبراء للتطوير والاستشارات',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      shadows: [
+                        Shadow(
+                          offset: Offset(1, 1),
+                          blurRadius: 3,
+                          color: Color.fromARGB(255, 0, 0, 0),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),

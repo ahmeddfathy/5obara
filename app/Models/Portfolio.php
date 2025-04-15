@@ -15,18 +15,12 @@ class Portfolio extends Model
         'slug',
         'description',
         'image',
-        'client_name',
-        'completion_date',
         'project_type',
-        'technologies',
-        'project_url',
         'is_featured'
     ];
 
     protected $casts = [
-        'technologies' => 'array',
-        'is_featured' => 'boolean',
-        'completion_date' => 'date'
+        'is_featured' => 'boolean'
     ];
 
     protected static function boot()

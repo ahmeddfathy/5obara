@@ -17,11 +17,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('description');
             $table->string('image')->nullable();
-            $table->string('client_name')->nullable();
-            $table->date('completion_date')->nullable();
             $table->string('project_type');
-            $table->json('technologies')->nullable();
-            $table->string('project_url')->nullable();
             $table->boolean('is_featured')->default(false);
             $table->timestamps();
         });

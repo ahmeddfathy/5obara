@@ -9,7 +9,6 @@ import '../../widgets/shared/header.dart';
 import '../../widgets/shared/footer.dart';
 import '../../widgets/shared/app_drawer.dart';
 
-
 class BlogDetailsScreen extends StatelessWidget {
   final Post post;
 

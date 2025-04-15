@@ -30,7 +30,7 @@
         <!-- User Profile Section in Sidebar -->
         <div class="sidebar-user-profile">
             <div class="sidebar-user-avatar">
-                <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'Admin' }}&background=0D8ABC&color=fff" alt="User Avatar">
+                <img src="data:image/svg+xml;base64,{{ base64_encode('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0D8ABC"/><text x="50" y="60" font-size="40" fill="#fff" text-anchor="middle">'.substr(Auth::user()->name ?? 'A', 0, 1).'</text></svg>') }}" alt="User Avatar">
             </div>
             <div class="sidebar-user-info">
                 <h4 class="sidebar-user-name">{{ Auth::user()->name ?? 'المدير' }}</h4>
@@ -70,7 +70,7 @@
             <li class="sidebar-divider"><span>الحساب الشخصي</span></li>
 
             <li class="sidebar-menu-item">
-                <a href="#" class="sidebar-menu-link">
+                <a href="/user/profile" class="sidebar-menu-link">
                     <div class="sidebar-menu-icon">
                         <i class="fas fa-user"></i>
                     </div>
@@ -119,10 +119,10 @@
                         <span class="admin-role">مدير النظام</span>
                     </div>
                     <div class="admin-user-avatar dropdown-toggle" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'Admin' }}&background=0D8ABC&color=fff" alt="User Avatar">
+                        <img src="data:image/svg+xml;base64,{{ base64_encode('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0D8ABC"/><text x="50" y="60" font-size="40" fill="#fff" text-anchor="middle">'.substr(Auth::user()->name ?? 'A', 0, 1).'</text></svg>') }}" alt="User Avatar">
                     </div>
                     <ul class="dropdown-menu user-dropdown-menu" aria-labelledby="userMenu">
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> الملف الشخصي</a></li>
+                        <li><a class="dropdown-item" href="/user/profile"><i class="fas fa-user me-2"></i> الملف الشخصي</a></li>
                         <li><a class="dropdown-item" href="#"><i class="fas fa-bell me-2"></i> الإشعارات</a></li>
                         <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> الإعدادات</a></li>
                         <li><hr class="dropdown-divider"></li>
@@ -154,6 +154,18 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
+
+        @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            <h5 class="alert-heading">يرجى تصحيح الأخطاء التالية:</h5>
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
 
                 @yield('content')
             </div>

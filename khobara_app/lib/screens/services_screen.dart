@@ -48,9 +48,7 @@ class ServicesScreen extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: const NetworkImage(
-            'https://images.unsplash.com/photo-1573164574472-797cdf4a583a?q=80&w=1920&auto=format&fit=crop',
-          ),
+          image: const AssetImage('assets/images/services/HERO.avif'),
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(
             Colors.black.withOpacity(0.6),

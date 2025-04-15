@@ -54,7 +54,16 @@ class PostController extends Controller
         ]);
 
         // Generate slug from title
-        $validated['slug'] = Str::slug($validated['title']);
+        $baseSlug = Str::slug($validated['title']);
+        $slug = $baseSlug;
+
+        // Check if slug already exists and append a suffix if needed
+        $count = 1;
+        while (Post::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $count++;
+        }
+
+        $validated['slug'] = $slug;
 
         // Convert arrays to JSON
         if (!empty($validated['tags'])) {
@@ -98,6 +107,9 @@ class PostController extends Controller
                 }
             }
 
+            // Save used images from temporary storage
+            $this->cleanupUnusedQuillImages($validated['content'], $request);
+
             DB::commit();
 
             return redirect()->route('admin.posts.index')
@@ -116,6 +128,16 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        // Make sure tags and investment_highlights are properly transformed
+        // from JSON to arrays before passing to the view
+        if (is_string($post->tags)) {
+            $post->tags = json_decode($post->tags) ?: [];
+        }
+
+        if (is_string($post->investment_highlights)) {
+            $post->investment_highlights = json_decode($post->investment_highlights) ?: [];
+        }
+
         return view('admin.posts.edit', compact('post'));
     }
 
@@ -145,7 +167,16 @@ class PostController extends Controller
 
         // Generate slug from title if title changed
         if ($post->title !== $validated['title']) {
-            $validated['slug'] = Str::slug($validated['title']);
+            $baseSlug = Str::slug($validated['title']);
+            $slug = $baseSlug;
+
+            // Check if slug already exists (excluding the current post) and append a suffix if needed
+            $count = 1;
+            while (Post::where('slug', $slug)->where('id', '!=', $post->id)->exists()) {
+                $slug = $baseSlug . '-' . $count++;
+            }
+
+            $validated['slug'] = $slug;
         }
 
         // Convert arrays to JSON
@@ -225,6 +256,9 @@ class PostController extends Controller
                     ]);
                 }
             }
+
+            // Save used images from temporary storage
+            $this->cleanupUnusedQuillImages($validated['content'], $request);
 
             DB::commit();
 
@@ -307,6 +341,11 @@ class PostController extends Controller
                 ], 500);
             }
 
+            // Store image as temporary in session
+            $tempImages = $request->session()->get('temp_quill_images', []);
+            $tempImages[] = $path;
+            $request->session()->put('temp_quill_images', $tempImages);
+
             return response()->json([
                 'url' => asset('storage/' . $path)
             ]);
@@ -315,5 +354,76 @@ class PostController extends Controller
                 'error' => 'Failed to upload image. Please try again.'
             ], 500);
         }
+    }
+
+    /**
+     * Clean up unused images uploaded through Quill editor
+     */
+    private function cleanupUnusedQuillImages($content, Request $request)
+    {
+        // Get temporary images from session
+        $tempImages = $request->session()->get('temp_quill_images', []);
+
+        if (empty($tempImages)) {
+            // في حالة التعديل، قد لا تكون هناك صور مؤقتة في الجلسة
+            // لذلك نقوم بفحص مجلد الصور مباشرة للتنظيف
+            try {
+                $contentImages = Storage::disk('public')->files('posts/content');
+                if (empty($contentImages)) {
+                    return;
+                }
+
+                foreach ($contentImages as $imagePath) {
+                    $filename = basename($imagePath);
+                    // تحقق مما إذا كانت الصورة مستخدمة في المحتوى
+                    if (strpos($content, $filename) === false) {
+                        // إذا كانت الصورة غير موجودة في المحتوى، قم بحذفها
+                        Storage::disk('public')->delete($imagePath);
+                    }
+                }
+                return;
+            } catch (\Exception $e) {
+                // لوج الخطأ واستمر
+                Log::error('Error cleaning content images: ' . $e->getMessage());
+                return;
+            }
+        }
+
+        // Find which images are actually used in the content
+        $usedImages = [];
+        foreach ($tempImages as $imagePath) {
+            $filename = basename($imagePath);
+
+            // Check if the image is in the content
+            if (strpos($content, $filename) !== false) {
+                $usedImages[] = $imagePath;
+            } else {
+                // Delete unused image
+                if (Storage::disk('public')->exists($imagePath)) {
+                    Storage::disk('public')->delete($imagePath);
+                }
+            }
+        }
+
+        // Clear the temporary images from session
+        $request->session()->forget('temp_quill_images');
+    }
+
+    /**
+     * Clear temporary images when user cancels form editing
+     */
+    public function clearTempImages(Request $request)
+    {
+        $tempImages = $request->session()->get('temp_quill_images', []);
+
+        foreach ($tempImages as $imagePath) {
+            if (Storage::disk('public')->exists($imagePath)) {
+                Storage::disk('public')->delete($imagePath);
+            }
+        }
+
+        $request->session()->forget('temp_quill_images');
+
+        return response()->json(['success' => true]);
     }
 }

@@ -6,7 +6,9 @@
     <title>تسجيل الدخول - خبراء</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="{{ asset('assets/css/auth.css') }}" rel="stylesheet">
+    <link rel="icon" href="{{ asset('assets/img/home/logo.jpg') }}" type="image/x-icon">
 </head>
 <body>
     <div class="container">
@@ -28,6 +30,8 @@
                     <i class="fas fa-check-circle me-2"></i>{{ session('status') }}
                 </div>
             @endif
+
+            <h4 class="text-center mb-4 fw-bold text-dark">مرحباً بعودتك!</h4>
 
             <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate>
                 @csrf
@@ -61,23 +65,22 @@
                     </label>
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <button type="submit" class="btn custom-btn w-100 mb-3">
+                    <i class="fas fa-sign-in-alt me-2"></i>تسجيل الدخول
+                </button>
+
+                <div class="d-flex justify-content-center mb-3">
                     @if (Route::has('password.request'))
                         <a href="{{ route('password.request') }}" class="text-decoration-none">
                             <i class="fas fa-key me-2"></i>نسيت كلمة المرور؟
                         </a>
                     @endif
-                    <button type="submit" class="btn custom-btn">
-                        <i class="fas fa-sign-in-alt me-2"></i>تسجيل الدخول
-                    </button>
                 </div>
             </form>
 
             <div class="auth-links">
-                <p class="mb-0">ليس لديك حساب؟
-                    <a href="{{ route('register') }}">
-                        <i class="fas fa-user-plus me-1"></i>إنشاء حساب جديد
-                    </a>
+                <p class="mb-0">
+                    <i class="fas fa-info-circle me-1"></i>التسجيل متاح فقط للإدارة
                 </p>
             </div>
         </div>
@@ -114,6 +117,22 @@
                 }, false)
             })
         })()
+
+        // Add ripple effect to button
+        document.querySelector('.custom-btn').addEventListener('click', function(e) {
+            let x = e.clientX - e.target.offsetLeft;
+            let y = e.clientY - e.target.offsetTop;
+
+            let ripple = document.createElement('span');
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+
+            this.appendChild(ripple);
+
+            setTimeout(() => {
+                ripple.remove();
+            }, 1000);
+        });
     </script>
 </body>
 </html>

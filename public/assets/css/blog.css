@@ -1,6 +1,6 @@
 /* Hero Section */
 .hero-section {
-    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1604594849809-dfedbc827105?ixlib=rb-4.0.3');
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('../img/blog/photo-1604594849809-dfedbc827105.jfif');
     background-size: cover;
     background-position: center;
     height: 600px;

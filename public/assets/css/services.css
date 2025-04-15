@@ -1,6 +1,44 @@
+/* Variables */
+:root {
+    --primary-color: #00b5ad;
+    --primary-dark: #008c85;
+    --primary-light: #33c3bd;
+    --secondary-color: #2c3e50;
+    --text-color: #333;
+    --text-light: #666;
+    --white: #fff;
+    --light-gray: #f8f9fa;
+    --border-radius: 6px;
+    --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --transition: all 0.3s ease;
+}
+
+/* Fix for header buttons in services page */
+.main-header .header-buttons .btn-primary {
+    background-color: #00b5ad !important;
+    border-color: #00b5ad !important;
+    color: white !important;
+    padding: 8px 16px !important;
+    font-weight: 500 !important;
+    border-radius: 6px !important;
+    line-height: 1.5 !important;
+    font-size: 16px !important;
+    transition: all 0.3s ease !important;
+    display: inline-block !important;
+    text-align: center !important;
+    text-decoration: none !important;
+}
+
+.main-header .header-buttons .btn-primary:hover {
+    background-color: #009d96 !important;
+    border-color: #009d96 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
 /* Hero Section */
 .hero-section {
-    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1573164574472-797cdf4a583a?q=80&w=1920&auto=format&fit=crop');
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('../img/services/photo-1573164574472-797cdf4a583a.avif');
     background-size: cover;
     background-position: center;
     height: 600px;
@@ -61,6 +99,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    text-align: right;
 }
 
 .service-card:hover {
@@ -70,22 +109,20 @@
 }
 
 .service-icon {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background-color: var(--primary-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 30px;
+    margin: 0 0 30px auto;
     transition: all 0.3s ease;
 }
 
-.service-icon img {
-    width: 45px;
-    height: 45px;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
+.service-icon i {
+    font-size: 40px;
+    color: white;
 }
 
 .service-card:hover .service-icon {
@@ -271,107 +308,6 @@
     color: var(--primary-dark);
 }
 
-/* Contact Section */
-.contact-section {
-    padding: 80px 0;
-    background-color: #f8f9fa;
-}
-
-.contact-form {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.05);
-}
-
-.contact-form h3 {
-    color: var(--secondary-color);
-    font-size: 24px;
-    margin-bottom: 30px;
-    font-weight: 600;
-}
-
-.form-control {
-    height: 50px;
-    border: 1px solid #ddd;
-    padding: 10px 15px;
-    font-size: 15px;
-    margin-bottom: 20px;
-}
-
-.btn-submit {
-    background-color: var(--primary-color);
-    color: #fff;
-    border: none;
-    padding: 12px 40px;
-    border-radius: 4px;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    width: 100%;
-}
-
-.btn-submit:hover {
-    background-color: #00a896;
-    transform: translateY(-2px);
-}
-
-.contact-info {
-    background-color: var(--primary-color);
-    padding: 40px;
-    border-radius: 8px;
-    color: #fff;
-    height: 100%;
-}
-
-.contact-info h3 {
-    font-size: 24px;
-    margin-bottom: 30px;
-    font-weight: 600;
-}
-
-.contact-info ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 30px;
-}
-
-.contact-info ul li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-    font-size: 15px;
-}
-
-.contact-info ul li i {
-    font-size: 18px;
-}
-
-.info-social-links {
-    display: flex;
-    gap: 15px;
-}
-
-.info-social-links a {
-    width: 40px;
-    height: 40px;
-    border: 2px solid #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    transition: all 0.3s ease;
-}
-
-.info-social-links a:hover {
-    background-color: #fff;
-    color: var(--primary-color);
-    transform: translateY(-2px);
-}
-
 /* Responsive Design */
 @media (max-width: 991px) {
     .hero-content h1 {
@@ -432,9 +368,8 @@
         height: 70px;
     }
 
-    .service-icon img {
-        width: 40px;
-        height: 40px;
+    .service-icon i {
+        font-size: 30px;
     }
 
     .cta-section {

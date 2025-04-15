@@ -1,6 +1,24 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('title', $post->title)
+
+@section('meta')
+<meta name="description" content="{{ Str::limit(strip_tags($post->content), 160) }}">
+<meta name="keywords" content="فرص استثمارية، {{ $post->title }}، استثمار، مشاريع استثمارية، خبراء، استشارات اقتصادية، {{ $post->investment_type ?? 'دراسة جدوى' }}، المملكة العربية السعودية">
+<meta property="og:title" content="{{ $post->title }} | خبراء للاستشارات الاقتصادية">
+<meta property="og:description" content="{{ Str::limit(strip_tags($post->content), 160) }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:image" content="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : asset('assets/img/blog/default-post.jpg') }}">
+@if($post->published_at)
+<meta property="article:published_time" content="{{ $post->published_at->toIso8601String() }}">
+@endif
+<meta property="article:section" content="{{ $post->investment_type ?? 'استثمار' }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $post->title }} | خبراء للاستشارات الاقتصادية">
+<meta name="twitter:description" content="{{ Str::limit(strip_tags($post->content), 160) }}">
+<meta name="twitter:image" content="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : asset('assets/img/blog/default-post.jpg') }}">
+@endsection
 
 @section('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/blog.css') }}" />
@@ -84,7 +102,7 @@
                         <div class="investment-details">
                             <div class="investment-detail">
                                 <strong>قيمة الاستثمار</strong>
-                                <span>${{ number_format($post->investment_amount) }}</span>
+                                <span>{{ number_format($post->investment_amount) }} ر.س</span>
                     </div>
                     @if($post->investment_type)
                             <div class="investment-detail">
@@ -242,7 +260,7 @@
                             @endif
 
                             @if($similarPost->investment_amount)
-                                <div class="blog-badge">${{ number_format($similarPost->investment_amount) }}</div>
+                                <div class="blog-badge">{{ number_format($similarPost->investment_amount) }} ر.س</div>
                             @endif
 
                             @if($similarPost->investment_type)

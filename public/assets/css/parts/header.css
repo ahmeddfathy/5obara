@@ -1,0 +1,74 @@
+/* Header Styles */
+.main-header {
+    background-color: #fff;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    margin-right: 0;
+    padding: 0;
+}
+
+.navbar-nav {
+    margin-right: 20px;
+}
+
+.nav-item {
+    margin: 0 12px;
+}
+
+.nav-link {
+    color: #333;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #00b5ad;
+}
+
+.header-buttons .btn {
+    padding: 8px 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.header-buttons .btn-primary {
+    background-color: #00b5ad;
+    border-color: #00b5ad;
+}
+
+.header-buttons .btn-primary:hover {
+    background-color: #009d96;
+    transform: translateY(-2px);
+}
+
+.header-buttons .btn-success {
+    background-color: #25D366;
+    border-color: #25D366;
+}
+
+.header-buttons .btn-success:hover {
+    background-color: #20bd5b;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 991px) {
+    .navbar-nav {
+        margin-right: 0;
+        margin-top: 15px;
+    }
+
+    .header-buttons {
+        margin-top: 15px;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .header-buttons .btn {
+        margin: 5px 0;
+        text-align: center;
+    }
+}

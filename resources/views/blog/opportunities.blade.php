@@ -1,6 +1,20 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('title', 'الفرص الاستثمارية')
+
+@section('meta')
+<meta name="description" content="اكتشف أفضل الفرص الاستثمارية المتاحة في المملكة العربية السعودية. فرص متنوعة في قطاعات مختلفة مع تحليل متكامل وتوقعات العوائد الاستثمارية.">
+<meta name="keywords" content="فرص استثمارية، استثمار، مشاريع واعدة، عوائد استثمارية، استثمار في السعودية، مشاريع مربحة، رأس المال، تمويل مشاريع، رؤية 2030">
+<meta property="og:title" content="الفرص الاستثمارية | خبراء للاستشارات الاقتصادية">
+<meta property="og:description" content="اكتشف أفضل الفرص الاستثمارية المتاحة في المملكة العربية السعودية. فرص متنوعة في قطاعات مختلفة مع تحليل متكامل وتوقعات العوائد الاستثمارية.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:image" content="{{ asset('assets/img/blog/default-post.jpg') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="الفرص الاستثمارية | خبراء للاستشارات الاقتصادية">
+<meta name="twitter:description" content="اكتشف أفضل الفرص الاستثمارية المتاحة في المملكة العربية السعودية. فرص متنوعة في قطاعات مختلفة مع تحليل متكامل وتوقعات العوائد الاستثمارية.">
+<meta name="twitter:image" content="{{ asset('assets/img/blog/default-post.jpg') }}">
+@endsection
 
 @section('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/blog.css') }}">
@@ -69,7 +83,7 @@
                         @endif
 
                         @if($post->investment_amount)
-                        <div class="blog-badge">${{ number_format($post->investment_amount) }}</div>
+                        <div class="blog-badge">{{ number_format($post->investment_amount) }} ر.س</div>
                         @endif
 
                         @if($post->investment_type)

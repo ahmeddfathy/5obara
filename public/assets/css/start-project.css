@@ -14,7 +14,7 @@
 
 /* Hero Section */
 .hero-section {
-    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?ixlib=rb-4.0.3');
+    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5)), url('../img/start-your-project/sec_chemplnt82-1-1024x430.jpg');
     background-size: cover;
     background-position: center;
     height: 500px;
@@ -168,6 +168,10 @@
     font-weight: 600;
 }
 
+.phone-input input {
+    padding-left: 60px;
+}
+
 .btn-submit {
     background-color: var(--primary-color);
     color: var(--white);
@@ -233,8 +237,8 @@
 }
 
 .feature-icon {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background-color: rgba(0, 181, 173, 0.1);
     border-radius: 50%;
     display: flex;
@@ -244,19 +248,18 @@
     transition: var(--transition);
 }
 
-.feature-icon img {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
+.feature-icon i {
+    font-size: 40px;
+    color: var(--primary-color);
+    transition: var(--transition);
 }
 
 .feature-card:hover .feature-icon {
     background-color: var(--primary-color);
-    transform: rotate(10deg);
 }
 
-.feature-card:hover .feature-icon img {
-    filter: brightness(0) invert(1);
+.feature-card:hover .feature-icon i {
+    color: white;
 }
 
 .feature-card h4 {
@@ -275,7 +278,7 @@
 
 /* Contact Section */
 .contact-section {
-    padding: 80px 0;
+    padding: 60px 0;
     background-color: var(--white);
 }
 
@@ -286,6 +289,7 @@
     color: var(--white);
     height: 100%;
     box-shadow: var(--box-shadow);
+    margin-bottom: 30px;
 }
 
 .contact-info h3 {
@@ -335,14 +339,14 @@
     text-align: center;
 }
 
-.social-links {
+.project-social-links {
     display: flex;
     justify-content: center;
     gap: 15px;
     margin-top: 30px;
 }
 
-.social-links a {
+.project-social-links a {
     width: 45px;
     height: 45px;
     border: 2px solid var(--white);
@@ -353,9 +357,10 @@
     color: var(--white);
     font-size: 18px;
     transition: var(--transition);
+    text-decoration: none;
 }
 
-.social-links a:hover {
+.project-social-links a:hover {
     background-color: var(--white);
     color: var(--primary-color);
     transform: translateY(-5px);
@@ -367,6 +372,7 @@
     overflow: hidden;
     box-shadow: var(--box-shadow);
     height: 450px;
+    width: 100%;
 }
 
 .contact-map iframe {
@@ -405,6 +411,10 @@
 
     .contact-info {
         margin-bottom: 30px;
+    }
+
+    .contact-map {
+        height: 400px;
     }
 }
 
@@ -445,9 +455,23 @@
         height: 30px;
     }
 
+    .contact-info,
+    .contact-map {
+        width: 100%;
+    }
+
     .contact-map {
         height: 350px;
-        margin-top: 30px;
+    }
+
+    .contact-section .row {
+        flex-direction: column;
+    }
+
+    .contact-section .col-lg-6 {
+        width: 100%;
+        flex-basis: 100%;
+        max-width: 100%;
     }
 }
 
@@ -491,9 +515,56 @@
 
     .contact-info ul li {
         font-size: 14px;
+        padding: 12px;
     }
 
     .contact-map {
         height: 300px;
+    }
+
+    .project-social-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .project-social-links a {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+}
+
+/* Additional mobile fixes */
+@media (max-width: 480px) {
+    .hero-section {
+        height: 300px;
+    }
+
+    .hero-content h1 {
+        font-size: 26px;
+    }
+
+    .form-wrapper {
+        margin-top: -50px;
+        padding: 15px;
+    }
+
+    .btn-submit {
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    .contact-info {
+        padding: 25px;
+    }
+
+    .contact-info ul li {
+        gap: 10px;
+        margin-bottom: 15px;
+        font-size: 13px;
+    }
+
+    .contact-map {
+        height: 250px;
     }
 }

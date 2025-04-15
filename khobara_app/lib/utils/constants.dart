@@ -8,7 +8,7 @@ class AppConstants {
     // For development mode - use appropriate local address
     if (kDebugMode) {
       if (Platform.isAndroid) {
-        return 'http://192.168.171.67:8000/api'; // Android emulator special IP for localhost
+        return 'http://192.168.98.79:8000/api'; // Android emulator special IP for localhost
       } else if (Platform.isIOS) {
         return 'http://192.168.171.67:8000/api'; // iOS simulator can use localhost directly
       } else {
@@ -29,6 +29,8 @@ class AppConstants {
   static const String portfoliosEndpoint = '/portfolios';
   static const String postsEndpoint = '/posts';
   static const String opportunitiesEndpoint = '/investment-opportunities';
+  static const String contactEndpoint = '/contact';
+  static const String investmentEndpoint = '/investments';
 
   // Screen routes
   static const String homeRoute = '/';

@@ -22,4 +22,24 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+
+    # Handle robots.txt and sitemap.xml properly
+    RewriteCond %{REQUEST_URI} ^/robots\.txt$ [OR]
+    RewriteCond %{REQUEST_URI} ^/sitemap\.xml$
+    RewriteRule ^ %{REQUEST_URI} [L]
+</IfModule>
+
+# Add proper MIME types for XML files
+<IfModule mod_mime.c>
+    AddType application/xml .xml
+</IfModule>
+
+# Disable directory listing
+Options -Indexes
+
+# Block access to hidden files and directories
+<IfModule mod_rewrite.c>
+    RewriteCond %{SCRIPT_FILENAME} -d [OR]
+    RewriteCond %{SCRIPT_FILENAME} -f
+    RewriteRule "(^|/)\." - [F]
 </IfModule>

@@ -2,6 +2,20 @@
 
 @section('title', 'خدماتنا')
 
+@section('meta')
+<meta name="description" content="تعرف على خدماتنا المتكاملة في مجال الاستشارات الاقتصادية - دراسات الجدوى، دراسة السوق، التخطيط المالي، وخدمات استشارية متكاملة لتحقيق نجاح مشاريعك.">
+<meta name="keywords" content="خدمات استشارية، دراسة جدوى، دراسة سوق، تخطيط مالي، استشارات اقتصادية، تنفيذ مشاريع، تمويل، رؤية 2030">
+<meta property="og:title" content="خدماتنا المتكاملة | خبراء للاستشارات الاقتصادية">
+<meta property="og:description" content="نقدم حلولاً استشارية متكاملة لتحقيق نجاح مشاريعك، بدءاً من دراسة الجدوى والسوق وحتى التخطيط المالي والتنفيذ.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:image" content="{{ asset('assets/img/home/logo.jpg') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="خدماتنا المتكاملة | خبراء للاستشارات الاقتصادية">
+<meta name="twitter:description" content="نقدم حلولاً استشارية متكاملة لتحقيق نجاح مشاريعك، بدءاً من دراسة الجدوى والسوق وحتى التخطيط المالي والتنفيذ.">
+<meta name="twitter:image" content="{{ asset('assets/img/home/logo.jpg') }}">
+@endsection
+
 @section('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/services.css') }}">
 @endsection
@@ -24,28 +38,28 @@
                 <div class="col-lg-4">
                     <div class="service-card">
                         <div class="service-icon">
-                            <img src="https://img.icons8.com/color/96/000000/statistics.png" alt="دراسة الجدوى">
+                            <i class="fas fa-chart-line"></i>
                         </div>
-                        <h3>دراسة الجدوى</h3>
-                        <p>نقدم دراسات جدوى شاملة لمشاريعك باستخدام أحدث المنهجيات وأدوات التحليل، مع التركيز على الجوانب المالية والتسويقية والفنية</p>
+                        <h3 class="text-right">دراسة الجدوى</h3>
+                        <p class="text-right">نقدم دراسات جدوى شاملة لمشاريعك باستخدام أحدث المنهجيات وأدوات التحليل، مع التركيز على الجوانب المالية والتسويقية والفنية</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="service-card">
                         <div class="service-icon">
-                            <img src="https://img.icons8.com/color/96/000000/market-research.png" alt="دراسة السوق">
+                            <i class="fas fa-search-dollar"></i>
                         </div>
-                        <h3>دراسة السوق</h3>
-                        <p>تحليل شامل للسوق المستهدف وتحديد الفرص والتحديات، مع تقديم رؤى استراتيجية لتحقيق النجاح في السوق التنافسي</p>
+                        <h3 class="text-right">دراسة السوق</h3>
+                        <p class="text-right">تحليل شامل للسوق المستهدف وتحديد الفرص والتحديات، مع تقديم رؤى استراتيجية لتحقيق النجاح في السوق التنافسي</p>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="service-card">
                         <div class="service-icon">
-                            <img src="https://img.icons8.com/color/96/000000/accounting.png" alt="التخطيط المالي">
+                            <i class="fas fa-calculator"></i>
                         </div>
-                        <h3>التخطيط المالي</h3>
-                        <p>تطوير خطط مالية متكاملة وتقدير التكاليف والإيرادات، مع وضع استراتيجيات فعالة لتحقيق الاستدامة المالية</p>
+                        <h3 class="text-right">التخطيط المالي</h3>
+                        <p class="text-right">تطوير خطط مالية متكاملة وتقدير التكاليف والإيرادات، مع وضع استراتيجيات فعالة لتحقيق الاستدامة المالية</p>
                     </div>
                 </div>
             </div>
@@ -93,5 +107,5 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('assets/js/services.js') }}"></script>
+<!-- No scripts needed for now -->
 @endsection

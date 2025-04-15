@@ -3,9 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
 use App\Http\Controllers\Admin\ImagesController;
+use App\Http\Controllers\InvestmentController;
+use App\Http\Controllers\ContactPageController;
+use App\Http\Controllers\StartProjectController;
 
 Route::get('/', function () {
     return view('index');
@@ -37,38 +41,74 @@ Route::get('/start-your-project', function () {
     return view('start-your-project');
 })->name('start-your-project');
 
-// Route::get('/portfolio', function () {
-//     return view('prtofolio');
-// })->name('portfolio');
+
+// منع الوصول إلى صفحة التسجيل وإعادة التوجيه إلى صفحة تسجيل الدخول
+Route::get('/register', function () {
+    return redirect()->route('login');
+})->middleware(['basic.auth']);
+
+Route::post('/register', function () {
+    abort(403, 'التسجيل غير متاح حالياً');
+})->middleware(['basic.auth']);
 
 // Admin Routes (protected)
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
         // Admin Dashboard
         Route::get('/', function () {
             return view('dashboard');
-        })->name('dashboard');
+        })->name('dashboard')->middleware('permission:access dashboard');
 
         // Admin image upload routes
-        Route::post('/upload/image', [ImagesController::class, 'upload'])->name('images.upload');
-        Route::post('/ckeditor/upload', [ImagesController::class, 'ckeditorUpload'])->name('ckeditor.upload');
+        Route::post('/upload/image', [ImagesController::class, 'upload'])
+            ->name('images.upload')
+            ->middleware('permission:manage content');
+
+        Route::post('/ckeditor/upload', [ImagesController::class, 'ckeditorUpload'])
+            ->name('ckeditor.upload')
+            ->middleware('permission:manage content');
 
         // Admin Posts Management
-        Route::resource('posts', AdminPostController::class);
-        Route::get('/quill-test', function () {
-            return view('admin.posts.quill_test');
-        })->name('quill.test');
-        Route::get('/quill-test-create', function () {
-            return view('admin.posts.quill_test_create');
-        })->name('quill.test.create');
-        Route::post('posts/upload-image', [AdminPostController::class, 'uploadImage'])->name('posts.upload-image');
+        Route::resource('posts', AdminPostController::class)
+            ->middleware('permission:manage content');
+
+        Route::post('posts/upload-image', [AdminPostController::class, 'uploadImage'])
+            ->name('posts.upload-image')
+            ->middleware('permission:manage content');
+
         // Admin Portfolio Management
-        Route::resource('portfolio', AdminPortfolioController::class);
+        Route::resource('portfolio', AdminPortfolioController::class)
+            ->middleware('permission:manage content');
     });
+
+// Special route for clearing temporary images that doesn't follow the admin. prefix pattern
+Route::post('/admin/posts/clear-temp-images', [AdminPostController::class, 'clearTempImages'])
+    ->name('admin.posts.clear-temp-images')
+    ->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'role:admin', 'permission:manage content']);
 
 // Redirect /dashboard to /admin
 Route::get('/dashboard', function () {
     return redirect()->route('admin.dashboard');
-})->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']);
+})->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'role:admin'])->name('dashboard');
+
+// Contact Routes
+Route::post('/contact/submit', [ContactController::class, 'submit'])
+    ->name('contact.submit')
+    ->middleware(['web']);
+
+// Contact Page Form Route
+Route::post('/contact-page/submit', [ContactPageController::class, 'submit'])
+    ->name('contact.page.submit')
+    ->middleware(['web']);
+
+// Investment Routes
+Route::post('/investment/submit', [InvestmentController::class, 'submit'])
+    ->name('investment.submit')
+    ->middleware(['web']);
+
+// Start Project Route
+Route::post('/start-project/submit', [StartProjectController::class, 'submit'])
+    ->name('start.project.submit')
+    ->middleware(['web']);

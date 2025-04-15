@@ -47,7 +47,16 @@ class PortfolioController extends Controller
         ]);
 
         // Generate slug from title
-        $validated['slug'] = Str::slug($validated['title']);
+        $baseSlug = Str::slug($validated['title']);
+        $slug = $baseSlug;
+
+        // Check if slug already exists and append a suffix if needed
+        $count = 1;
+        while (Portfolio::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $count++;
+        }
+
+        $validated['slug'] = $slug;
 
         // Convert technologies array to JSON for storage
         if (!empty($validated['technologies'])) {
@@ -94,9 +103,18 @@ class PortfolioController extends Controller
             'is_featured' => 'boolean'
         ]);
 
-        // Generate slug from title if title changed
+        // Generate slug from title if title has changed
         if ($portfolio->title !== $validated['title']) {
-            $validated['slug'] = Str::slug($validated['title']);
+            $baseSlug = Str::slug($validated['title']);
+            $slug = $baseSlug;
+
+            // Check if slug already exists (excluding the current portfolio) and append a suffix if needed
+            $count = 1;
+            while (Portfolio::where('slug', $slug)->where('id', '!=', $portfolio->id)->exists()) {
+                $slug = $baseSlug . '-' . $count++;
+            }
+
+            $validated['slug'] = $slug;
         }
 
         // Convert technologies array to JSON for storage

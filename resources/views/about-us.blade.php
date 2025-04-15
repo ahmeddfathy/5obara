@@ -2,6 +2,20 @@
 
 @section('title', 'من نحن')
 
+@section('meta')
+<meta name="description" content="مكتب خبراء للاستشارات الاقتصادية - مكتب معتمد في تنفيذ دراسات جدوى اقتصادية مفصلة للمشروعات داخل المملكة العربية السعودية. خبرة تزيد عن 7 سنوات في الأسواق الخليجية والإقليمية.">
+<meta name="keywords" content="من نحن، عن الشركة، خبراء، استشارات اقتصادية، دراسات جدوى، مكتب معتمد، مشاريع استثمارية، المملكة العربية السعودية">
+<meta property="og:title" content="من نحن | خبراء للاستشارات الاقتصادية">
+<meta property="og:description" content="مكتب معتمد في تنفيذ دراسات جدوى اقتصادية مفصلة للمشروعات بخبرة تزيد عن 7 سنوات في الأسواق الخليجية والإقليمية.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:image" content="{{ asset('assets/img/about/Afniah_Logo-1-1024x809.png') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="من نحن | خبراء للاستشارات الاقتصادية">
+<meta name="twitter:description" content="مكتب معتمد في تنفيذ دراسات جدوى اقتصادية مفصلة للمشروعات بخبرة تزيد عن 7 سنوات في الأسواق الخليجية والإقليمية.">
+<meta name="twitter:image" content="{{ asset('assets/img/about/Afniah_Logo-1-1024x809.png') }}">
+@endsection
+
 @section('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/about.css') }}">
 @endsection
@@ -44,57 +58,6 @@
                     </div>
                     <div class="partner-card">
                         <img src="{{ asset('assets/img/about/bashory-logo.jpeg') }}" alt="شركة باشوري">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="contact-form">
-                        <h3>تواصل معنا</h3>
-                        <form>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="الاسم الكامل">
-                            </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control" placeholder="البريد الإلكتروني">
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control">
-                                    <option value="">نوع الخدمة</option>
-                                    <option>دراسة جدوى</option>
-                                    <option>استشارة</option>
-                                    <option>تمويل مشروع</option>
-                                    <option>خدمات أخرى</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <textarea class="form-control" rows="4" placeholder="رسالتك"></textarea>
-                            </div>
-                            <button type="submit" class="btn-submit">إرسال الرسالة</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="contact-info">
-                        <h3>معلومات التواصل</h3>
-                        <ul>
-                            <li><i class="far fa-envelope"></i> info@5obara.com</li>
-                            <li><i class="fas fa-phone"></i> +966569617288</li>
-                            <li><i class="fab fa-whatsapp"></i> +966569617288</li>
-                            <li><i class="fas fa-map-marker-alt"></i> جدة، المملكة العربية السعودية</li>
-                        </ul>
-                        <div class="social-links">
-                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
                     </div>
                 </div>
             </div>

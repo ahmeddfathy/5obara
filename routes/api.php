@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PortfolioController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\InvestmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +35,9 @@ Route::get('/post-categories', [PostController::class, 'categories']);
 // Investment opportunities routes
 Route::get('/opportunities', [PostController::class, 'opportunities']);
 Route::get('/featured-investments', [PostController::class, 'featuredInvestments']);
+
+// Contact route
+Route::post('/contact', [ContactController::class, 'submit'])->middleware(['throttle:20,1']);
+
+// Investment form submission route
+Route::post('/investments', [InvestmentController::class, 'submit'])->middleware(['throttle:10,10']);

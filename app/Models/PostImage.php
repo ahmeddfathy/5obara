@@ -9,6 +9,11 @@ class PostImage extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'post_id',
         'image_path',

@@ -1,6 +1,20 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
-@section('title', 'سابقة الأعمال')
+@section('title', 'أعمالنا السابقة')
+
+@section('meta')
+<meta name="description" content="استعرض أبرز الأعمال والمشاريع السابقة التي نفذها فريق خبراء للاستشارات الاقتصادية. مشاريع ناجحة في مختلف القطاعات الاقتصادية.">
+<meta name="keywords" content="أعمالنا، مشاريع سابقة، بورتفوليو، خبراء، استشارات اقتصادية، دراسات جدوى، قصص نجاح، مشاريع ناجحة، المملكة العربية السعودية">
+<meta property="og:title" content="أعمالنا السابقة | خبراء للاستشارات الاقتصادية">
+<meta property="og:description" content="استعرض أبرز الأعمال والمشاريع السابقة التي نفذها فريق خبراء للاستشارات الاقتصادية. مشاريع ناجحة في مختلف القطاعات الاقتصادية.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:image" content="{{ asset('assets/img/home/logo.jpg') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="أعمالنا السابقة | خبراء للاستشارات الاقتصادية">
+<meta name="twitter:description" content="استعرض أبرز الأعمال والمشاريع السابقة التي نفذها فريق خبراء للاستشارات الاقتصادية. مشاريع ناجحة في مختلف القطاعات الاقتصادية.">
+<meta name="twitter:image" content="{{ asset('assets/img/home/logo.jpg') }}">
+@endsection
 
 @section('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/portfolio.css') }}">
@@ -44,9 +58,6 @@
                         <div class="portfolio-content">
                             <div class="portfolio-meta">
                                 <span class="portfolio-category">{{ $portfolio->project_type }}</span>
-                                @if($portfolio->completion_date)
-                                <span class="portfolio-date">{{ $portfolio->completion_date->format('M Y') }}</span>
-                                @endif
                             </div>
                             <h3>{{ $portfolio->title }}</h3>
                             <p class="portfolio-description">{{ Str::limit($portfolio->description, 100) }}</p>
@@ -58,82 +69,12 @@
                 </div>
                 @endforeach
             @endif
-
-            <!-- Fallback static examples if no dynamic content -->
-            @if($portfolios->isEmpty())
-            <!-- Project 1 -->
-            <div class="col-lg-4 col-md-6">
-                <div class="portfolio-item">
-                    <div class="portfolio-img-container">
-                        <img src="{{ asset('assets/img/portfolio/project1.jpg') }}" alt="مشروع ورشة تصليح سيارات">
-                    </div>
-                    <div class="portfolio-content">
-                        <div class="portfolio-meta">
-                            <span class="portfolio-category">دراسة جدوى</span>
-                            <span class="portfolio-date">2023</span>
-                        </div>
-                        <h3>دراسة جدوى مشروع ورشة تصليح سيارات</h3>
-                        <p class="portfolio-description">دراسة جدوى مفصلة لإنشاء ورشة تصليح سيارات متكاملة مع تحليل السوق والمنافسين.</p>
-                        <div class="portfolio-buttons">
-                            <a href="{{ route('contact') }}" class="contact-btn">تواصل معنا <i class="fas fa-envelope"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Project 2 -->
-            <div class="col-lg-4 col-md-6">
-                <div class="portfolio-item">
-                    <div class="portfolio-img-container">
-                        <img src="{{ asset('assets/img/portfolio/project2.jpg') }}" alt="مشروع مصنع مصابيح">
-                    </div>
-                    <div class="portfolio-content">
-                        <div class="portfolio-meta">
-                            <span class="portfolio-category">دراسة جدوى</span>
-                            <span class="portfolio-date">2023</span>
-                        </div>
-                        <h3>دراسة جدوى مشروع مصنع مصابيح Led</h3>
-                        <p class="portfolio-description">دراسة جدوى شاملة لمصنع إنتاج مصابيح LED مع دراسة تكاليف الإنتاج والتسويق.</p>
-                        <div class="portfolio-buttons">
-                            <a href="{{ route('contact') }}" class="contact-btn">تواصل معنا <i class="fas fa-envelope"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Project 3 -->
-            <div class="col-lg-4 col-md-6">
-                <div class="portfolio-item">
-                    <div class="portfolio-img-container">
-                        <img src="{{ asset('assets/img/portfolio/project3.jpg') }}" alt="مشروع مصنع مظلات">
-                    </div>
-                    <div class="portfolio-content">
-                        <div class="portfolio-meta">
-                            <span class="portfolio-category">دراسة جدوى</span>
-                            <span class="portfolio-date">2023</span>
-                        </div>
-                        <h3>دراسة جدوى مشروع مصنع مظلات</h3>
-                        <p class="portfolio-description">دراسة جدوى تفصيلية لمشروع مصنع مظلات مع تحليل للسوق المحلي وخطة التسويق.</p>
-                        <div class="portfolio-buttons">
-                            <a href="{{ route('contact') }}" class="contact-btn">تواصل معنا <i class="fas fa-envelope"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
         </div>
 
         <!-- Pagination -->
         @if(!$portfolios->isEmpty())
         <div class="pagination-wrapper">
             {{ $portfolios->links() }}
-        </div>
-        @else
-        <div class="pagination-wrapper">
-            <ul class="pagination">
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">التالي</a></li>
-            </ul>
         </div>
         @endif
     </div>

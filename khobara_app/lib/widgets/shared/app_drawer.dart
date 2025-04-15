@@ -17,21 +17,26 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(color: AppColors.primary),
+            decoration: BoxDecoration(color: Colors.white),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'الخبراء للاستشارات',
-                  style: TextStyle(color: Colors.white, fontSize: 24),
+                // Logo image
+                Image.asset(
+                  'assets/images/logo.jpg',
+                  height: 80,
+                  fit: BoxFit.contain,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
                 Text(
                   'الخبراء للتطوير والاستشارات',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.8),
+                    color: AppColors.primary,
                     fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),

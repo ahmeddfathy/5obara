@@ -1,0 +1,73 @@
+/* Top Bar Styles */
+.top-bar {
+    background-color: #00b5ad;
+    padding: 10px 0;
+    color: white;
+}
+
+.contact-links {
+    display: flex;
+    align-items: center;
+}
+
+.contact-links a {
+    color: white;
+    margin-right: 25px;
+    font-size: 15px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.contact-links a:hover {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+}
+
+.contact-links .login-link {
+    font-weight: 600;
+}
+
+.social-links {
+    display: flex;
+    margin-left: 60px;
+}
+
+.social-links a {
+    color: white;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+.social-links a:hover {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+}
+
+@media (max-width: 767px) {
+    .contact-links {
+        justify-content: center;
+        margin: 8px 0;
+    }
+
+    .col-12 {
+        text-align: center !important;
+    }
+
+    .contact-links a {
+        margin: 0 12px;
+        font-size: 14px;
+    }
+
+    .social-links {
+        margin-left: 0;
+        justify-content: center;
+        margin-bottom: 12px;
+    }
+
+    .social-links a {
+        font-size: 16px;
+        margin: 0 15px;
+    }
+}

@@ -2,8 +2,7 @@
 
 @section('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/admin/posts.css') }}">
-<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
 <style>
     #editor {
         height: 300px;
@@ -33,6 +32,18 @@
         max-width: 100%;
         margin: 1em 0;
     }
+    /* Validation styles */
+    .is-invalid {
+        border-color: #dc3545 !important;
+    }
+    .text-danger {
+        color: #dc3545 !important;
+        font-size: 0.875rem;
+    }
+    .quill-error .ql-toolbar,
+    .quill-error .ql-container {
+        border-color: #dc3545 !important;
+    }
 </style>
 @endsection
 
@@ -57,15 +68,18 @@
                         <div class="form-group mb-4">
                             <label for="title" class="form-label">Title</label>
                             <input type="text" name="title" id="title" value="{{ old('title') }}" required
-                                class="form-control">
+                                class="form-control @error('title') is-invalid @enderror">
+                            <x-form-error name="title" />
                         </div>
 
                         <div class="form-group mb-4">
                             <label for="editor" class="form-label">Content</label>
-                            <div id="editor">{!! old('content') !!}</div>
+                            <div id="editor" class="@error('content') quill-error @enderror">{!! old('content') !!}</div>
                             <input type="hidden" name="content" id="content-input">
+                            <x-form-error name="content" />
                             <div class="text-sm text-muted mt-2">
                                 <p>يمكنك إدراج الصور في أي مكان من المحتوى. استخدم الأزرار في شريط الأدوات لإضافة صور ومحتوى منسق.</p>
+                                <p class="text-warning"><i class="fas fa-info-circle me-1"></i> ملاحظة: الصور التي تم تحميلها ثم حذفها من المحرر سيتم حذفها تلقائيًا عند حفظ المقال.</p>
                             </div>
                         </div>
                     </div>
@@ -77,29 +91,41 @@
                                 <img src="" id="featured-image-preview" class="img-fluid rounded">
                             </div>
                             <input type="file" name="featured_image" id="featured_image" accept="image/*"
-                                class="form-control" onchange="previewFeaturedImage(this)">
+                                class="form-control @error('featured_image') is-invalid @enderror" onchange="previewFeaturedImage(this)">
+                            @error('featured_image')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                             <p class="text-sm text-muted mt-1">هذه الصورة ستظهر في الصفحة الرئيسية وفي أعلى صفحة المقال</p>
                         </div>
 
                         <div class="form-group mb-4">
-                            <label for="investment_amount" class="form-label">Investment Amount</label>
+                            <label for="investment_amount" class="form-label">Investment Amount (SAR)</label>
                             <div class="input-group">
-                                <span class="input-group-text">$</span>
+                                <span class="input-group-text">ر.س</span>
                                 <input type="number" name="investment_amount" id="investment_amount" value="{{ old('investment_amount') }}"
-                                    class="form-control">
+                                    class="form-control @error('investment_amount') is-invalid @enderror">
                             </div>
+                            @error('investment_amount')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="form-group mb-4">
                             <label for="investment_type" class="form-label">Investment Type</label>
                             <input type="text" name="investment_type" id="investment_type" value="{{ old('investment_type') }}"
-                                class="form-control">
+                                class="form-control @error('investment_type') is-invalid @enderror">
+                            @error('investment_type')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="form-group mb-4">
                             <label for="location" class="form-label">Location</label>
                             <input type="text" name="location" id="location" value="{{ old('location') }}"
-                                class="form-control">
+                                class="form-control @error('location') is-invalid @enderror">
+                            @error('location')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="form-group mb-4">
@@ -119,7 +145,13 @@
                     <div class="admin-card-body">
                         <div class="border border-dashed border-gray-300 p-4 rounded">
                             <input type="file" name="gallery_images[]" id="gallery_images" accept="image/*" multiple
-                                class="form-control" onchange="previewGalleryImages(this)">
+                                class="form-control @error('gallery_images') is-invalid @enderror" onchange="previewGalleryImages(this)">
+                            @error('gallery_images')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
+                            @error('gallery_images.*')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                             <p class="text-sm text-muted mt-1">You can select multiple images at once</p>
 
                             <div id="gallery-preview" class="gallery-preview mt-4"></div>
@@ -137,14 +169,20 @@
                                 <div class="form-group mb-4">
                                     <label for="tags" class="form-label">Tags (comma-separated)</label>
                                     <input type="text" name="tags" id="tags" value="{{ old('tags') }}"
-                                        class="form-control">
+                                        class="form-control @error('tags') is-invalid @enderror">
+                                    @error('tags')
+                                        <div class="text-danger mt-2">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-4">
                                     <label for="investment_highlights" class="form-label">Investment Highlights (comma-separated)</label>
                                     <input type="text" name="investment_highlights" id="investment_highlights" value="{{ old('investment_highlights') }}"
-                                        class="form-control">
+                                        class="form-control @error('investment_highlights') is-invalid @enderror">
+                                    @error('investment_highlights')
+                                        <div class="text-danger mt-2">{{ $message }}</div>
+                                    @enderror
                                     <p class="text-sm text-muted mt-1">For example: "Guaranteed ROI of 15%,Premium location,Fully managed property"</p>
                                 </div>
                             </div>
@@ -153,7 +191,10 @@
                         <div class="form-group mb-4">
                             <label for="contact_info" class="form-label">Contact Information</label>
                             <textarea name="contact_info" id="contact_info" rows="3"
-                                class="form-control">{{ old('contact_info') }}</textarea>
+                                class="form-control @error('contact_info') is-invalid @enderror">{{ old('contact_info') }}</textarea>
+                            @error('contact_info')
+                                <div class="text-danger mt-2">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -162,7 +203,7 @@
                     <button type="submit" class="admin-btn admin-btn-primary">
                         <i class="fas fa-save me-2"></i>Create Post
                     </button>
-                    <a href="{{ route('admin.posts.index') }}" class="admin-btn admin-btn-outline">
+                    <a href="{{ route('admin.posts.index') }}" class="admin-btn admin-btn-outline" id="cancel-btn">
                         <i class="fas fa-arrow-left me-2"></i>Back to List
                     </a>
                 </div>
@@ -173,6 +214,51 @@
 @endsection
 
 @section('scripts')
+<!-- Add MutationObserver polyfill for deprecated DOM mutation events -->
+<script>
+// Polyfill for DOMNodeInserted event used in Quill
+if (typeof window !== 'undefined' && window.MutationObserver) {
+    // Store original addEventListener
+    const originalAddEventListener = EventTarget.prototype.addEventListener;
+
+    // Override addEventListener to intercept DOMNodeInserted
+    EventTarget.prototype.addEventListener = function(type, listener, options) {
+        if (type === 'DOMNodeInserted') {
+            // Create a MutationObserver instead
+            const target = this;
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        // Simulate the event for added nodes
+                        mutation.addedNodes.forEach(node => {
+                            const event = new Event('DOMNodeInserted');
+                            event.target = node;
+                            event.relatedNode = target;
+                            listener.call(target, event);
+                        });
+                    }
+                });
+            });
+
+            // Start observing with configuration
+            observer.observe(target, { childList: true, subtree: true });
+
+            // Store observer in a WeakMap to manage its lifecycle
+            if (!this._mutationObservers) {
+                this._mutationObservers = new WeakMap();
+            }
+            this._mutationObservers.set(listener, observer);
+
+            // Don't call the original method
+            return;
+        }
+
+        // Call original method for all other event types
+        return originalAddEventListener.call(this, type, listener, options);
+    };
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
 <script>
     var quill;
     var initialContent = `{!! old('content') !!}`;
@@ -327,6 +413,18 @@
             if (e.target.classList.contains('gallery-remove')) {
                 e.target.closest('.gallery-item-container').remove();
             }
+        });
+
+        // Add event listener to cancel button to clear temporary images
+        document.getElementById('cancel-btn').addEventListener('click', function(e) {
+            // Clear temp images using AJAX call
+            fetch('/admin/posts/clear-temp-images', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            }).catch(error => console.error('Error clearing temporary images:', error));
         });
     });
 </script>

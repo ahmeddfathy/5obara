@@ -1,9 +1,141 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../utils/constants.dart';
+import '../../services/api_service.dart';
 
-class Footer extends StatelessWidget {
+class Footer extends StatefulWidget {
   const Footer({super.key});
+
+  @override
+  State<Footer> createState() => _FooterState();
+}
+
+class _FooterState extends State<Footer> {
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _cityController = TextEditingController();
+  final _messageController = TextEditingController();
+  String _inquiryType = 'استفسار';
+  bool _isLoading = false;
+  String? _errorMessage;
+  String? _successMessage;
+
+  final ApiService _apiService = ApiService();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    _cityController.dispose();
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+        _successMessage = null;
+      });
+
+      try {
+        final response = await _apiService.submitContactForm(
+          name: _nameController.text,
+          phone: _phoneController.text,
+          inquiryType: _inquiryType,
+          city: _cityController.text,
+          message: _messageController.text,
+        );
+
+        setState(() {
+          _isLoading = false;
+
+          if (response['success']) {
+            _successMessage = response['message'];
+            // Clear form on success
+            _nameController.clear();
+            _phoneController.clear();
+            _cityController.clear();
+            _messageController.clear();
+            _inquiryType = 'استفسار';
+          } else {
+            _errorMessage = response['message'];
+
+            // إذا كان هناك retry_after، نعرض عداد تنازلي
+            if (response.containsKey('retry_after')) {
+              _showRateLimitDialog(response['retry_after'] as int);
+            }
+          }
+        });
+      } catch (e) {
+        setState(() {
+          _isLoading = false;
+          _errorMessage = 'حدث خطأ غير متوقع. الرجاء المحاولة مرة أخرى لاحقاً.';
+        });
+      }
+    }
+  }
+
+  // عرض مربع حوار مع عداد تنازلي عند تجاوز حد الطلبات
+  void _showRateLimitDialog(int seconds) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        int remainingSeconds = seconds;
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            // بدء العداد التنازلي
+            Future.delayed(const Duration(seconds: 1), () {
+              if (remainingSeconds > 0 && Navigator.canPop(context)) {
+                setState(() {
+                  remainingSeconds--;
+                });
+
+                // إغلاق مربع الحوار عند انتهاء الوقت
+                if (remainingSeconds <= 0) {
+                  Navigator.pop(context);
+                }
+              }
+            });
+
+            return AlertDialog(
+              title: const Text('تم تجاوز عدد المحاولات المسموح به'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'لقد تجاوزت الحد المسموح من المحاولات. يرجى الانتظار قبل إعادة المحاولة.',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'يمكنك المحاولة مرة أخرى بعد: $remainingSeconds ثانية',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('إغلاق'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,93 +296,110 @@ class Footer extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'أرسل لنا رسالة',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.w600,
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'أرسل لنا رسالة',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 20),
-          _buildFormField('الاسم'),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    _buildFormField('مثال: 544902462'),
-                    Positioned(
-                      left: 10,
-                      top: 12,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFEEEEEE),
-                          borderRadius: BorderRadius.circular(3),
+            const SizedBox(height: 20),
+            if (_errorMessage != null)
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade100,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  _errorMessage!,
+                  style: const TextStyle(
+                      color: Colors.red, fontWeight: FontWeight.bold),
+                ),
+              ),
+            if (_successMessage != null)
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade100,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  _successMessage!,
+                  style: const TextStyle(
+                      color: Colors.green, fontWeight: FontWeight.bold),
+                ),
+              ),
+            if (_errorMessage != null || _successMessage != null)
+              const SizedBox(height: 16),
+            _buildNameField(),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildPhoneField(),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildInquiryTypeDropdown(),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            _buildCityField(),
+            const SizedBox(height: 12),
+            _buildMessageField(),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _isLoading ? null : _submitForm,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: AppColors.primary,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  elevation: 4,
+                ),
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(AppColors.primary),
+                          strokeWidth: 2,
                         ),
-                        child: const Text(
-                          '+966',
-                          style: TextStyle(
-                            color: Color(0xFF555555),
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      )
+                    : const Text(
+                        'إرسال',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _buildDropdownField(),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          _buildFormField('بأي مدينة مشروعك؟'),
-          const SizedBox(height: 12),
-          _buildFormField('الرسالة', maxLines: 4),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: AppColors.primary,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                elevation: 4,
-              ),
-              child: const Text(
-                'إرسال',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildFormField(String hint, {int maxLines = 1}) {
-    return TextField(
-      maxLines: maxLines,
+  Widget _buildNameField() {
+    return TextFormField(
+      controller: _nameController,
       decoration: InputDecoration(
-        hintText: hint,
+        hintText: 'الاسم',
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(
@@ -262,10 +411,68 @@ class Footer extends StatelessWidget {
           vertical: 8,
         ),
       ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'الرجاء إدخال الاسم';
+        }
+        return null;
+      },
     );
   }
 
-  Widget _buildDropdownField() {
+  Widget _buildPhoneField() {
+    return Stack(
+      children: [
+        TextFormField(
+          controller: _phoneController,
+          keyboardType: TextInputType.phone,
+          decoration: InputDecoration(
+            hintText: 'مثال: 544902462',
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 60, // Space for the prefix
+              vertical: 8,
+            ),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'الرجاء إدخال رقم الهاتف';
+            }
+            if (!RegExp(r'^[0-9\+\-\(\)\s]+$').hasMatch(value)) {
+              return 'رقم هاتف غير صالح';
+            }
+            return null;
+          },
+        ),
+        Positioned(
+          left: 10,
+          top: 12,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: const Color(0xFFEEEEEE),
+              borderRadius: BorderRadius.circular(3),
+            ),
+            child: const Text(
+              '+966',
+              style: TextStyle(
+                color: Color(0xFF555555),
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInquiryTypeDropdown() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
@@ -274,16 +481,74 @@ class Footer extends StatelessWidget {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          value: 'استشارة',
+          value: _inquiryType,
           isExpanded: true,
           items: const [
-            DropdownMenuItem(value: 'استشارة', child: Text('استشارة')),
             DropdownMenuItem(value: 'استفسار', child: Text('استفسار')),
+            DropdownMenuItem(value: 'شكوى', child: Text('شكوى')),
+            DropdownMenuItem(value: 'اقتراح', child: Text('اقتراح')),
             DropdownMenuItem(value: 'أخرى', child: Text('أخرى')),
           ],
-          onChanged: (value) {},
+          onChanged: (value) {
+            if (value != null) {
+              setState(() {
+                _inquiryType = value;
+              });
+            }
+          },
         ),
       ),
+    );
+  }
+
+  Widget _buildCityField() {
+    return TextFormField(
+      controller: _cityController,
+      decoration: InputDecoration(
+        hintText: 'بأي مدينة مشروعك؟',
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 8,
+        ),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'الرجاء إدخال المدينة';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildMessageField() {
+    return TextFormField(
+      controller: _messageController,
+      maxLines: 4,
+      decoration: InputDecoration(
+        hintText: 'الرسالة',
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 8,
+        ),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'الرجاء إدخال الرسالة';
+        }
+        return null;
+      },
     );
   }
 

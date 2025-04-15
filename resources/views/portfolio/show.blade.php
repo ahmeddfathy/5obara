@@ -1,6 +1,21 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('title', $portfolio->title)
+
+@section('meta')
+<meta name="description" content="{{ Str::limit(strip_tags($portfolio->description), 160) }}">
+<meta name="keywords" content="{{ $portfolio->title }}، {{ $portfolio->category }}، مشاريع ناجحة، خبراء، استشارات اقتصادية، دراسة جدوى، قصة نجاح، المملكة العربية السعودية">
+<meta property="og:title" content="{{ $portfolio->title }} | خبراء للاستشارات الاقتصادية">
+<meta property="og:description" content="{{ Str::limit(strip_tags($portfolio->description), 160) }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ url()->current() }}">
+<meta property="og:image" content="{{ $portfolio->featured_image ? asset('storage/' . $portfolio->featured_image) : asset('assets/img/portfolio/default-project.jpg') }}">
+<meta property="article:section" content="{{ $portfolio->category ?? 'مشاريع' }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $portfolio->title }} | خبراء للاستشارات الاقتصادية">
+<meta name="twitter:description" content="{{ Str::limit(strip_tags($portfolio->description), 160) }}">
+<meta name="twitter:image" content="{{ $portfolio->featured_image ? asset('storage/' . $portfolio->featured_image) : asset('assets/img/portfolio/default-project.jpg') }}">
+@endsection
 
 @section('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/portfolio.css') }}">
@@ -29,14 +44,6 @@
     .project-meta i {
         margin-left: 5px;
         color: #00b5ad;
-    }
-    .technologies span {
-        display: inline-block;
-        padding: 5px 10px;
-        margin: 5px;
-        background-color: #e9e9e9;
-        border-radius: 20px;
-        font-size: 13px;
     }
     .share-buttons {
         margin-top: 30px;
@@ -95,14 +102,6 @@
                     @if($portfolio->project_type)
                     <span><i class="fas fa-tag"></i> {{ $portfolio->project_type }}</span>
                     @endif
-
-                    @if($portfolio->client_name)
-                    <span><i class="fas fa-user"></i> {{ $portfolio->client_name }}</span>
-                    @endif
-
-                    @if($portfolio->completion_date)
-                    <span><i class="fas fa-calendar"></i> {{ $portfolio->completion_date->format('F Y') }}</span>
-                    @endif
                 </div>
 
                 <div class="project-description">
@@ -111,31 +110,6 @@
                         {!! nl2br(e($portfolio->description)) !!}
                     </div>
                 </div>
-
-                @php
-                    $techs = $portfolio->technologies;
-                    if (is_string($techs)) {
-                        $techs = json_decode($techs) ?: [];
-                    }
-                @endphp
-                @if(!empty($techs) && (is_array($techs) || is_object($techs)))
-                <div class="technologies mt-4">
-                    <h3>التقنيات المستخدمة</h3>
-                    <div>
-                        @foreach($techs as $technology)
-                        <span>{{ $technology }}</span>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-
-                @if($portfolio->project_url)
-                <div class="mt-4">
-                    <a href="{{ $portfolio->project_url }}" target="_blank" class="btn btn-primary">
-                        <i class="fas fa-external-link-alt"></i> عرض المشروع
-                    </a>
-                </div>
-                @endif
 
                 <div class="share-buttons">
                     <h4>شارك هذا المشروع</h4>

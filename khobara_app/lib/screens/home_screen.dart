@@ -82,9 +82,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   const TopBar(),
                   const Header(),
                   const HeroSection(),
+                  const WhyChooseUsSection(),
                   const ServicesSection(),
                   const ServicesOfferingSection(),
-                  const WhyChooseUsSection(),
+
                   const StatsSection(),
                   const InvestSection(),
                   const Footer(),

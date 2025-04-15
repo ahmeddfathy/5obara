@@ -16,7 +16,7 @@
 
     <!-- Statistics Cards -->
     <div class="row mb-4">
-        <div class="col-md-3 portfolio-fade-in portfolio-fade-in-1">
+        <div class="col-md-4 portfolio-fade-in portfolio-fade-in-1">
             <div class="portfolio-stats-card">
                 <div class="portfolio-stats-icon primary">
                     <i class="fas fa-briefcase"></i>
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 portfolio-fade-in portfolio-fade-in-2">
+        <div class="col-md-4 portfolio-fade-in portfolio-fade-in-2">
             <div class="portfolio-stats-card">
                 <div class="portfolio-stats-icon success">
                     <i class="fas fa-star"></i>
@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 portfolio-fade-in portfolio-fade-in-3">
+        <div class="col-md-4 portfolio-fade-in portfolio-fade-in-3">
             <div class="portfolio-stats-card">
                 <div class="portfolio-stats-icon info">
                     <i class="fas fa-calendar"></i>
@@ -46,17 +46,6 @@
                 <div class="portfolio-stats-content">
                     <p class="portfolio-stats-value">{{ $portfolios->where('created_at', '>=', now()->startOfMonth())->count() }}</p>
                     <h3 class="portfolio-stats-title">هذا الشهر</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 portfolio-fade-in portfolio-fade-in-4">
-            <div class="portfolio-stats-card">
-                <div class="portfolio-stats-icon neutral">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-                <div class="portfolio-stats-content">
-                    <p class="portfolio-stats-value">{{ $portfolios->whereNotNull('client_name')->count() }}</p>
-                    <h3 class="portfolio-stats-title">العملاء</h3>
                 </div>
             </div>
         </div>
@@ -80,11 +69,9 @@
                 <table class="table portfolio-table" id="portfolioTable">
                     <thead>
                         <tr>
-                            <th width="35%"><i class="fas fa-file-alt"></i> عنوان المشروع</th>
-                            <th width="15%"><i class="fas fa-user"></i> العميل</th>
-                            <th width="15%"><i class="fas fa-tag"></i> النوع</th>
-                            <th width="15%"><i class="fas fa-calendar-alt"></i> تاريخ الإنجاز</th>
-                            <th width="10%" class="text-center"><i class="fas fa-star"></i> مميز</th>
+                            <th width="50%"><i class="fas fa-file-alt"></i> عنوان المشروع</th>
+                            <th width="25%"><i class="fas fa-tag"></i> النوع</th>
+                            <th width="15%" class="text-center"><i class="fas fa-star"></i> مميز</th>
                             <th width="10%" class="text-center"><i class="fas fa-cogs"></i> الإجراءات</th>
                         </tr>
                     </thead>
@@ -109,27 +96,9 @@
                                 </div>
                             </td>
                             <td>
-                                @if($portfolio->client_name)
-                                    <span class="portfolio-badge portfolio-badge-neutral">
-                                        <i class="fas fa-building"></i> {{ $portfolio->client_name }}
-                                    </span>
-                                @else
-                                    <span class="text-muted">—</span>
-                                @endif
-                            </td>
-                            <td>
                                 <span class="portfolio-badge portfolio-badge-info">
                                     <i class="fas fa-tag"></i> {{ $portfolio->project_type }}
                                 </span>
-                            </td>
-                            <td>
-                                @if($portfolio->completion_date)
-                                    <span class="portfolio-badge portfolio-badge-success">
-                                        <i class="fas fa-calendar-check"></i> {{ $portfolio->completion_date->format('M Y') }}
-                                    </span>
-                                @else
-                                    <span class="text-muted">—</span>
-                                @endif
                             </td>
                             <td class="text-center">
                                 @if($portfolio->is_featured)
@@ -164,7 +133,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-5">
+                            <td colspan="4" class="text-center py-5">
                                 <div class="empty-state">
                                     <div class="empty-state-icon">
                                         <i class="fas fa-folder-open"></i>
@@ -284,10 +253,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         tableRows.forEach(row => {
             const title = row.querySelector('.portfolio-item-title-text').textContent.toLowerCase();
-            const client = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-            const type = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            const type = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
 
-            if (title.includes(searchTerm) || client.includes(searchTerm) || type.includes(searchTerm)) {
+            if (title.includes(searchTerm) || type.includes(searchTerm)) {
                 row.style.display = '';
                 foundResults = true;
             } else {

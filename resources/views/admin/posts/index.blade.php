@@ -60,7 +60,7 @@
                     </div>
                     <div class="admin-stats-content">
                         <h3 class="admin-stats-title">Investments</h3>
-                        <p class="admin-stats-value">${{ number_format($posts->sum('investment_amount')) }}</p>
+                        <p class="admin-stats-value">{{ number_format($posts->sum('investment_amount')) }} ر.س</p>
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                             </td>
                             <td>
                                 @if($post->investment_amount)
-                                    <span class="investment-amount">${{ number_format($post->investment_amount) }}</span>
+                                    <span class="investment-amount">{{ number_format($post->investment_amount) }} ر.س</span>
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif

@@ -6,6 +6,7 @@
     <title>إنشاء حساب جديد - خبراء</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="{{ asset('assets/css/auth.css') }}" rel="stylesheet">
     <style>
         .register-container {
@@ -61,6 +62,8 @@
                     </ul>
                 </div>
             @endif
+
+            <h4 class="text-center mb-4 fw-bold text-dark">انضم إلينا الآن!</h4>
 
             <form method="POST" action="{{ route('register') }}" class="needs-validation" novalidate>
                 @csrf
@@ -122,15 +125,20 @@
                     </div>
                 @endif
 
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <button type="submit" class="btn custom-btn w-100 mb-3">
+                    <i class="fas fa-user-plus me-2"></i>إنشاء حساب
+                </button>
+
+                <div class="d-flex justify-content-center">
                     <a href="{{ route('login') }}" class="text-decoration-none">
                         <i class="fas fa-sign-in-alt me-2"></i>لديك حساب بالفعل؟
                     </a>
-                    <button type="submit" class="btn custom-btn">
-                        <i class="fas fa-user-plus me-2"></i>إنشاء حساب
-                    </button>
                 </div>
             </form>
+
+            <div class="mt-4 text-center">
+                <small class="text-muted">بالتسجيل، أنت توافق على تلقي إشعارات من منصة خبراء</small>
+            </div>
         </div>
     </div>
 
@@ -165,6 +173,45 @@
                 }, false)
             })
         })()
+
+        // Add ripple effect to button
+        document.querySelector('.custom-btn').addEventListener('click', function(e) {
+            if (!this.contains(e.target)) return;
+
+            let x = e.clientX - e.target.offsetLeft;
+            let y = e.clientY - e.target.offsetTop;
+
+            let ripple = document.createElement('span');
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+
+            this.appendChild(ripple);
+
+            setTimeout(() => {
+                ripple.remove();
+            }, 1000);
+        });
+
+        // Password strength indicator
+        document.getElementById('password').addEventListener('input', function() {
+            // Basic password strength check
+            const password = this.value;
+            const passwordStrength = calculatePasswordStrength(password);
+
+            // You could add a visual indicator here if desired
+        });
+
+        function calculatePasswordStrength(password) {
+            let strength = 0;
+
+            if (password.length >= 8) strength += 1;
+            if (password.match(/[a-z]+/)) strength += 1;
+            if (password.match(/[A-Z]+/)) strength += 1;
+            if (password.match(/[0-9]+/)) strength += 1;
+            if (password.match(/[^a-zA-Z0-9]+/)) strength += 1;
+
+            return strength;
+        }
     </script>
 </body>
 </html>

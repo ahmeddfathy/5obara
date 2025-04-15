@@ -2,11 +2,53 @@
 
 @section('title', 'الموقع الرسمي')
 
+@section('meta')
+<meta name="description" content="خبراء - مكتب متخصص في تقديم دراسات الجدوى الاقتصادية المفصلة للمشاريع. نساعدك في الحصول على تمويل وتنفيذ مشروعك بنجاح.">
+<meta name="keywords" content="دراسات جدوى, مشاريع استثمارية, تمويل مشاريع, خطوط إنتاج, استشارات اقتصادية, رؤية 2030">
+<meta name="author" content="خبراء للاستشارات الاقتصادية">
+<meta property="og:title" content="خبراء - دراسات جدوى اقتصادية مفصلة للمشاريع">
+<meta property="og:description" content="نقدم دراسات جدوى اقتصادية معتمدة ومفصلة لمشروعك، ونساعدك في الحصول على التمويل وتنفيذ المشروع بنجاح.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ url('/') }}">
+<meta property="og:image" content="{{ asset('assets/img/home/1184773-1.png') }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="خبراء - دراسات جدوى اقتصادية مفصلة للمشاريع">
+<meta name="twitter:description" content="نقدم دراسات جدوى اقتصادية معتمدة ومفصلة لمشروعك، ونساعدك في الحصول على التمويل وتنفيذ المشروع بنجاح.">
+<meta name="twitter:image" content="{{ asset('assets/img/home/1184773-1.png') }}">
+@endsection
+
 @section('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+<style>
+    .toast-message {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        max-width: 350px;
+        padding: 15px 20px;
+        border-radius: 5px;
+        background-color: #d4edda;
+        color: #155724;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        opacity: 1;
+        transition: opacity 0.5s;
+        direction: rtl;
+    }
+    .toast-message.hide {
+        opacity: 0;
+    }
+</style>
 @endsection
 
 @section('content')
+@if(session('investment_success'))
+    <div class="toast-message" id="successToast">
+        <i class="fas fa-check-circle ml-2"></i>
+        {{ session('investment_success') }}
+    </div>
+@endif
+
 <!-- Hero Section -->
 <section class="hero">
     <div class="container">
@@ -14,11 +56,11 @@
             <h5>اطلب الآن</h5>
             <h1>دراسة جدوى اقتصادية مفصلة لمشروعك</h1>
             <div class="hero-btns">
-                <a href="#" class="btn-green">
+                <a href="{{ route('contact') }}" class="btn-green">
                     <i class="fa fa-file-alt"></i>
                     اطلب دراسة جدوى الان
                 </a>
-                <a href="#" class="btn-whatsapp">
+                <a href="https://wa.me/966569617288" class="btn-whatsapp">
                     <i class="fab fa-whatsapp"></i>
                     تواصل معنا عبر الواتساب
                 </a>
@@ -236,31 +278,35 @@
         <h2 class="section-title">استثمر معنا</h2>
         <p class="invest-desc">يمكنك إدخال رأس المال وسنتواصل معك بأفضل المشاريع - أطلب الان دراسة جدوى اقتصادية مفصلة لمشروعك</p>
         <div class="invest-form">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="الاسم">
+            <form action="{{ route('investment.submit') }}" method="POST">
+                @csrf
+                <input type="hidden" name="form_type" value="استثمار">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" name="name" class="form-control" placeholder="الاسم" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="email" name="email" class="form-control" placeholder="البريد الإلكتروني" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="tel" name="phone" class="form-control" placeholder="رقم الهاتف" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" name="investment_amount" class="form-control" placeholder="المبلغ المراد استثماره" required>
+                        </div>
+                    </div>
+                    <div class="col-12 text-center">
+                        <button type="submit" class="submit-btn">طلب استثمار</button>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <input type="email" class="form-control" placeholder="البريد الإلكتروني">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <input type="tel" class="form-control" placeholder="رقم الهاتف">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="المبلغ المراد استثماره">
-                    </div>
-                </div>
-                <div class="col-12 text-center">
-                    <button type="submit" class="submit-btn">طلب استثمار</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 </section>
@@ -268,4 +314,20 @@
 
 @section('scripts')
 <script src="{{ asset('assets/js/script.js') }}"></script>
+<script src="{{ asset('assets/js/counters.js') }}"></script>
+<script>
+    // Auto hide toast messages after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        const toasts = document.querySelectorAll('.toast-message');
+
+        toasts.forEach(function(toast) {
+            setTimeout(function() {
+                toast.classList.add('hide');
+                setTimeout(function() {
+                    toast.remove();
+                }, 500);
+            }, 5000);
+        });
+    });
+</script>
 @endsection
