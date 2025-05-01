@@ -1,24 +1,28 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
 use App\Http\Controllers\Admin\ImagesController;
 use App\Http\Controllers\InvestmentController;
 use App\Http\Controllers\ContactPageController;
 use App\Http\Controllers\StartProjectController;
+use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\InvestmentOpportunityController;
+use App\Http\Controllers\Admin\InvestmentController as AdminInvestmentController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\InvestmentCategoryController;
 
 Route::get('/', function () {
     return view('index');
 });
 
 // Blog Routes (Frontend - Public)
-Route::get('/blog', [PostController::class, 'index'])->name('blog.index');
-Route::get('/blog/{post:slug}', [PostController::class, 'show'])->name('blog.show');
-Route::get('/investment-opportunities', [PostController::class, 'opportunities'])->name('blog.opportunities');
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{blog:slug}', [BlogController::class, 'show'])->name('blog.show');
 
 // Portfolio Routes (Frontend - Public)
 Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.index');
@@ -70,22 +74,50 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
             ->name('ckeditor.upload')
             ->middleware('permission:manage content');
 
-        // Admin Posts Management
-        Route::resource('posts', AdminPostController::class)
+        // Admin Blogs Management
+        Route::resource('blogs', AdminBlogController::class)
             ->middleware('permission:manage content');
 
-        Route::post('posts/upload-image', [AdminPostController::class, 'uploadImage'])
-            ->name('posts.upload-image')
+        Route::post('blogs/upload-image', [AdminBlogController::class, 'uploadImage'])
+            ->name('blogs.upload-image')
             ->middleware('permission:manage content');
 
         // Admin Portfolio Management
         Route::resource('portfolio', AdminPortfolioController::class)
             ->middleware('permission:manage content');
+
+        // Admin Investment Email Management
+        Route::get('/investment-email', [App\Http\Controllers\Admin\InvestmentEmailController::class, 'index'])
+            ->name('investment.email')
+            ->middleware('permission:manage content');
+
+        Route::post('/investment-email/send', [App\Http\Controllers\Admin\InvestmentEmailController::class, 'send'])
+            ->name('investment.send-email')
+            ->middleware('permission:manage content');
+
+        // Admin Investment Opportunities Management
+        Route::resource('investments', AdminInvestmentController::class)
+            ->middleware('permission:manage content');
+
+        Route::post('investments/upload-image', [AdminInvestmentController::class, 'uploadImage'])
+            ->name('investments.upload-image')
+            ->middleware('permission:manage content');
+
+        // Admin Categories Management
+        Route::resource('categories', CategoryController::class);
+
+        // Investment Categories Routes
+        Route::resource('investment-categories', InvestmentCategoryController::class);
     });
 
 // Special route for clearing temporary images that doesn't follow the admin. prefix pattern
-Route::post('/admin/posts/clear-temp-images', [AdminPostController::class, 'clearTempImages'])
-    ->name('admin.posts.clear-temp-images')
+Route::post('/admin/blogs/clear-temp-images', [AdminBlogController::class, 'clearTempImages'])
+    ->name('admin.blogs.clear-temp-images')
+    ->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'role:admin', 'permission:manage content']);
+
+// Special route for clearing temporary images
+Route::post('/admin/investments/clear-temp-images', [AdminInvestmentController::class, 'clearTempImages'])
+    ->name('admin.investments.clear-temp-images')
     ->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified', 'role:admin', 'permission:manage content']);
 
 // Redirect /dashboard to /admin
@@ -112,3 +144,12 @@ Route::post('/investment/submit', [InvestmentController::class, 'submit'])
 Route::post('/start-project/submit', [StartProjectController::class, 'submit'])
     ->name('start.project.submit')
     ->middleware(['web']);
+
+// Newsletter Subscription Route
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
+    ->name('newsletter.subscribe')
+    ->middleware(['web']);
+
+// Investment Opportunities Routes (Frontend - Public)
+Route::get('/investment-opportunities', [InvestmentOpportunityController::class, 'index'])->name('investments.index');
+Route::get('/investment-opportunities/{investment:slug}', [InvestmentOpportunityController::class, 'show'])->name('investments.show');

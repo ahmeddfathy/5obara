@@ -1,35 +1,30 @@
 /* Modern Authentication Pages Styling */
 :root {
-    --primary-color: #4FD1C5;
-    --primary-hover: #38B2AC;
-    --dark-color: #2B2D42;
-    --light-color: #F8F9FA;
+    --primary-color: #4fd1c5;
+    --primary-hover: #38b2ac;
+    --dark-color: #2b2d42;
+    --light-color: #f8f9fa;
     --danger-color: #ef476f;
     --success-color: #06d6a0;
     --secondary-color: #ff9e00;
-    --accent-color: #63B3ED;
+    --accent-color: #63b3ed;
 }
 
 body {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    background-image: url('../img/auth-bg.svg');
-    background-size: cover;
-    background-attachment: fixed;
+    background-color: #f8f9fa;
     min-height: 100vh;
     display: flex;
     align-items: center;
-    font-family: 'Tajawal', sans-serif;
+    font-family: "Tajawal", sans-serif;
 }
 
 .auth-container {
     max-width: 450px;
     margin: 2rem auto;
     padding: 2.5rem;
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    border-radius: 24px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
     position: relative;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -37,17 +32,17 @@ body {
 
 .auth-container:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
 .auth-container::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 7px;
-    background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+    height: 5px;
+    background-color: var(--primary-color);
 }
 
 .logo {
@@ -63,7 +58,7 @@ body {
 }
 
 .form-control {
-    border: 2px solid #E2E8F0;
+    border: 2px solid #e2e8f0;
     padding: 0.75rem 1rem;
     border-radius: 12px;
     font-size: 1rem;
@@ -84,7 +79,7 @@ body {
 }
 
 .custom-btn {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    background-color: var(--primary-color);
     border: none;
     color: white;
     padding: 0.75rem 1.5rem;
@@ -92,13 +87,13 @@ body {
     font-weight: 600;
     transition: all 0.3s ease;
     position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(79, 209, 197, 0.3);
+    box-shadow: 0 4px 10px rgba(79, 209, 197, 0.2);
 }
 
 .custom-btn:hover {
+    background-color: var(--primary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(79, 209, 197, 0.4);
+    box-shadow: 0 6px 15px rgba(79, 209, 197, 0.3);
     color: white;
 }
 
@@ -106,40 +101,11 @@ body {
     transform: translateY(0);
 }
 
-.custom-btn::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.5);
-    opacity: 0;
-    border-radius: 100%;
-    transform: scale(1, 1) translate(-50%);
-    transform-origin: 50% 50%;
-}
-
-.custom-btn:hover::after {
-    animation: ripple 1s ease-out;
-}
-
-@keyframes ripple {
-    0% {
-        transform: scale(0, 0);
-        opacity: 0.5;
-    }
-    100% {
-        transform: scale(20, 20);
-        opacity: 0;
-    }
-}
-
 .form-check-input {
     width: 1.2em;
     height: 1.2em;
     border-radius: 6px;
-    border: 2px solid #CBD5E0;
+    border: 2px solid #cbd5e0;
     cursor: pointer;
 }
 
@@ -149,39 +115,44 @@ body {
 }
 
 .form-check-label {
-    color: #4A5568;
+    color: #4a5568;
     padding-right: 0.5rem;
     cursor: pointer;
 }
 
 .error-message {
-    background-color: #FFF5F5;
-    border: 1px solid #FED7D7;
+    background-color: #fff5f5;
+    border: 1px solid #fed7d7;
     color: var(--danger-color);
     padding: 1rem;
     border-radius: 12px;
     margin-bottom: 1.5rem;
-    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 @keyframes shake {
-    10%, 90% {
+    10%,
+    90% {
         transform: translate3d(-1px, 0, 0);
     }
-    20%, 80% {
+    20%,
+    80% {
         transform: translate3d(2px, 0, 0);
     }
-    30%, 50%, 70% {
+    30%,
+    50%,
+    70% {
         transform: translate3d(-4px, 0, 0);
     }
-    40%, 60% {
+    40%,
+    60% {
         transform: translate3d(4px, 0, 0);
     }
 }
 
 .success-message {
-    background-color: #F0FFF4;
-    border: 1px solid #C6F6D5;
+    background-color: #f0fff4;
+    border: 1px solid #c6f6d5;
     color: var(--success-color);
     padding: 1rem;
     border-radius: 12px;
@@ -229,7 +200,6 @@ body {
 
 .form-control:focus + .form-label,
 .form-control:not(:placeholder-shown) + .form-label {
-    transform: translateY(-1.5rem) scale(0.85);
     color: var(--primary-color);
 }
 
@@ -251,7 +221,7 @@ body {
 }
 
 .loading::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 20px;
     height: 20px;
@@ -271,22 +241,22 @@ body {
 
 /* Terms Checkbox Styling */
 .terms-container {
-    background-color: #F7FAFC;
+    background-color: #f7fafc;
     padding: 1.2rem;
     border-radius: 12px;
     margin: 1.5rem 0;
-    border: 1px solid #E2E8F0;
+    border: 1px solid #e2e8f0;
     transition: all 0.3s ease;
 }
 
 .terms-container:hover {
-    background-color: #EDF2F7;
-    border-color: #CBD5E0;
+    background-color: #edf2f7;
+    border-color: #cbd5e0;
 }
 
 .terms-text {
     font-size: 0.9rem;
-    color: #4A5568;
+    color: #4a5568;
 }
 
 .terms-text a {
@@ -320,13 +290,26 @@ body {
 
 .divider::before,
 .divider::after {
-    content: '';
+    content: "";
     flex: 1;
-    border-bottom: 1px solid #E2E8F0;
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .divider span {
     padding: 0 1rem;
     color: #718096;
     font-size: 0.9rem;
+}
+
+/* Register specific styles */
+.register-container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.form-floating > .form-control:focus ~ label {
+    color: var(--primary-color);
 }

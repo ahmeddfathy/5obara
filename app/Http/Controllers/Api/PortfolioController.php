@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class PortfolioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function index()
     {
         $portfolios = Portfolio::orderBy('completion_date', 'desc')
@@ -30,15 +25,8 @@ class PortfolioController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Portfolio  $portfolio
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function show(Portfolio $portfolio)
     {
-        // Make sure technologies is always an array, even if it's null or a JSON string
         if ($portfolio->technologies) {
             if (is_string($portfolio->technologies)) {
                 $portfolio->technologies = json_decode($portfolio->technologies) ?: [];
@@ -53,11 +41,6 @@ class PortfolioController extends Controller
         ]);
     }
 
-    /**
-     * Return categories/types of portfolio items
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function categories()
     {
         $categories = Portfolio::select('type')

@@ -1,6 +1,7 @@
 /* Hero Section */
 .hero-section {
-    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('../img/prtofolio/photo-1454165804606-c3d57bc86b40.jfif');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)),
+        url("../img/prtofolio/photo-1454165804606-c3d57bc86b40.jfif");
     background-size: cover;
     background-position: center;
     height: 600px;
@@ -10,41 +11,146 @@
     text-align: center;
     color: #fff;
     margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
 }
 
 .hero-content h1 {
     font-size: 48px;
-    font-weight: 600;
-    margin-bottom: 0;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    animation: fadeInDown 1s ease-out;
+}
+
+.hero-content p {
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Portfolio Section */
 .portfolio-section {
-    padding: 60px 0;
+    padding: 80px 0;
+    background-color: #f8f9fa;
+    position: relative;
+}
+
+.portfolio-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 181, 173, 0.05),
+        transparent
+    );
+    z-index: 1;
+}
+
+.portfolio-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.section-title h2 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.section-title p {
+    color: #666;
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.section-title::after {
+    content: "";
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(135deg, #00b5ad 0%, #008c85 100%);
+    margin: 20px auto 0;
+    border-radius: 2px;
 }
 
 .portfolio-item {
     position: relative;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    margin-bottom: 35px;
-    height: auto;
+    margin-bottom: 0;
+    height: 100%;
     background-color: #fff;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     opacity: 1;
     transform: translateY(0);
+    border: 1px solid rgba(0, 181, 173, 0.1);
+    display: flex;
+    flex-direction: column;
 }
 
 .portfolio-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 15px 35px rgba(0, 181, 173, 0.15);
 }
 
 .portfolio-img-container {
     position: relative;
     width: 100%;
-    height: 220px;
+    height: 250px;
     overflow: hidden;
 }
 
@@ -60,7 +166,7 @@
 }
 
 .portfolio-content {
-    padding: 25px;
+    padding: 28px;
 }
 
 .portfolio-content h3 {
@@ -68,15 +174,16 @@
     font-size: 20px;
     margin-top: 0;
     margin-bottom: 12px;
-    font-weight: 600;
+    font-weight: 700;
     text-align: right;
+    line-height: 1.4;
 }
 
 .portfolio-description {
     color: #666;
     font-size: 15px;
     margin-bottom: 20px;
-    line-height: 1.6;
+    line-height: 1.7;
     text-align: right;
     height: 48px;
     overflow: hidden;
@@ -110,49 +217,54 @@
 .portfolio-date {
     color: #999;
     font-size: 13px;
-    margin-left: 12px;
+    margin-right: 12px;
 }
 
-.view-btn, .contact-btn {
+.view-btn,
+.contact-btn {
     background-color: transparent;
     border: 2px solid #00b5ad;
     color: #00b5ad;
     padding: 8px 20px;
     border-radius: 6px;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 14px;
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
 }
 
-.view-btn:hover, .contact-btn:hover {
-    background-color: #00b5ad;
+.view-btn:hover,
+.contact-btn:hover {
+    background: linear-gradient(135deg, #00b5ad 0%, #008c85 100%);
     color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 181, 173, 0.25);
+    transform: translateY(-2px);
 }
 
-.view-btn i, .contact-btn i {
+.view-btn i,
+.contact-btn i {
     margin-left: 8px;
 }
 
 /* Pagination */
 .pagination-wrapper {
-    margin-top: 50px;
+    margin-top: 60px;
     display: flex;
     justify-content: center;
 }
 
 .pagination {
     display: flex;
-    gap: 5px;
+    gap: 8px;
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .pagination li {
-    margin: 0 2px;
+    margin: 0;
 }
 
 .pagination li a,
@@ -160,37 +272,41 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     background-color: #fff;
-    border: 1px solid #eee;
-    color: #333;
+    border: 1px solid rgba(0, 181, 173, 0.15);
+    color: #555;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 12px;
     transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 15px;
 }
 
 .pagination li.active a {
-    background-color: #00b5ad;
-    border-color: #00b5ad;
+    background: linear-gradient(135deg, #00b5ad 0%, #008c85 100%);
+    border-color: transparent;
     color: #fff;
     font-weight: 600;
+    box-shadow: 0 5px 15px rgba(0, 181, 173, 0.25);
 }
 
 .pagination li a:hover {
-    background-color: #f8f9fa;
-    border-color: #00b5ad;
+    background-color: rgba(0, 181, 173, 0.05);
+    border-color: rgba(0, 181, 173, 0.3);
     color: #00b5ad;
+    transform: translateY(-2px);
 }
 
 /* Chat Buttons */
 .chat-btns {
     position: fixed;
-    bottom: 20px;
-    left: 20px;
+    bottom: 30px;
+    left: 30px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
     z-index: 100;
 }
 
@@ -203,20 +319,21 @@
     justify-content: center;
     color: #fff;
     font-size: 24px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
 }
 
 .chat-btn.whatsapp {
-    background-color: #25D366;
+    background-color: #25d366;
 }
 
 .chat-btn.messenger {
-    background-color: #0084FF;
+    background-color: #0084ff;
 }
 
 .chat-btn:hover {
     transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsive Styles */
@@ -226,13 +343,22 @@
     }
 
     .portfolio-img-container {
-        height: 200px;
+        height: 220px;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    .section-title h2 {
+        font-size: 32px;
     }
 }
 
 @media (max-width: 768px) {
     .hero-section {
-        height: 250px;
+        height: 400px;
     }
 
     .hero-content h1 {
@@ -240,7 +366,7 @@
     }
 
     .portfolio-img-container {
-        height: 180px;
+        height: 200px;
     }
 
     .portfolio-content {
@@ -250,15 +376,28 @@
     .portfolio-content h3 {
         font-size: 18px;
     }
+
+    .portfolio-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+    }
+
+    .section-title h2 {
+        font-size: 28px;
+    }
 }
 
 @media (max-width: 576px) {
+    .hero-section {
+        height: 300px;
+    }
+
     .hero-content h1 {
         font-size: 32px;
     }
 
     .portfolio-img-container {
-        height: 160px;
+        height: 180px;
     }
 
     .portfolio-content {
@@ -274,8 +413,22 @@
         margin-bottom: 15px;
     }
 
-    .view-btn, .contact-btn {
+    .view-btn,
+    .contact-btn {
         padding: 6px 12px;
         font-size: 13px;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .section-title h2 {
+        font-size: 24px;
+    }
+
+    .portfolio-section {
+        padding: 60px 0;
     }
 }

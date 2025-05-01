@@ -15,44 +15,39 @@ class InvestmentController extends Controller
     public function submit(Request $request)
     {
         try {
-            // التحقق من محدودية عدد الطلبات من نفس IP
             $ipAddress = $request->ip();
-            if (RateLimiter::tooManyAttempts('investment-form:'.$ipAddress, 3)) {
-                $seconds = RateLimiter::availableIn('investment-form:'.$ipAddress);
+            if (RateLimiter::tooManyAttempts('investment-form:' . $ipAddress, 3)) {
+                $seconds = RateLimiter::availableIn('investment-form:' . $ipAddress);
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'لقد أرسلت العديد من الطلبات. الرجاء المحاولة مرة أخرى بعد '.$seconds.' ثانية.',
+                    'message' => 'لقد أرسلت العديد من الطلبات. الرجاء المحاولة مرة أخرى بعد ' . $seconds . ' ثانية.',
                     'retry_after' => $seconds
                 ], 429);
             }
 
-            RateLimiter::hit('investment-form:'.$ipAddress, 60*30); // 30 دقيقة
+            RateLimiter::hit('investment-form:' . $ipAddress, 60 * 30);
 
-            // التحقق من honeypot (فخ للروبوتات)
             if ($request->filled('website_field')) {
-                // وهمي - إذا تم ملؤه فهو على الأرجح روبوت
                 return response()->json([
                     'status' => 'success',
                     'message' => 'تم إرسال طلب الاستثمار بنجاح! سنتواصل معك قريباً.'
-                ], 200); // نعيد رسالة نجاح مزيفة
+                ], 200);
             }
 
-            // وقت التقديم لمنع الإرسال التلقائي
             $submissionTimestamp = $request->input('_timestamp', 0);
-            if (time() - $submissionTimestamp < 3) { // أقل من 3 ثوانٍ = مشبوه
+            if (time() - $submissionTimestamp < 3) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'الرجاء التأكد من إدخال جميع البيانات بشكل صحيح قبل الإرسال.'
                 ], 400);
             }
 
-            // Validate the form data
             $validator = Validator::make($request->all(), [
-                'name' => 'required|string|max:255|regex:/^[\p{L}\s\-\.\']+$/u', // يسمح فقط بالأحرف والمسافات
+                'name' => 'required|string|max:255|regex:/^[\p{L}\s\-\.\']+$/u',
                 'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:20|regex:/^[0-9\+\-\(\)\s]+$/', // يسمح فقط بأرقام الهاتف الصالحة
+                'phone' => 'required|string|max:20|regex:/^[0-9\+\-\(\)\s]+$/',
                 'investment_amount' => 'required|string|max:255',
-                'form_type' => 'required|string|in:استثمار,شراكة,تمويل', // قيم محددة فقط
+                'form_type' => 'required|string|in:استثمار,شراكة,تمويل',
             ]);
 
             if ($validator->fails()) {
@@ -65,18 +60,15 @@ class InvestmentController extends Controller
 
             $validated = $validator->validated();
 
-            // تنظيف البيانات المدخلة
             $validated['name'] = strip_tags($validated['name']);
             $validated['email'] = filter_var($validated['email'], FILTER_SANITIZE_EMAIL);
             $validated['investment_amount'] = strip_tags($validated['investment_amount']);
 
-            // Add source information to the form data
             $validated['source'] = 'API فورم الاستثمار';
             $validated['source_url'] = $request->header('Referer', 'API');
             $validated['submission_time'] = now()->format('Y-m-d H:i:s');
-            $validated['ip_address'] = $request->ip(); // تخزين IP للتتبع الأمني
+            $validated['ip_address'] = $request->ip();
 
-            // تسجيل طلب الاستثمار للمراجعة الأمنية
             Log::info('Investment form API submission', [
                 'name' => $validated['name'],
                 'email' => $validated['email'],
@@ -84,25 +76,20 @@ class InvestmentController extends Controller
                 'ip' => $ipAddress
             ]);
 
-            // Send the email
             Mail::to('ahmeddfathy087@gmail.com')
                 ->send(new InvestmentFormMail($validated));
 
-            // Return success response
             return response()->json([
                 'status' => 'success',
                 'message' => 'تم إرسال طلب الاستثمار بنجاح! سنتواصل معك قريباً.'
             ], 200);
-
         } catch (\Exception $e) {
-            // تسجيل الخطأ
             Log::error('Error in investment form API submission', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
                 'ip' => $request->ip()
             ]);
 
-            // إعادة استجابة خطأ
             return response()->json([
                 'status' => 'error',
                 'message' => 'حدث خطأ أثناء إرسال طلب الاستثمار. يرجى المحاولة مرة أخرى لاحقاً.'

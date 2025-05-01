@@ -24,6 +24,9 @@
                             <a class="nav-link {{ request()->routeIs('portfolio.index') ? 'active' : '' }}" href="{{ route('portfolio.index') }}">أعمالنا</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('investments.index') || request()->routeIs('investments.show') ? 'active' : '' }}" href="{{ route('investments.index') }}">الفرص الاستثمارية</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}" href="{{ route('blog.index') }}">المدونة</a>
                         </li>
                         <li class="nav-item">

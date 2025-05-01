@@ -1,10 +1,10 @@
 <!-- Footer -->
 <footer>
     @if(session('success'))
-        <div class="toast-message" id="successToast">
-            <i class="fas fa-check-circle ml-2"></i>
-            {{ session('success') }}
-        </div>
+    <div class="toast-message" id="successToast">
+        <i class="fas fa-check-circle ml-2"></i>
+        {{ session('success') }}
+    </div>
     @endif
 
     <div class="container-fluid">
@@ -71,9 +71,11 @@
             <!-- Contact Form Section -->
             <div class="col-md-6">
                 <div class="contact-form-container">
-                    <h3 class="footer-form-heading">أرسل لنا رسالة</h3>
+
                     <div class="footer-form">
+
                         <form class="contact-form" action="{{ route('contact.submit') }}" method="POST">
+                            <h3 class="footer-form-heading">أرسل لنا رسالة</h3>
                             @csrf
                             <input type="hidden" name="email_to" value="ahmeddfathy087@gmail.com">
                             <div class="form-row">
@@ -97,7 +99,7 @@
                                 <textarea name="message" class="form-control" rows="4" placeholder="الرسالة" required></textarea>
                             </div>
                             <div class="form-row">
-                                <button type="submit" class="btn-submit">إرسال</button>
+                                <button type="submit" class="footer-btn-submit">إرسال</button>
                             </div>
                         </form>
                     </div>

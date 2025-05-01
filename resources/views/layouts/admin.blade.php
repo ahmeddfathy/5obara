@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,9 +16,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}?t={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/categories.css') }}?t={{ time() }}">
     @yield('styles')
 </head>
+
 <body class="admin-panel">
     <div class="admin-sidebar" id="adminSidebar">
         <div class="sidebar-header">
@@ -48,11 +51,19 @@
                 </a>
             </li>
             <li class="sidebar-menu-item">
-                <a href="{{ route('admin.posts.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.blogs.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}">
                     <div class="sidebar-menu-icon">
                         <i class="fas fa-newspaper"></i>
-                        </div>
+                    </div>
                     <span class="sidebar-menu-text">المقالات</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="{{ route('admin.categories.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                    <div class="sidebar-menu-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <span class="sidebar-menu-text">تصنيفات المقالات</span>
                 </a>
             </li>
             <li class="sidebar-menu-item">
@@ -61,6 +72,30 @@
                         <i class="fas fa-briefcase"></i>
                     </div>
                     <span class="sidebar-menu-text">المشاريع</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="{{ route('admin.investments.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.investments.*') ? 'active' : '' }}">
+                    <div class="sidebar-menu-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <span class="sidebar-menu-text">الفرص الاستثمارية</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="{{ route('admin.investment-categories.index') }}" class="sidebar-menu-link {{ request()->routeIs('admin.investment-categories.*') ? 'active' : '' }}">
+                    <div class="sidebar-menu-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <span class="sidebar-menu-text">تصنيفات الفرص الاستثمارية</span>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="{{ route('admin.investment.email') }}" class="sidebar-menu-link {{ request()->routeIs('admin.investment.*') && !request()->routeIs('admin.investments.*') ? 'active' : '' }}">
+                    <div class="sidebar-menu-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <span class="sidebar-menu-text">ارسال الفرص الاستثمارية</span>
                 </a>
             </li>
 
@@ -99,10 +134,10 @@
                     <a href="{{ route('admin.dashboard') }}" class="admin-quick-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <i class="fas fa-tachometer-alt"></i> لوحة التحكم
                     </a>
-                    <a href="{{ route('admin.posts.index') }}" class="admin-quick-link {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.blogs.index') }}" class="admin-quick-link {{ request()->routeIs('admin.blogs.*') ? 'active' : '' }}">
                         <i class="fas fa-newspaper"></i> المقالات
                     </a>
-                    <a href="{{ route('admin.posts.create') }}" class="admin-quick-link {{ request()->routeIs('admin.posts.create') ? 'active' : '' }}">
+                    <a href="{{ route('admin.blogs.create') }}" class="admin-quick-link {{ request()->routeIs('admin.blogs.create') ? 'active' : '' }}">
                         <i class="fas fa-plus-circle"></i> إضافة مقال
                     </a>
                     <a href="{{ route('admin.portfolio.index') }}" class="admin-quick-link {{ request()->routeIs('admin.portfolio.*') ? 'active' : '' }}">
@@ -111,7 +146,15 @@
                     <a href="{{ route('admin.portfolio.create') }}" class="admin-quick-link {{ request()->routeIs('admin.portfolio.create') ? 'active' : '' }}">
                         <i class="fas fa-plus-square"></i> إضافة مشروع
                     </a>
-
+                    <a href="{{ route('admin.investments.index') }}" class="admin-quick-link {{ request()->routeIs('admin.investments.*') ? 'active' : '' }}">
+                        <i class="fas fa-chart-line"></i> الفرص الاستثمارية
+                    </a>
+                    <a href="{{ route('admin.investments.create') }}" class="admin-quick-link {{ request()->routeIs('admin.investments.create') ? 'active' : '' }}">
+                        <i class="fas fa-plus-circle"></i> إضافة فرصة استثمارية
+                    </a>
+                    <a href="{{ route('admin.investment.email') }}" class="admin-quick-link {{ request()->routeIs('admin.investment.*') && !request()->routeIs('admin.investments.*') ? 'active' : '' }}">
+                        <i class="fas fa-envelope"></i> ارسال الفرص الاستثمارية
+                    </a>
                 </div>
                 <div class="admin-user-menu">
                     <div class="admin-user-info">
@@ -125,7 +168,9 @@
                         <li><a class="dropdown-item" href="/user/profile"><i class="fas fa-user me-2"></i> الملف الشخصي</a></li>
                         <li><a class="dropdown-item" href="#"><i class="fas fa-bell me-2"></i> الإشعارات</a></li>
                         <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> الإعدادات</a></li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}" id="navLogoutForm">
                                 @csrf
@@ -145,30 +190,30 @@
         <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
             {{ session('success') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
+        </div>
+        @endif
 
         @if (session('error'))
         <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
             {{ session('error') }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                @endif
+        </div>
+        @endif
 
         @if ($errors->any())
         <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
             <h5 class="alert-heading">يرجى تصحيح الأخطاء التالية:</h5>
             <ul class="mb-0">
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                <li>{{ $error }}</li>
                 @endforeach
             </ul>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         @endif
 
-                @yield('content')
-            </div>
+        @yield('content')
+    </div>
 
     <!-- JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -197,4 +242,5 @@
     </script>
     @yield('scripts')
 </body>
+
 </html>

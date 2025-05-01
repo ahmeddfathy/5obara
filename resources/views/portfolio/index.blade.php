@@ -17,7 +17,7 @@
 @endsection
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/portfolio.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/portfolio.css') }}?t={{ time() }}">
 @endsection
 
 @section('content')
@@ -32,44 +32,45 @@
 
 <!-- Portfolio Grid -->
 <section class="portfolio-section">
-    <div class="container">
-        <div class="row g-4">
-            @if($portfolios->isEmpty())
-            <div class="col-12">
-                <div class="text-center py-5">
-                    <div class="mb-4">
-                        <i class="fas fa-folder-open fa-3x text-muted"></i>
+    <div class="portfolio-container">
+        <div class="section-title">
+            <h2>سابقة الأعمال</h2>
+            <p>تصفح مجموعة متنوعة من مشاريعنا الناجحة في مختلف القطاعات</p>
+        </div>
+
+        @if($portfolios->isEmpty())
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="fas fa-folder-open fa-3x text-muted"></i>
+            </div>
+            <p class="text-muted fs-5 mb-3">لا توجد أعمال متاحة حالياً</p>
+            <p class="text-muted">تابعنا قريباً حيث نقوم بإضافة مشاريع جديدة باستمرار.</p>
+        </div>
+        @else
+        <div class="portfolio-grid">
+            @foreach($portfolios as $portfolio)
+            <div class="portfolio-item">
+                <div class="portfolio-img-container">
+                    @if($portfolio->image)
+                    <img src="{{ asset('storage/' . $portfolio->image) }}" alt="{{ $portfolio->title }}">
+                    @else
+                    <img src="{{ asset('assets/img/portfolio/default-project.jpg') }}" alt="{{ $portfolio->title }}">
+                    @endif
+                </div>
+                <div class="portfolio-content">
+                    <div class="portfolio-meta">
+                        <span class="portfolio-category">{{ $portfolio->project_type }}</span>
                     </div>
-                    <p class="text-muted fs-5 mb-3">لا توجد أعمال متاحة حالياً</p>
-                    <p class="text-muted">تابعنا قريباً حيث نقوم بإضافة مشاريع جديدة باستمرار.</p>
+                    <h3>{{ $portfolio->title }}</h3>
+                    <p class="portfolio-description">{{ Str::limit($portfolio->description, 100) }}</p>
+                    <div class="portfolio-buttons">
+                        <a href="{{ route('portfolio.show', $portfolio->slug) }}" class="view-btn">عرض التفاصيل <i class="fas fa-arrow-left"></i></a>
+                    </div>
                 </div>
             </div>
-            @else
-                @foreach($portfolios as $portfolio)
-                <div class="col-lg-4 col-md-6">
-                    <div class="portfolio-item">
-                        <div class="portfolio-img-container">
-                            @if($portfolio->image)
-                            <img src="{{ asset('storage/' . $portfolio->image) }}" alt="{{ $portfolio->title }}">
-                            @else
-                            <img src="{{ asset('assets/img/portfolio/default-project.jpg') }}" alt="{{ $portfolio->title }}">
-                            @endif
-                        </div>
-                        <div class="portfolio-content">
-                            <div class="portfolio-meta">
-                                <span class="portfolio-category">{{ $portfolio->project_type }}</span>
-                            </div>
-                            <h3>{{ $portfolio->title }}</h3>
-                            <p class="portfolio-description">{{ Str::limit($portfolio->description, 100) }}</p>
-                            <div class="portfolio-buttons">
-                                <a href="{{ route('portfolio.show', $portfolio->slug) }}" class="view-btn">عرض التفاصيل <i class="fas fa-arrow-left"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            @endif
+            @endforeach
         </div>
+        @endif
 
         <!-- Pagination -->
         @if(!$portfolios->isEmpty())
@@ -91,5 +92,5 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('assets/js/portfolio.js') }}"></script>
+<script src="{{ asset('assets/js/portfolio.js') }}?t={{ time() }}"></script>
 @endsection

@@ -1,27 +1,27 @@
 @extends('layouts.main')
 
-@section('title', $post->title)
+@section('title', $blog->title)
 
 @section('meta')
-<meta name="description" content="{{ Str::limit(strip_tags($post->content), 160) }}">
-<meta name="keywords" content="فرص استثمارية، {{ $post->title }}، استثمار، مشاريع استثمارية، خبراء، استشارات اقتصادية، {{ $post->investment_type ?? 'دراسة جدوى' }}، المملكة العربية السعودية">
-<meta property="og:title" content="{{ $post->title }} | خبراء للاستشارات الاقتصادية">
-<meta property="og:description" content="{{ Str::limit(strip_tags($post->content), 160) }}">
+<meta name="description" content="{{ Str::limit(strip_tags($blog->content), 160) }}">
+<meta name="keywords" content="مقالات اقتصادية، {{ $blog->title }}، خبراء، استشارات اقتصادية، {{ $blog->blog_type ?? 'دراسات اقتصادية' }}، المملكة العربية السعودية">
+<meta property="og:title" content="{{ $blog->title }} | خبراء للاستشارات الاقتصادية">
+<meta property="og:description" content="{{ Str::limit(strip_tags($blog->content), 160) }}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="{{ url()->current() }}">
-<meta property="og:image" content="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : asset('assets/img/blog/default-post.jpg') }}">
-@if($post->published_at)
-<meta property="article:published_time" content="{{ $post->published_at->toIso8601String() }}">
+<meta property="og:image" content="{{ $blog->featured_image ? asset('storage/' . $blog->featured_image) : asset('assets/img/blog/default-post.jpg') }}">
+@if($blog->published_at)
+<meta property="article:published_time" content="{{ $blog->published_at->toIso8601String() }}">
 @endif
-<meta property="article:section" content="{{ $post->investment_type ?? 'استثمار' }}">
+<meta property="article:section" content="{{ $blog->blog_type ?? 'مقالات اقتصادية' }}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ $post->title }} | خبراء للاستشارات الاقتصادية">
-<meta name="twitter:description" content="{{ Str::limit(strip_tags($post->content), 160) }}">
-<meta name="twitter:image" content="{{ $post->featured_image ? asset('storage/' . $post->featured_image) : asset('assets/img/blog/default-post.jpg') }}">
+<meta name="twitter:title" content="{{ $blog->title }} | خبراء للاستشارات الاقتصادية">
+<meta name="twitter:description" content="{{ Str::limit(strip_tags($blog->content), 160) }}">
+<meta name="twitter:image" content="{{ $blog->featured_image ? asset('storage/' . $blog->featured_image) : asset('assets/img/blog/default-post.jpg') }}">
 @endsection
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/blog.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/css/blog.css') }}?t={{ time() }}" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
 <style>
     /* Hero Section - Specific to this page */
@@ -31,6 +31,7 @@
         overflow: hidden;
         height: 600px;
     }
+
     .hero-section::before {
         content: '';
         position: absolute;
@@ -41,6 +42,7 @@
         background: rgba(0, 0, 0, 0.5);
         z-index: 1;
     }
+
     .hero-section .featured-image {
         position: absolute;
         top: 0;
@@ -48,7 +50,9 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        object-position: center;
     }
+
     .hero-content {
         position: relative;
         z-index: 2;
@@ -56,18 +60,138 @@
         text-align: center;
         padding: 200px 0;
     }
+
     .hero-content h1 {
         font-size: 2.5rem;
         margin-bottom: 1rem;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
+
     .hero-content p {
         font-size: 1.2rem;
         opacity: 0.9;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
     }
 
+    /* Gallery Section Image Improvements */
+    .gallery-section {
+        margin: 40px 0;
+        position: relative;
+    }
 
+    .gallery-top {
+        height: 500px;
+        width: 100%;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        background-color: #f8f9fa;
+    }
+
+    .gallery-top .swiper-slide {
+        position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .gallery-top .swiper-slide img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .gallery-thumbs {
+        height: 100px;
+        box-sizing: border-box;
+        padding: 10px 0;
+    }
+
+    .gallery-thumbs .swiper-slide {
+        height: 100%;
+        opacity: 0.4;
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .gallery-thumbs .swiper-slide-thumb-active {
+        opacity: 1;
+    }
+
+    .gallery-thumbs .swiper-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    /* Gallery Captions Improvement */
+    .gallery-captions {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .gallery-caption {
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .gallery-caption img {
+        width: 100%;
+        height: 200px;
+        object-fit: contain;
+        background-color: #f8f9fa;
+    }
+
+    /* Blog content image fixes */
+    .blog-detail-content img {
+        max-width: 100%;
+        height: auto !important;
+        object-fit: contain;
+        background-color: #f8f9fa;
+        margin: 20px auto;
+        display: block;
+    }
+
+    /* Media queries for responsive images */
+    @media (max-width: 768px) {
+        .gallery-top {
+            height: 400px;
+        }
+
+        .gallery-thumbs {
+            height: 80px;
+        }
+
+        .gallery-caption img {
+            height: 180px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .gallery-top {
+            height: 300px;
+        }
+
+        .gallery-thumbs {
+            height: 60px;
+        }
+
+        .gallery-caption img {
+            height: 160px;
+        }
+    }
 </style>
 
 @endsection
@@ -75,14 +199,14 @@
 @section('content')
 <!-- Hero Section -->
 <section class="hero-section">
-    @if($post->featured_image)
-        <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}" class="featured-image">
+    @if($blog->featured_image)
+    <img src="{{ asset('storage/' . $blog->featured_image) }}" alt="{{ $blog->title }}" class="featured-image">
     @endif
     <div class="container">
         <div class="hero-content">
-            <h1>{{ $post->title }}</h1>
-            @if($post->investment_type)
-                <p>{{ $post->investment_type }}</p>
+            <h1>{{ $blog->title }}</h1>
+            @if($blog->blog_type)
+            <p>{{ $blog->blog_type }}</p>
             @endif
         </div>
     </div>
@@ -95,68 +219,64 @@
             <!-- Main Content Column -->
             <div class="col-lg-8">
                 <div class="blog-detail-container">
-                    <!-- Investment Highlight Box -->
-            @if($post->investment_amount)
+                    <!-- Post Details Box -->
+                    @if($blog->published_at || $blog->blog_type)
                     <div class="investment-box">
-                        <h3>تفاصيل الاستثمار</h3>
+                        <h3>تفاصيل المقالة</h3>
                         <div class="investment-details">
+                            @if($blog->blog_type)
                             <div class="investment-detail">
-                                <strong>قيمة الاستثمار</strong>
-                                <span>{{ number_format($post->investment_amount) }} ر.س</span>
-                    </div>
-                    @if($post->investment_type)
-                            <div class="investment-detail">
-                                <strong>نوع الاستثمار</strong>
-                                <span>{{ $post->investment_type }}</span>
-                    </div>
-                    @endif
-                    @if($post->location)
-                            <div class="investment-detail">
-                                <strong>الموقع</strong>
-                                <span>{{ $post->location }}</span>
+                                <strong>التصنيف</strong>
+                                <span>{{ $blog->blog_type }}</span>
                             </div>
                             @endif
-                            @if($post->published_at)
+                            @if($blog->published_at)
                             <div class="investment-detail">
                                 <strong>تاريخ النشر</strong>
-                                <span>{{ $post->published_at->format('d M, Y') }}</span>
+                                <span>{{ $blog->published_at->format('d M, Y') }}</span>
+                            </div>
+                            @endif
+                        </div>
                     </div>
                     @endif
-                </div>
-                        <div class="investment-cta">
-                            <a href="#contact" class="investment-button">
-                        تواصل معنا للاستفسار
-                                <i class="fas fa-envelope mr-2"></i>
-                    </a>
-                </div>
-            </div>
-            @endif
-
-
 
                     <!-- Post Content -->
                     <div class="blog-detail-content">
-                            {!! $post->content !!}
+                        {!! $blog->content !!}
                     </div>
 
-                    <!-- Investment Highlights -->
-                    @php
-                        $highlights = $post->investment_highlights;
-                        if (is_string($highlights)) {
-                            $highlights = json_decode($highlights) ?: [];
-                        }
-                    @endphp
-                    @if(!empty($highlights) && (is_array($highlights) || is_object($highlights)))
-                    <div class="investment-box mt-5">
-                        <h3>مميزات الاستثمار</h3>
-                        <ul class="list-unstyled mt-4">
-                            @foreach($highlights as $highlight)
-                            <li class="mb-3 d-flex align-items-start">
-                                <i class="fas fa-check-circle me-2 mt-1 text-success"></i>
-                                <span>{{ $highlight }}</span>
-                            </li>
-                            @endforeach
-                        </ul>
+                    <!-- Gallery Section -->
+                    @if($galleryImages->isNotEmpty())
+                    <div class="gallery-section">
+                        <div class="swiper gallery-top">
+                            <div class="swiper-wrapper">
+                                @foreach($galleryImages as $image)
+                                <div class="swiper-slide">
+                                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="{{ $image->caption ?? $blog->title }}">
+                                    @if($image->caption && $galleryImages->count() > 1)
+                                    <div class="gallery-caption">
+                                        <p>{{ $image->caption }}</p>
+                                    </div>
+                                    @endif
+                                </div>
+                                @endforeach
+                            </div>
+                            @if($galleryImages->count() > 1)
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                            @endif
+                        </div>
+                        @if($galleryImages->count() > 1)
+                        <div class="swiper gallery-thumbs">
+                            <div class="swiper-wrapper">
+                                @foreach($galleryImages as $image)
+                                <div class="swiper-slide">
+                                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="{{ $image->caption ?? $blog->title }}">
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
                     </div>
                     @endif
 
@@ -166,15 +286,15 @@
                         <h3 class="mb-4 fw-bold">معرض الصور</h3>
                         <div class="gallery-captions">
                             @foreach($galleryImages as $index => $image)
-                                @if($image->caption)
-                                <div class="gallery-caption">
-                                    <img src="{{ asset('storage/' . $image->image_path) }}" alt="{{$image->caption}}">
-                                    <div>
-                                        <div class="text-muted small mb-1">صورة {{ $index + 1 }}</div>
-                                        <p class="mb-0">{{ $image->caption }}</p>
-                                    </div>
+                            @if($image->caption)
+                            <div class="gallery-caption">
+                                <img src="{{ asset('storage/' . $image->image_path) }}" alt="{{ $image->caption }}">
+                                <div>
+                                    <div class="text-muted small mb-1">صورة {{ $index + 1 }}</div>
+                                    <p class="mb-0">{{ $image->caption }}</p>
                                 </div>
-                                @endif
+                            </div>
+                            @endif
                             @endforeach
                         </div>
                     </div>
@@ -182,56 +302,56 @@
 
                     <!-- Share Buttons -->
                     <div class="blog-share">
-                        <span class="blog-share-label">شارك هذه الفرصة:</span>
+                        <span class="blog-share-label">شارك هذه المقالة:</span>
                         <div class="blog-share-buttons">
-                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($post->title) }}" target="_blank" class="twitter">
+                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($blog->title) }}" target="_blank" class="twitter">
                                 <i class="fab fa-twitter"></i>
                             </a>
                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}" target="_blank" class="facebook">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
-                            <a href="https://wa.me/?text={{ urlencode($post->title . ' - ' . url()->current()) }}" target="_blank" class="whatsapp">
+                            <a href="https://wa.me/?text={{ urlencode($blog->title . ' - ' . url()->current()) }}" target="_blank" class="whatsapp">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                         </div>
                     </div>
                 </div>
-                </div>
+            </div>
 
             <!-- Sidebar Column -->
             <div class="col-lg-4">
-                    <!-- Contact Information -->
-                    @if($post->contact_info)
+                <!-- Contact Information -->
+                @if($blog->contact_info)
                 <div id="contact" class="blog-detail-container">
                     <h3 class="mb-4 fw-bold">معلومات التواصل</h3>
                     <div class="mb-4">
-                            {!! $post->contact_info !!}
-                        </div>
+                        {!! $blog->contact_info !!}
+                    </div>
 
                     <a href="mailto:info@5obara.com" class="investment-button d-block text-center">
                         <i class="fas fa-envelope me-2"></i>
-                                راسلنا للاستفسار
-                            </a>
-                    </div>
-                    @endif
+                        راسلنا للاستفسار
+                    </a>
+                </div>
+                @endif
 
-                    <!-- Tags -->
-                    @php
-                        $tags = $post->tags;
-                        if (is_string($tags)) {
-                            $tags = json_decode($tags) ?: [];
-                        }
-                    @endphp
-                    @if(!empty($tags) && (is_array($tags) || is_object($tags)))
+                <!-- Tags -->
+                @php
+                $tags = $blog->tags;
+                if (is_string($tags)) {
+                $tags = json_decode($tags) ?: [];
+                }
+                @endphp
+                @if(!empty($tags) && (is_array($tags) || is_object($tags)))
                 <div class="blog-detail-container mb-4">
                     <h3 class="mb-4 fw-bold">الوسوم</h3>
                     <div class="d-flex flex-wrap gap-2">
-                            @foreach($tags as $tag)
+                        @foreach($tags as $tag)
                         <span class="badge bg-light text-dark p-2 rounded-pill">{{ $tag }}</span>
-                            @endforeach
-                        </div>
+                        @endforeach
                     </div>
-                    @endif
+                </div>
+                @endif
 
                 <!-- WhatsApp Contact -->
                 <div class="blog-detail-container">
@@ -242,47 +362,43 @@
                         تواصل عبر الواتساب
                     </a>
                 </div>
-                </div>
             </div>
+        </div>
 
-            <!-- Related Posts -->
+        <!-- Related Posts -->
         <div class="mt-5">
-            <h2 class="text-center fw-bold mb-4">فرص استثمارية مشابهة</h2>
+            <h2 class="text-center fw-bold mb-4">مقالات ذات صلة</h2>
             <div class="row g-4">
-                @foreach($similarPosts as $similarPost)
+                @foreach($similarBlogs as $similarBlog)
                 <div class="col-lg-4 col-md-6">
                     <div class="blog-item">
-                        <div class="blog-img-container">
-                            @if($similarPost->featured_image)
-                                <img src="{{ asset('storage/' . $similarPost->featured_image) }}" alt="{{ $similarPost->title }}">
+                        <div class="blog-img-container" style="background-color: #f8f9fa;">
+                            @if($similarBlog->featured_image)
+                            <img src="{{ asset('storage/' . $similarBlog->featured_image) }}" alt="{{ $similarBlog->title }}" style="object-fit: contain;">
                             @else
-                                <img src="{{ asset('assets/img/blog/default-post.jpg') }}" alt="{{ $similarPost->title }}">
+                            <img src="{{ asset('assets/img/blog/default-post.jpg') }}" alt="{{ $similarBlog->title }}" style="object-fit: contain;">
                             @endif
 
-                            @if($similarPost->investment_amount)
-                                <div class="blog-badge">{{ number_format($similarPost->investment_amount) }} ر.س</div>
-                            @endif
-
-                            @if($similarPost->investment_type)
-                                <div class="blog-type">{{ $similarPost->investment_type }}</div>
+                            @if($similarBlog->blog_type)
+                            <div class="blog-type">{{ $similarBlog->blog_type }}</div>
                             @endif
                         </div>
                         <div class="blog-content">
                             <h3>
-                                <a href="{{ route('blog.show', $similarPost->slug) }}">
-                                    {{ $similarPost->title }}
+                                <a href="{{ route('blog.show', $similarBlog->slug) }}">
+                                    {{ $similarBlog->title }}
                                 </a>
                             </h3>
                             <p class="blog-description">
-                                {{ Str::limit(strip_tags($similarPost->content), 150) }}
+                                {{ Str::limit(strip_tags($similarBlog->content), 150) }}
                             </p>
                             <div class="blog-meta">
                                 <div class="blog-date">
                                     <i class="far fa-calendar-alt"></i>
-                                    {{ $similarPost->published_at->format('Y-m-d') }}
+                                    {{ $similarBlog->published_at->format('Y-m-d') }}
                                 </div>
-                                <a href="{{ route('blog.show', $similarPost->slug) }}" class="read-more">
-                                    عرض التفاصيل
+                                <a href="{{ route('blog.show', $similarBlog->slug) }}" class="read-more">
+                                    اقرأ المزيد
                                     <i class="fas fa-arrow-left"></i>
                                 </a>
                             </div>
@@ -309,6 +425,21 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Check if there's only one gallery image
+        const gallerySlides = document.querySelectorAll('.gallery-top .swiper-slide');
+        const galleryTopElement = document.querySelector('.gallery-top');
+
+        if (gallerySlides.length === 1 && galleryTopElement) {
+            galleryTopElement.classList.add('single-image');
+
+            // Hide navigation arrows for single image
+            const nextButton = document.querySelector('.gallery-top .swiper-button-next');
+            const prevButton = document.querySelector('.gallery-top .swiper-button-prev');
+
+            if (nextButton) nextButton.style.display = 'none';
+            if (prevButton) prevButton.style.display = 'none';
+        }
+
         var galleryThumbs = new Swiper('.gallery-thumbs', {
             spaceBetween: 10,
             slidesPerView: 4,
@@ -324,6 +455,21 @@
             },
             thumbs: {
                 swiper: galleryThumbs
+            },
+            on: {
+                init: function() {
+                    // Alternative approach: add class to wrapper when only one slide
+                    if (this.slides.length === 1) {
+                        this.wrapperEl.classList.add('single-slide');
+
+                        // Hide navigation buttons when initialized with one slide
+                        const nextButton = document.querySelector('.gallery-top .swiper-button-next');
+                        const prevButton = document.querySelector('.gallery-top .swiper-button-prev');
+
+                        if (nextButton) nextButton.style.display = 'none';
+                        if (prevButton) prevButton.style.display = 'none';
+                    }
+                }
             }
         });
 

@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const timer = setInterval(() => {
             current += step;
             if (current >= target) {
-                element.textContent = target;
+                element.textContent = tAarget;
                 clearInterval(timer);
             } else {
                 element.textContent = current;

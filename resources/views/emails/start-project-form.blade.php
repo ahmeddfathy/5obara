@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>طلب مشروع جديد - خبراء</title>
     <meta charset="utf-8">
@@ -12,42 +13,51 @@
             background-color: #f9f9f9;
             direction: rtl;
         }
+
         .container {
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
         }
+
         .header {
-            background-color: #3CBFAE;
+            background-color: #00b5ad;
             padding: 20px;
             text-align: center;
         }
+
         .header h1 {
             color: white;
             margin: 0;
             font-size: 24px;
         }
+
         .content {
             background-color: white;
             padding: 20px;
             border-radius: 0 0 5px 5px;
         }
+
         .footer {
             text-align: center;
             padding: 15px;
             font-size: 12px;
             color: #777;
         }
+
         .data-item {
             margin-bottom: 15px;
         }
+
         .label {
             font-weight: bold;
-            color: #333;
+            color: #00b5ad;
         }
+
         .value {
             color: #000;
         }
+
         .source-info {
             margin-top: 30px;
             padding-top: 15px;
@@ -57,6 +67,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -108,4 +119,5 @@
         </div>
     </div>
 </body>
+
 </html>

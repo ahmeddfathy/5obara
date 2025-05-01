@@ -9,12 +9,6 @@ use Illuminate\Support\Str;
 
 class ImagesController extends Controller
 {
-    /**
-     * Upload an image for CKEditor 5
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function ckeditorUpload(Request $request)
     {
         if (!$request->hasFile('upload')) {
@@ -28,7 +22,6 @@ class ImagesController extends Controller
         try {
             $file = $request->file('upload');
 
-            // التحقق من نوع الملف
             $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
             if (!in_array($file->getMimeType(), $allowedMimeTypes)) {
                 return response()->json([
@@ -38,7 +31,6 @@ class ImagesController extends Controller
                 ], 400);
             }
 
-            // تخزين الملف
             $fileName = Str::random(40) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('posts/content', $fileName, 'public');
 
@@ -55,12 +47,6 @@ class ImagesController extends Controller
         }
     }
 
-    /**
-     * Upload an image for general use
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function upload(Request $request)
     {
         if (!$request->hasFile('file')) {
@@ -74,7 +60,6 @@ class ImagesController extends Controller
         try {
             $file = $request->file('file');
 
-            // التحقق من نوع الملف
             $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
             if (!in_array($file->getMimeType(), $allowedMimeTypes)) {
                 return response()->json([
@@ -84,7 +69,6 @@ class ImagesController extends Controller
                 ], 400);
             }
 
-            // تخزين الملف
             $fileName = Str::random(40) . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('posts/content', $fileName, 'public');
 

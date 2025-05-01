@@ -1,23 +1,23 @@
 @extends('layouts.main')
 
-@section('title', 'المدونة والفرص الاستثمارية')
+@section('title', 'المدونة')
 
 @section('meta')
-<meta name="description" content="اكتشف أحدث المقالات والفرص الاستثمارية من خبراء للاستشارات الاقتصادية. مقالات متخصصة وفرص استثمارية واعدة لمساعدتك في اتخاذ قرارات استثمارية ذكية.">
-<meta name="keywords" content="مدونة اقتصادية، فرص استثمارية، مقالات اقتصادية، استثمار، مشاريع استثمارية، نصائح استثمارية، دراسات جدوى، المملكة العربية السعودية، رؤية 2030">
-<meta property="og:title" content="المدونة والفرص الاستثمارية | خبراء للاستشارات الاقتصادية">
-<meta property="og:description" content="اكتشف أحدث المقالات والفرص الاستثمارية من خبراء للاستشارات الاقتصادية. مقالات متخصصة وفرص استثمارية واعدة لمساعدتك في اتخاذ قرارات استثمارية ذكية.">
+<meta name="description" content="اكتشف أحدث المقالات من خبراء للاستشارات الاقتصادية. مقالات متخصصة لمساعدتك في اتخاذ قرارات اقتصادية ذكية.">
+<meta name="keywords" content="مدونة اقتصادية، مقالات اقتصادية، استشارات اقتصادية، المملكة العربية السعودية، رؤية 2030">
+<meta property="og:title" content="المدونة | خبراء للاستشارات الاقتصادية">
+<meta property="og:description" content="اكتشف أحدث المقالات من خبراء للاستشارات الاقتصادية. مقالات متخصصة لمساعدتك في اتخاذ قرارات اقتصادية ذكية.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ url()->current() }}">
 <meta property="og:image" content="{{ asset('assets/img/blog/default-post.jpg') }}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="المدونة والفرص الاستثمارية | خبراء للاستشارات الاقتصادية">
-<meta name="twitter:description" content="اكتشف أحدث المقالات والفرص الاستثمارية من خبراء للاستشارات الاقتصادية. مقالات متخصصة وفرص استثمارية واعدة لمساعدتك في اتخاذ قرارات استثمارية ذكية.">
+<meta name="twitter:title" content="المدونة | خبراء للاستشارات الاقتصادية">
+<meta name="twitter:description" content="اكتشف أحدث المقالات من خبراء للاستشارات الاقتصادية. مقالات متخصصة لمساعدتك في اتخاذ قرارات اقتصادية ذكية.">
 <meta name="twitter:image" content="{{ asset('assets/img/blog/default-post.jpg') }}">
 @endsection
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/blog.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/blog.css') }}?t={{ time() }}">
 @endsection
 
 @section('content')
@@ -25,60 +25,74 @@
 <section class="hero-section">
     <div class="container">
         <div class="hero-content">
-            <h1>المدونة والفرص الاستثمارية</h1>
-            <p>اكتشف أحدث الفرص الاستثمارية والمقالات التي تساعدك على اتخاذ قرارات استثمارية ذكية</p>
+            <h1>المدونة</h1>
+            <p>اكتشف أحدث المقالات التي تساعدك على اتخاذ قرارات اقتصادية ذكية</p>
         </div>
     </div>
 </section>
 
-<!-- Blog Section -->
-<section class="blog-section">
+<!-- Blog Section with Modern Filters -->
+<section class="investment-grid">
     <div class="container">
-        @if($posts->isEmpty())
-        <div class="col-12">
-            <div class="text-center py-5">
-                <div class="mb-4">
-                    <i class="fas fa-newspaper fa-3x text-muted"></i>
+        <!-- Modern Dropdown Filters -->
+        <div class="investment-filters mb-4">
+            <div class="filter-dropdown" id="categoryDropdown">
+                <div class="filter-dropdown-toggle">
+                    <span>{{ request('category') && request('category') !== 'all' ? $categories->firstWhere('id', request('category'))->name : 'كل المقالات' }}</span>
+                    <i class="fas fa-chevron-down"></i>
                 </div>
-                <p class="text-muted fs-5 mb-3">لا توجد منشورات حالياً</p>
-                <p class="text-muted">تابعنا قريباً للحصول على أحدث الفرص الاستثمارية</p>
+                <div class="filter-dropdown-menu">
+                    <a href="{{ route('blog.index') }}"
+                        class="filter-dropdown-item {{ !request('category') || request('category') === 'all' ? 'active' : '' }}">
+                        كل المقالات
+                    </a>
+                    @foreach($categories as $category)
+                    <a href="{{ route('blog.index', ['category' => $category->id]) }}"
+                        class="filter-dropdown-item {{ request('category') == $category->id ? 'active' : '' }}">
+                        {{ $category->name }}
+                    </a>
+                    @endforeach
+                </div>
             </div>
+        </div>
+
+        @if($blogs->isEmpty())
+        <div class="empty-state">
+            <i class="fas fa-newspaper"></i>
+            <h3>لا توجد منشورات حالياً</h3>
+            <p>تابعنا قريباً للحصول على أحدث المقالات</p>
         </div>
         @else
         <div class="row g-4">
-            @foreach($posts as $post)
+            @foreach($blogs as $blog)
             <div class="col-lg-4 col-md-6">
                 <div class="blog-item">
                     <div class="blog-img-container">
-                        @if($post->featured_image)
-                        <img src="{{ asset('storage/' . $post->featured_image) }}" alt="{{ $post->title }}">
+                        @if($blog->featured_image)
+                        <img src="{{ asset('storage/' . $blog->featured_image) }}" alt="{{ $blog->title }}">
                         @else
-                        <img src="{{ asset('assets/img/blog/default-post.jpg') }}" alt="{{ $post->title }}">
+                        <img src="{{ asset('assets/img/blog/default-post.jpg') }}" alt="{{ $blog->title }}">
                         @endif
 
-                        @if($post->investment_amount)
-                        <div class="blog-badge">{{ number_format($post->investment_amount) }} ر.س</div>
-                        @endif
-
-                        @if($post->investment_type)
-                        <div class="blog-type">{{ $post->investment_type }}</div>
+                        @if($blog->category)
+                        <div class="blog-type">{{ $blog->category->name }}</div>
                         @endif
                     </div>
                     <div class="blog-content">
                         <h3>
-                            <a href="{{ route('blog.show', $post->slug) }}">
-                                {{ $post->title }}
+                            <a href="{{ route('blog.show', $blog->slug) }}">
+                                {{ $blog->title }}
                             </a>
                         </h3>
                         <p class="blog-description">
-                            {{ Str::limit(strip_tags($post->content), 150) }}
+                            {{ Str::limit(strip_tags($blog->content), 150) }}
                         </p>
                         <div class="blog-meta">
                             <div class="blog-date">
                                 <i class="fas fa-calendar-alt"></i>
-                                {{ $post->published_at->format('d M, Y') }}
+                                {{ $blog->published_at->format('d M, Y') }}
                             </div>
-                            <a href="{{ route('blog.show', $post->slug) }}" class="read-more">
+                            <a href="{{ route('blog.show', $blog->slug) }}" class="read-more">
                                 اقرأ المزيد
                                 <i class="fas fa-arrow-left"></i>
                             </a>
@@ -89,17 +103,8 @@
             @endforeach
         </div>
 
-        @if(!$posts->isEmpty())
-        <div class="text-center mt-5">
-            <a href="{{ route('blog.opportunities') }}" class="investment-button">
-                عرض جميع الفرص الاستثمارية
-                <i class="fas fa-arrow-left mr-2"></i>
-            </a>
-        </div>
-        @endif
-
         <div class="pagination-wrapper">
-            {{ $posts->links() }}
+            {{ $blogs->links() }}
         </div>
         @endif
     </div>
@@ -118,7 +123,7 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Animación de aparición para los elementos del blog
+        // Animation for blog items
         const blogItems = document.querySelectorAll('.blog-item');
 
         if (blogItems.length > 0) {
@@ -129,6 +134,36 @@
                 }, 100 * index);
             });
         }
+
+        // Dropdown functionality
+        const dropdowns = document.querySelectorAll('.filter-dropdown');
+
+        dropdowns.forEach(dropdown => {
+            const toggle = dropdown.querySelector('.filter-dropdown-toggle');
+
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Close other dropdowns
+                dropdowns.forEach(otherDropdown => {
+                    if (otherDropdown !== dropdown) {
+                        otherDropdown.classList.remove('active');
+                    }
+                });
+
+                // Toggle current dropdown
+                dropdown.classList.toggle('active');
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.filter-dropdown')) {
+                dropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
+        });
     });
 </script>
 @endsection

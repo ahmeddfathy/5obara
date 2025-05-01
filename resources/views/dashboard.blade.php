@@ -3,18 +3,21 @@
 @section('title', 'لوحة التحكم')
 
 @section('styles')
-<link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/dashboard.css') }}?t={{ time() }}" rel="stylesheet">
 <style>
     .welcome-message {
         background: linear-gradient(120deg, #f8f9fa 0%, #e9ecef 100%);
         border-right: 4px solid var(--primary-color);
     }
+
     .welcome-message::before {
         display: none;
     }
+
     .card-header {
         background: rgba(79, 209, 197, 0.05);
     }
+
     .section-title {
         position: relative;
         margin-bottom: 1.5rem;
@@ -22,6 +25,7 @@
         display: inline-block;
         color: var(--dark-color);
     }
+
     .section-title:after {
         content: '';
         position: absolute;
@@ -32,9 +36,11 @@
         background: linear-gradient(to right, var(--primary-color), transparent);
         border-radius: 3px;
     }
+
     .dashboard-container {
         margin-top: 1rem;
     }
+
     .badge-role {
         background-color: var(--primary-color);
         color: white;
@@ -43,6 +49,7 @@
         font-size: 0.8rem;
         margin-left: 5px;
     }
+
     .badge-permission {
         background-color: #63B3ED;
         color: white;
@@ -75,23 +82,33 @@
                         <div class="row g-3">
                             @can('manage content')
                             <div class="col-md-6">
-                                <a href="{{ route('admin.posts.create') }}" class="list-group-item list-group-item-action">
+                                <a href="{{ route('admin.blogs.create') }}" class="list-group-item list-group-item-action">
                                     <i class="fas fa-plus-circle"></i>إضافة مقال جديد
                                 </a>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ route('admin.portfolio.create') }}" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-folder-plus"></i>إضافة مشروع جديد
+                                <a href="{{ route('admin.categories.create') }}" class="list-group-item list-group-item-action">
+                                    <i class="fas fa-plus-square"></i>إضافة تصنيف جديد
                                 </a>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ route('admin.posts.index') }}" class="list-group-item list-group-item-action">
+                                <a href="{{ route('admin.blogs.index') }}" class="list-group-item list-group-item-action">
                                     <i class="fas fa-list"></i>إدارة المقالات
                                 </a>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ route('admin.portfolio.index') }}" class="list-group-item list-group-item-action">
-                                    <i class="fas fa-briefcase"></i>إدارة المشاريع
+                                <a href="{{ route('admin.categories.index') }}" class="list-group-item list-group-item-action">
+                                    <i class="fas fa-tags"></i>إدارة التصنيفات
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{ route('admin.investment-categories.index') }}" class="list-group-item list-group-item-action">
+                                    <i class="fas fa-tags"></i>إدارة تصنيفات الفرص الاستثمارية
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{ route('admin.investment-categories.create') }}" class="list-group-item list-group-item-action">
+                                    <i class="fas fa-plus-square"></i>إضافة تصنيف فرص استثمارية
                                 </a>
                             </div>
                             @else
@@ -116,7 +133,7 @@
                         <div class="mb-3">
                             <strong>الأدوار:</strong>
                             @foreach(Auth::user()->roles as $role)
-                                <span class="badge-role">{{ $role->name }}</span>
+                            <span class="badge-role">{{ $role->name }}</span>
                             @endforeach
                         </div>
 
@@ -124,7 +141,7 @@
                             <strong>الصلاحيات:</strong>
                             <div class="mt-2">
                                 @foreach(Auth::user()->getAllPermissions() as $permission)
-                                    <span class="badge-permission">{{ $permission->name }}</span>
+                                <span class="badge-permission">{{ $permission->name }}</span>
                                 @endforeach
                             </div>
                         </div>

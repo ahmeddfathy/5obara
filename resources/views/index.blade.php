@@ -18,7 +18,7 @@
 @endsection
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}?t={{ time() }}">
 <style>
     .toast-message {
         position: fixed;
@@ -313,8 +313,8 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('assets/js/script.js') }}"></script>
-<script src="{{ asset('assets/js/counters.js') }}"></script>
+<script src="{{ asset('assets/js/script.js') }}?t={{ time() }}"></script>
+<script src="{{ asset('assets/js/counters.js') }}?t={{ time() }}"></script>
 <script>
     // Auto hide toast messages after 5 seconds
     document.addEventListener('DOMContentLoaded', function() {

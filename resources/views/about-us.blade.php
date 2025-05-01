@@ -17,7 +17,7 @@
 @endsection
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/about.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/about.css') }}?t={{ time() }}">
 @endsection
 
 @section('content')
@@ -66,5 +66,5 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('assets/js/about.js') }}"></script>
+<script src="{{ asset('assets/js/about.js') }}?t={{ time() }}"></script>
 @endsection

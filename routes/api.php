@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PortfolioController;
-use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\InvestmentController;
 
@@ -27,14 +27,13 @@ Route::get('/portfolios', [PortfolioController::class, 'index']);
 Route::get('/portfolios/{portfolio}', [PortfolioController::class, 'show']);
 Route::get('/portfolio-categories', [PortfolioController::class, 'categories']);
 
-// Blog post routes
-Route::get('/posts', [PostController::class, 'index']);
-Route::get('/posts/{post}', [PostController::class, 'show']);
-Route::get('/post-categories', [PostController::class, 'categories']);
-
-// Investment opportunities routes
-Route::get('/opportunities', [PostController::class, 'opportunities']);
-Route::get('/featured-investments', [PostController::class, 'featuredInvestments']);
+// Blog routes
+Route::get('/blogs', [BlogController::class, 'index']);
+Route::get('/blogs/{blog}', [BlogController::class, 'show']);
+Route::get('/blog-categories', [BlogController::class, 'categories']);
+Route::get('/blog-types', [BlogController::class, 'blogTypes']);
+Route::get('/blogs/by-type', [BlogController::class, 'byType']);
+Route::get('/featured-blogs', [BlogController::class, 'featured']);
 
 // Contact route
 Route::post('/contact', [ContactController::class, 'submit'])->middleware(['throttle:20,1']);

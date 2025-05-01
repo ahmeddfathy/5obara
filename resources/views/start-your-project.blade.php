@@ -17,7 +17,7 @@
 @endsection
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/start-project.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/start-project.css') }}?t={{ time() }}">
 <style>
     .toast-message {
         position: fixed;
@@ -29,11 +29,12 @@
         border-radius: 5px;
         background-color: #d4edda;
         color: #155724;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         opacity: 1;
         transition: opacity 0.5s;
         direction: rtl;
     }
+
     .toast-message.hide {
         opacity: 0;
     }
@@ -42,10 +43,10 @@
 
 @section('content')
 @if(session('project_success'))
-    <div class="toast-message" id="successToast">
-        <i class="fas fa-check-circle ml-2"></i>
-        {{ session('project_success') }}
-    </div>
+<div class="toast-message" id="successToast">
+    <i class="fas fa-check-circle ml-2"></i>
+    {{ session('project_success') }}
+</div>
 @endif
 
 <!-- Hero Section -->
@@ -104,7 +105,7 @@
                             <div class="col-12 mt-3">
                                 <div class="form-group">
                                     <label>وصف المشروع</label>
-                                    <textarea name="description" class="form-control" rows="5" required></textarea>
+                                    <textarea name="description" class="form-control" rows="5" placeholder="اكتب تفاصيل مشروعك هنا..." required></textarea>
                                 </div>
                             </div>
                             <div class="col-12 mt-3">
@@ -168,15 +169,15 @@
                 <div class="contact-info">
                     <h3>تواصل معنا</h3>
                     <ul>
-                        <li><i class="fas fa-phone"></i> +966 50 000 0000</li>
+                        <li><i class="fas fa-phone"></i> +966 569617288</li>
                         <li><i class="fas fa-envelope"></i> info@5obara.com</li>
-                        <li><i class="fas fa-map-marker-alt"></i> جدة، المملكة العربية السعودية</li>
+                        <li><i class="fas fa-map-marker-alt"></i> جدة - طريق الكورنيش - مبنى كورنيز الدور الرابع</li>
                     </ul>
                     <div class="project-social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.facebook.com/people/%D8%AE%D8%A8%D8%B1%D8%A7%D8%A1-%D9%84%D9%84%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%A7%D9%82%D8%AA%D8%B5%D8%A7%D8%AF%D9%8A%D8%A9/61551783909820/" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://x.com/Khobra_company" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/company/%D8%AE%D8%A8%D8%B1%D8%A7%D8%A1-%D9%84%D9%84%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A7%D8%AA-%D8%A7%D9%84%D8%A7%D9%82%D8%AA%D8%B5%D8%A7%D8%AF%D9%8A%D8%A9/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
             </div>
@@ -188,10 +189,15 @@
         </div>
     </div>
 </section>
+
+<!-- Vision 2030 Logo -->
+<div class="vision-2030">
+    <img src="{{ asset('assets/img/footer-logo.png') }}" alt="رؤية 2030 - المملكة العربية السعودية">
+</div>
 @endsection
 
 @section('scripts')
-<script src="{{ asset('assets/js/start-project.js') }}"></script>
+<script src="{{ asset('assets/js/start-project.js') }}?t={{ time() }}"></script>
 <script>
     // Auto hide toast messages after 5 seconds
     document.addEventListener('DOMContentLoaded', function() {

@@ -1,8 +1,0 @@
-This folder should contain the following images:
-
-1. hero-bg.jpg - A background image for the hero section
-2. invest-bg.jpg - A background image for the investment section
-3. favicon.ico - Website favicon
-4. logo.png - Website logo
-
-Please add these images to make the website look complete. The CSS is already configured to use these image paths. 

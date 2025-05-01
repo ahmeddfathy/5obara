@@ -20,13 +20,14 @@
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
         <!-- Main CSS -->
-        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}?t={{ time() }}">
 
 
         <!-- Parts CSS -->
-        <link rel="stylesheet" href="{{ asset('assets/css/parts/top-bar.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/parts/header.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/parts/footer.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/parts/top-bar.css') }}?t={{ time() }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/parts/header.css') }}?t={{ time() }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/parts/footer.css') }}?t={{ time() }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/parts/newsletter.css') }}?t={{ time() }}">
 
         @yield('styles')
     </head>
@@ -40,12 +41,15 @@
         <!-- Main Content -->
         @yield('content')
 
+        <!-- Newsletter -->
+        @include('parts.newsletter')
+
         <!-- Footer -->
         @include('parts.footer')
 
         <!-- JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="{{ asset('assets/js/script.js') }}"></script>
+        <script src="{{ asset('assets/js/script.js') }}?t={{ time() }}"></script>
 
         @yield('scripts')
     </body>

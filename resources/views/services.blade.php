@@ -17,7 +17,7 @@
 @endsection
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('assets/css/services.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/services.css') }}?t={{ time() }}">
 @endsection
 
 @section('content')

@@ -7,9 +7,6 @@ use App\Models\Portfolio;
 
 class PortfolioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $portfolios = Portfolio::orderBy('created_at', 'desc')
@@ -18,11 +15,14 @@ class PortfolioController extends Controller
         return view('portfolio.index', compact('portfolios'));
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Portfolio $portfolio)
     {
-        return view('portfolio.show', compact('portfolio'));
+        $relatedProjects = Portfolio::where('project_type', $portfolio->project_type)
+            ->where('id', '!=', $portfolio->id)
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->get();
+
+        return view('portfolio.show', compact('portfolio', 'relatedProjects'));
     }
 }
