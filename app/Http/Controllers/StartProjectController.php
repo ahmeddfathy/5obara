@@ -14,13 +14,13 @@ class StartProjectController extends Controller
     {
         try {
             $ipAddress = $request->ip();
-            if (RateLimiter::tooManyAttempts('start-project-form:'.$ipAddress, 3)) {
-                $seconds = RateLimiter::availableIn('start-project-form:'.$ipAddress);
-                return back()->with('project_error', 'لقد أرسلت العديد من الطلبات. الرجاء المحاولة مرة أخرى بعد '.$seconds.' ثانية.')
-                            ->withInput();
+            if (RateLimiter::tooManyAttempts('start-project-form:' . $ipAddress, 3)) {
+                $seconds = RateLimiter::availableIn('start-project-form:' . $ipAddress);
+                return back()->with('project_error', 'لقد أرسلت العديد من الطلبات. الرجاء المحاولة مرة أخرى بعد ' . $seconds . ' ثانية.')
+                    ->withInput();
             }
 
-            RateLimiter::hit('start-project-form:'.$ipAddress, 60*30);
+            RateLimiter::hit('start-project-form:' . $ipAddress, 60 * 30);
 
             if ($request->filled('website_field')) {
                 return back()->with('project_success', 'تم إرسال طلب المشروع بنجاح! سنتواصل معك قريباً.');
@@ -29,7 +29,7 @@ class StartProjectController extends Controller
             $submissionTimestamp = $request->input('_timestamp', 0);
             if (time() - $submissionTimestamp < 3) {
                 return back()->with('project_error', 'الرجاء التأكد من إدخال جميع البيانات بشكل صحيح قبل الإرسال.')
-                            ->withInput();
+                    ->withInput();
             }
 
             $validated = $request->validate([
@@ -62,8 +62,7 @@ class StartProjectController extends Controller
             Mail::to('ahmeddfathy087@gmail.com')
                 ->send(new StartProjectMail($validated));
 
-            return back()->with('project_success', 'تم إرسال طلب المشروع بنجاح! سنتواصل معك قريباً.');
-
+            return redirect('/thank-you')->with('project_success', 'تم إرسال طلب المشروع بنجاح! سنتواصل معك قريباً.');
         } catch (\Exception $e) {
             Log::error('Error in start project form submission', [
                 'error' => $e->getMessage(),
@@ -72,7 +71,7 @@ class StartProjectController extends Controller
             ]);
 
             return back()->with('project_error', 'حدث خطأ أثناء إرسال طلب المشروع. يرجى المحاولة مرة أخرى لاحقاً.')
-                         ->withInput();
+                ->withInput();
         }
     }
 }

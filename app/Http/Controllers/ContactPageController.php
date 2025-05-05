@@ -14,13 +14,13 @@ class ContactPageController extends Controller
     {
         try {
             $ipAddress = $request->ip();
-            if (RateLimiter::tooManyAttempts('contact-page-form:'.$ipAddress, 5)) {
-                $seconds = RateLimiter::availableIn('contact-page-form:'.$ipAddress);
-                return back()->with('contact_error', 'لقد أرسلت العديد من الرسائل. الرجاء المحاولة مرة أخرى بعد '.$seconds.' ثانية.')
-                            ->withInput();
+            if (RateLimiter::tooManyAttempts('contact-page-form:' . $ipAddress, 5)) {
+                $seconds = RateLimiter::availableIn('contact-page-form:' . $ipAddress);
+                return back()->with('contact_error', 'لقد أرسلت العديد من الرسائل. الرجاء المحاولة مرة أخرى بعد ' . $seconds . ' ثانية.')
+                    ->withInput();
             }
 
-            RateLimiter::hit('contact-page-form:'.$ipAddress, 60*10);
+            RateLimiter::hit('contact-page-form:' . $ipAddress, 60 * 10);
 
             if ($request->filled('website_field')) {
                 return back()->with('contact_success', 'تم إرسال رسالتك بنجاح! سنقوم بالتواصل معك قريباً.');
@@ -29,7 +29,7 @@ class ContactPageController extends Controller
             $submissionTimestamp = $request->input('_timestamp', 0);
             if (time() - $submissionTimestamp < 3) {
                 return back()->with('contact_error', 'الرجاء التأكد من إدخال جميع البيانات بشكل صحيح قبل الإرسال.')
-                            ->withInput();
+                    ->withInput();
             }
 
             $validated = $request->validate([
@@ -61,7 +61,7 @@ class ContactPageController extends Controller
 
             Log::info('Contact form email sent successfully');
 
-            return back()->with('contact_success', 'تم إرسال رسالتك بنجاح! سنقوم بالتواصل معك قريباً.');
+            return redirect('/thank-you')->with('contact_success', 'تم إرسال رسالتك بنجاح! سنقوم بالتواصل معك قريباً.');
         } catch (\Exception $e) {
             Log::error('Error in contact form submission', [
                 'error' => $e->getMessage(),
@@ -70,7 +70,7 @@ class ContactPageController extends Controller
             ]);
 
             return back()->with('contact_error', 'حدث خطأ أثناء إرسال رسالتك. يرجى المحاولة مرة أخرى لاحقاً.')
-                         ->withInput();
+                ->withInput();
         }
     }
 }

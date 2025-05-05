@@ -26,11 +26,11 @@ class SecurityHeaders
         // سياسة أمان المحتوى - محسّنة
         $cspDirectives = [
             "default-src 'self'",
-            "script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.quilljs.com 'unsafe-inline'",
+            "script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.quilljs.com https://www.gstatic.com https://*.gstatic.com https://*.googleapis.com https://firebase.googleapis.com 'unsafe-inline'",
             "style-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://cdn.quilljs.com 'unsafe-inline'",
             "img-src 'self' data: blob:",
             "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.quilljs.com",
-            "connect-src 'self'",
+            "connect-src 'self' https://*.googleapis.com https://*.firebase.googleapis.com https://*.gstatic.com https://fcm.googleapis.com",
             "media-src 'self'",
             "object-src 'none'",
             "frame-src 'self' https://www.google.com https://*.google.com https://*.gstatic.com",

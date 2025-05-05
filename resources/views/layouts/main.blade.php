@@ -52,5 +52,7 @@
         <script src="{{ asset('assets/js/script.js') }}?t={{ time() }}"></script>
 
         @yield('scripts')
+        @include('components.firebase-messaging')
+
     </body>
 </html>

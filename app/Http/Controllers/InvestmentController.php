@@ -59,7 +59,7 @@ class InvestmentController extends Controller
             Mail::to('ahmeddfathy087@gmail.com')
                 ->send(new InvestmentFormMail($validated));
 
-            return back()->with('investment_success', 'تم إرسال طلب الاستثمار بنجاح! سنتواصل معك قريباً.');
+            return redirect('/thank-you')->with('investment_success', 'تم إرسال طلب الاستثمار بنجاح! سنتواصل معك قريباً.');
         } catch (\Exception $e) {
             Log::error('Error in investment form submission', [
                 'error' => $e->getMessage(),

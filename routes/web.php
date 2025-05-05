@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\InvestmentController as AdminInvestmentController
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\InvestmentCategoryController;
 
+
 Route::get('/', function () {
     return view('index');
 });
@@ -45,6 +46,9 @@ Route::get('/start-your-project', function () {
     return view('start-your-project');
 })->name('start-your-project');
 
+Route::get('/thank-you', function () {
+    return view('thank-you');
+})->name('thank-you');
 
 // منع الوصول إلى صفحة التسجيل وإعادة التوجيه إلى صفحة تسجيل الدخول
 Route::get('/register', function () {
@@ -153,3 +157,10 @@ Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
 // Investment Opportunities Routes (Frontend - Public)
 Route::get('/investment-opportunities', [InvestmentOpportunityController::class, 'index'])->name('investments.index');
 Route::get('/investment-opportunities/{investment:slug}', [InvestmentOpportunityController::class, 'show'])->name('investments.show');
+
+// Blog Notifications Routes
+
+// FCM Token Update Route
+Route::post('/fcm/token/update', [App\Http\Controllers\FCMController::class, 'updateToken'])
+    ->name('fcm.token.update')
+    ->middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']);

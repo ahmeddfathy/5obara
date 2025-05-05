@@ -241,6 +241,9 @@
         });
     </script>
     @yield('scripts')
+
+    <!-- Firebase Messaging -->
+    @include('components.firebase-messaging')
 </body>
 
 </html>

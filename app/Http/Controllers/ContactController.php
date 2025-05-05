@@ -14,12 +14,12 @@ class ContactController extends Controller
     public function submit(Request $request)
     {
         $ipAddress = $request->ip();
-        if (RateLimiter::tooManyAttempts('contact-form:'.$ipAddress, 5)) {
-            $seconds = RateLimiter::availableIn('contact-form:'.$ipAddress);
-            return back()->with('error', 'لقد أرسلت العديد من الرسائل. الرجاء المحاولة مرة أخرى بعد '.$seconds.' ثانية.');
+        if (RateLimiter::tooManyAttempts('contact-form:' . $ipAddress, 5)) {
+            $seconds = RateLimiter::availableIn('contact-form:' . $ipAddress);
+            return back()->with('error', 'لقد أرسلت العديد من الرسائل. الرجاء المحاولة مرة أخرى بعد ' . $seconds . ' ثانية.');
         }
 
-        RateLimiter::hit('contact-form:'.$ipAddress, 60*10);
+        RateLimiter::hit('contact-form:' . $ipAddress, 60 * 10);
 
         if ($request->filled('website_field')) {
             return back()->with('success', 'تم إرسال رسالتك بنجاح!');
@@ -52,11 +52,11 @@ class ContactController extends Controller
             Mail::to('ahmeddfathy087@gmail.com')
                 ->send(new ContactFormMail($validated));
 
-            return back()->with('success', 'تم إرسال رسالتك بنجاح!');
+            return redirect('/thank-you')->with('success', 'تم إرسال رسالتك بنجاح!');
         } catch (\Exception $e) {
             Log::error('Contact form error: ' . $e->getMessage());
             return back()->with('error', 'حدث خطأ أثناء إرسال الرسالة. الرجاء المحاولة مرة أخرى لاحقاً.')
-                        ->withInput();
+                ->withInput();
         }
     }
 }
